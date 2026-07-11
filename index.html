@@ -30,6 +30,18 @@
     letter-spacing:.22em;color:#e8c98f;text-shadow:0 2px 8px rgba(0,0,0,.6)}
   .credit{margin-top:16px;font-size:12px;letter-spacing:.24em;color:#c9a06a;
     text-transform:uppercase;opacity:.85}
+  @keyframes glow{0%,100%{text-shadow:0 3px 0 #3a1608, 0 0 26px rgba(200,121,47,.3)}
+    50%{text-shadow:0 3px 0 #3a1608, 0 0 52px rgba(255,180,90,.6)}}
+  #scrTitle h1{animation:glow 3.2s ease-in-out infinite}
+  .btn2{margin-top:12px;font-family:'IM Fell English SC',serif;font-size:15px;
+    letter-spacing:.1em;color:#e8c98f;background:transparent;
+    border:1px solid #b98f5f;border-radius:4px;padding:8px 22px;cursor:pointer}
+  #scrBiblio{background:rgba(14,8,5,.94);justify-content:flex-start;
+    overflow-y:auto;padding:44px 20px 60px}
+  .biblio{max-width:640px;text-align:left;font-size:15px;line-height:1.65;color:#e9d8b4}
+  .biblio h3{font-family:'IM Fell English SC',serif;font-weight:400;color:#e8c98f;
+    margin:22px 0 6px;font-size:20px;letter-spacing:.06em}
+  .biblio b{color:var(--arena)} .biblio i{color:#d9b98a}
   .rule{width:min(420px,70vw);height:2px;margin:18px auto;
     background:linear-gradient(90deg,transparent,var(--ocre),transparent)}
   .story{max-width:560px;font-size:clamp(15px,2.6vw,19px);line-height:1.55;color:#e9d8b4}
@@ -89,16 +101,83 @@
     Tres misiones guarda la memoria: el primer choque en <b>Guampacha</b>,
     la emboscada de <b>Zanca</b> en Choya, y la batalla final de <b>Maquijata</b>.
     <br><br>
-    Sos el <b>Cacique</b>. Cada invasor caído suma <b>guerreros</b> a tu lado
-    y hace más grande la <span class="ven">flecha del veneno</span>.
+    Sos <b>Canamico</b> (Qhanamikuq), gobernador tonokoté de la Federación,
+    junto al capitán inca <b>Sinchi Wayna</b>. Cada invasor caído suma
+    <b>guerreros</b> a tu lado, los <b>caballos robados</b> montan a tu gente,
+    y la <span class="ven">flecha del veneno</span> crece.
     La historia dice que una sola bastó.
   </div>
   <button class="btn" id="bStart">COMENZAR</button>
+  <button class="btn2" id="bBiblio">BIBLIOTECA HISTÓRICA</button>
   <div class="keys">
     <kbd>W A S D</kbd> o flechas: moverse &nbsp;·&nbsp; <kbd>ESPACIO</kbd>: disparar (mantener)
     &nbsp;·&nbsp; <kbd>E</kbd>: flecha envenenada &nbsp;·&nbsp; <kbd>Q</kbd>: bola de fuego (tras 10 bajas) &nbsp;·&nbsp; <kbd>M</kbd>: música<br>En celular: joystick y botones en pantalla &nbsp;·&nbsp; Tocá la pantalla para oír la chacarera
   </div>
   <div class="credit">Realizado por Jellabs</div>
+</div>
+
+<!-- Misión -->
+<div class="screen hidden" id="scrMision">
+  <div class="eyebrow" id="misEyebrow">MISIÓN 1 · 1543</div>
+  <h1 id="misTitle" style="font-size:clamp(30px,6vw,56px)">GUAMPACHA</h1>
+  <div class="rule"></div>
+  <div class="story" id="misText"></div>
+  <button class="btn" id="bMision">COMENZAR MISIÓN</button>
+  <div class="credit">Más en la Biblioteca Histórica del menú</div>
+</div>
+
+<!-- Biblioteca histórica -->
+<div class="screen hidden" id="scrBiblio">
+  <h1 style="font-size:clamp(26px,5vw,44px)">BIBLIOTECA HISTÓRICA</h1>
+  <div class="rule"></div>
+  <div class="biblio">
+    <h3>Canamico (Qhanamikuq), ca. 1500–1560</h3>
+    Gobernador tonokoté incaizado, líder de la resistencia en la región de
+    Santiago del Estero. Comandó a la <b>Federación Tonokoté</b> frente a las
+    primeras expediciones coloniales. Es reconocido como el vencedor de la
+    <b>batalla de Maquijata</b>, al mando de unos 1.500 guerreros. Algunos
+    cronistas lo describen vestido a la usanza peruana y llevado en andas por
+    los suyos; su tembetá lucía el símbolo del <i>Tahuantinsuyu</i>.
+
+    <h3>Sinchi Wayna</h3>
+    Capitán inca, jefe militar de Canamico. Su presencia refleja la alianza de
+    los pueblos locales con la organización militar incaica, herencia de la
+    expansión del imperio sobre estas tierras.
+
+    <h3>Diego de Rojas (†1544)</h3>
+    Capitán español que encabezó la primera entrada al Tucumán en 1543,
+    bajando desde el Alto Perú por el camino inca del <i>Qhapaq Ñan</i>.
+    Herido en la pierna por una <b>flecha envenenada</b> en Maquijata, murió
+    tras una larga agonía en enero de 1544.
+
+    <h3>Los tonocotés (juríes)</h3>
+    Agricultores sedentarios que habitaban extensos poblados protegidos con
+    empalizadas. Los españoles los llamaron <i>juríes</i> —del quichua
+    <i>xuri</i>, suri o ñandú— por sus taparrabos de plumas.
+
+    <h3>Diaguitas y sanavirones</h3>
+    Las etnias serranas y occidentales se agrupaban en señoríos con fuerte
+    tradición alfarera y agrícola, y resistieron el avance conquistador
+    coordinándose con los pueblos vecinos.
+
+    <h3>Los incas y el Qhapaq Ñan</h3>
+    Hacia 1460 la expansión de Túpac Yupanqui alcanzó estas tierras bajas.
+    Jefes locales como Canamico quedaron integrados a la administración
+    incaica; Maquijata pertenecía al <i>wamani</i> (provincia) de Quire Quire.
+
+    <h3>Las tres batallas de esta campaña</h3>
+    <b>Guampacha</b>: primer encuentro con las tropas de Rojas en las sierras
+    de Guasayán. <b>Zanca</b> (Departamento Choya): la emboscada donde cae
+    gran parte del ejército invasor. <b>Maquijata</b>: la batalla final y la
+    muerte de Diego de Rojas.
+
+    <h3>Las armas de la resistencia</h3>
+    Arcos con <span class="ven" style="color:var(--veneno)">flechas envenenadas</span>
+    —arma típica tonokoté—, hondas de cuero y piedra. Los invasores traían
+    arcabuces, cañones, perros de guerra y caballos... que los guerreros
+    aprendieron a robar y montar.
+  </div>
+  <button class="btn" id="bVolver" style="margin-top:30px">VOLVER</button>
 </div>
 
 <!-- Derrota -->
@@ -116,10 +195,10 @@
   <h1 style="color:#bcd37f">LA FLECHA<br>ENVENENADA</h1>
   <div class="rule"></div>
   <div class="story">
-    La flecha encontró el punto que la armadura no cubría.
-    <b>Diego de Rojas</b>, herido en Maquijata, murió por el
-    <span class="ven">veneno</span> a comienzos de <b>1544</b>:
-    el primer conquistador caído en el Tucumán.
+    La flecha encontró la pierna que la armadura no cubría.
+    <b>Diego de Rojas</b>, herido en Maquijata por las huestes de
+    <b>Canamico</b> y <b>Sinchi Wayna</b>, murió tras larga agonía
+    en enero de <b>1544</b>: el primer conquistador caído en el Tucumán.
     <br><br>
     <i>La memoria de Maquijata sigue viva en las sierras de Guasayán,
     Santiago del Estero.</i>
@@ -289,9 +368,29 @@ document.getElementById('bAgain').onclick = () => { startGame(); };
 document.getElementById('scrTitle').addEventListener('pointerdown', () => {
   if(state === 'title') startMusic('chacarera');
 });
+const MISIONES = {
+  1: {titulo: 'GUAMPACHA', texto: 'Sierras de Guasayán, 1543. Aquí viven los <b>tonocotés</b> —que los españoles llaman <i>juríes</i>, del quichua <i>xuri</i> (suri), por sus taparrabos de plumas— junto a parcialidades <b>diaguitas</b> serranas. Por el camino inca del Qhapaq Ñan baja la expedición de <b>Diego de Rojas</b> con arcabuces, caballos y cañones. Bajo la tormenta se produce el primer encuentro.'},
+  2: {titulo: 'ZANCA · CHOYA', texto: 'Departamento Choya, cerca de la actual Villa La Punta. <b>Juríes</b>, <b>diaguitas</b> y <b>sanavirones</b>, pueblos agricultores de poblados con empalizadas, coordinan la emboscada junto a las aguas del cerro. Gran parte del ejército de Rojas cae aquí.'},
+  3: {titulo: 'MAQUIJATA', texto: 'Wamani inca de Quire Quire, en el límite de las actuales Santiago del Estero y Catamarca. <b>Canamico</b> (Qhanamikuq), gobernador tonokoté, comanda 1.500 guerreros junto al capitán inca <b>Sinchi Wayna</b>. La <span class="ven">flecha envenenada</span> espera a Diego de Rojas.'}
+};
+function showMision(n){
+  level = n; wave = 0; waveMsg = 0;
+  scr('misEyebrow').textContent = 'MISIÓN ' + n + ' · 1543';
+  scr('misTitle').textContent = MISIONES[n].titulo;
+  scr('misText').innerHTML = MISIONES[n].texto;
+  showScreen('scrMision');
+  state = 'mision';
+}
+document.getElementById('bMision').onclick = () => {
+  showScreen(null);
+  state = 'play';
+  nextWave();
+};
+document.getElementById('bBiblio').onclick = () => { showScreen('scrBiblio'); };
+document.getElementById('bVolver').onclick = () => { showScreen('scrTitle'); };
 
 function showScreen(id){
-  for(const s of ['scrTitle','scrLose','scrWin']) scr(s).classList.add('hidden');
+  for(const s of ['scrTitle','scrLose','scrWin','scrMision','scrBiblio']) scr(s).classList.add('hidden');
   if(id) scr(id).classList.remove('hidden');
 }
 
@@ -309,7 +408,7 @@ function startGame(){
   if(AC && AC.state === 'suspended') AC.resume();
   startMusic('batalla');
   startRainSound();
-  state = 'levelintro'; levelBanner = 3.4;
+  showMision(1);
 }
 
 /* ---------- oleadas ---------- */
@@ -340,12 +439,11 @@ function nextWave(){
   }
 }
 function startLevel(n){
-  level = n; wave = 0; waveMsg = 0;
-  state = 'levelintro'; levelBanner = 3.4;
   player.hp = Math.min(player.maxHp, player.hp + 2);
   addFloat(player.x, player.y-60, '+2 corazones', '#ffd27a');
   grito(4);
-  stopRainSound();   // la lluvia queda atrás, en la quebrada
+  stopRainSound();   // la lluvia queda atrás, en Guampacha
+  showMision(n);
 }
 /* agua del cerro: el río y el ojo de agua del nivel 2 frenan el paso */
 function inWater(x, y){
@@ -405,11 +503,20 @@ function addAlly(){
     ang: rnd(0, 6.283), dist: rnd(42, 60),
     spd: rnd(1.0, 1.6) * (Math.random() < .5 ? 1 : -1),
     weapon: allies.length % 2 === 0 ? 'arco' : 'honda',
+    mounted: false,
     cd: rnd(.4, 1.2), x: player.x, y: player.y, t: rnd(0, 6)
   });
 }
 function killAlly(i){
   const al = allies[i];
+  if(al.mounted){
+    // pierde el caballo, pero el guerrero sigue en pie
+    al.mounted = false; al.dist -= 14;
+    burst(al.x, al.y, '#8a6a4a', 12, 130);
+    addFloat(al.x, al.y - 30, 'perdió el caballo', '#e8c9a0');
+    sfx(180, .2, 'sawtooth', .05, 70);
+    return;
+  }
   burst(al.x, al.y, '#c9584a', 12, 130);
   addFloat(al.x, al.y - 30, 'cayó un guerrero', '#e8b0a0');
   allies.splice(i, 1);
@@ -431,6 +538,14 @@ function registerKill(e){
     addFloat(player.x, player.y - 72, 'La flecha del veneno crece...', '#a8d060');
   }
   if(kills % 3 === 0) grito(1 + Math.floor(Math.random()*2));   // grito de guerra por cada baja
+  if(kills % 8 === 0){
+    const a = allies.find(x => !x.mounted);
+    if(a){
+      a.mounted = true; a.dist += 14;
+      addFloat(player.x, player.y - 104, '¡Caballo robado al invasor!', '#ffd27a');
+      sfx(760, .3, 'sawtooth', .05, 320);   // relincho
+    }
+  }
 }
 
 /* ---------- bola de fuego de la honda ---------- */
@@ -598,7 +713,7 @@ function update(dt){
     if(al.cd <= 0 && !player.dead){
       const t = nearestTarget();
       if(t && dist(al, t) < 430){
-        al.cd = rnd(1.0, 1.6);
+        al.cd = al.mounted ? rnd(0.7, 1.1) : rnd(1.0, 1.6);
         const dd = dist(al, t) || 1;
         const vx = (t.x - al.x)/dd, vy = (t.y - al.y)/dd;
         if(al.weapon === 'arco'){
@@ -1402,6 +1517,15 @@ function drawTitleScene(){
   ctx.lineWidth = 2;
   ctx.beginPath(); ctx.moveTo(W-108, H*0.575);
   ctx.quadraticCurveTo(W-140, H*0.50, W-128, H*0.44); ctx.stroke();
+  // guerreros en marcha hacia la batalla (siluetas)
+  for(let i = 0; i < 5; i++){
+    const wx = W + 80 - ((tGlobal*34 + i*170) % (W + 260));
+    drawSiluetaGuerrero(wx, H*0.80 + (i%2)*10, 1 + (i%2)*0.18);
+  }
+  // jinete con caballo robado cruzando al galope
+  const rx = ((tGlobal*68) % (W*2.6)) - 220;
+  if(rx < W + 120) drawSiluetaJinete(rx, H*0.745);
+
   // chispas cálidas flotando
   for(let i = 0; i < 12; i++){
     const x = (i*97 + tGlobal*14) % W;
@@ -1411,6 +1535,46 @@ function drawTitleScene(){
     ctx.beginPath(); ctx.arc(x, y, 1.6, 0, 6.283); ctx.fill();
   }
   ctx.globalAlpha = 1;
+}
+function drawSiluetaGuerrero(x, y, s){
+  ctx.save(); ctx.translate(x, y); ctx.scale(-s, s);   // marchan hacia la izquierda
+  ctx.fillStyle = '#1c0c10'; ctx.strokeStyle = '#1c0c10';
+  ctx.lineCap = 'round';
+  const st = Math.sin(tGlobal*8 + x*0.05)*4;
+  ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(-3, 0); ctx.lineTo(-6, 14 + st);
+  ctx.moveTo(3, 0); ctx.lineTo(7, 14 - st); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(0, -8, 6, 11, 0, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(0, -22, 5.5, 0, 6.283); ctx.fill();
+  // plumas
+  ctx.lineWidth = 2.5;
+  ctx.beginPath(); ctx.moveTo(-2, -26); ctx.lineTo(-5, -33); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(2, -26); ctx.lineTo(5, -33); ctx.stroke();
+  // lanza
+  ctx.lineWidth = 2.2;
+  ctx.beginPath(); ctx.moveTo(8, 4); ctx.lineTo(14, -34); ctx.stroke();
+  ctx.restore();
+}
+function drawSiluetaJinete(x, y){
+  ctx.save(); ctx.translate(x, y); ctx.scale(-1.15, 1.15);
+  ctx.fillStyle = '#1c0c10'; ctx.strokeStyle = '#1c0c10'; ctx.lineCap = 'round';
+  const gal = Math.sin(tGlobal*13)*5;
+  ctx.lineWidth = 4.5;
+  ctx.beginPath();
+  ctx.moveTo(-14, 4); ctx.lineTo(-18, 16 + gal);
+  ctx.moveTo(-6, 6); ctx.lineTo(-6, 16 - gal);
+  ctx.moveTo(6, 6); ctx.lineTo(6, 16 + gal);
+  ctx.moveTo(14, 4); ctx.lineTo(18, 16 - gal); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(0, 0, 20, 9, 0, 0, 6.283); ctx.fill();
+  ctx.lineWidth = 7;
+  ctx.beginPath(); ctx.moveTo(17, -2); ctx.lineTo(26, -13); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(28, -15, 6, 4, .4, 0, 6.283); ctx.fill();
+  // jinete con lanza
+  ctx.beginPath(); ctx.ellipse(-2, -13, 5.5, 9, 0, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(-2, -25, 4.8, 0, 6.283); ctx.fill();
+  ctx.lineWidth = 2.2;
+  ctx.beginPath(); ctx.moveTo(4, -18); ctx.lineTo(16, -38); ctx.stroke();
+  ctx.restore();
 }
 
 /* ---------- personajes ---------- */
@@ -1462,10 +1626,32 @@ function drawIndio(a){
   ctx.scale(1.25, 1.25);
   const step = Math.sin(a.t*10)*1.6;
   ctx.fillStyle = 'rgba(0,0,0,.25)';
-  ctx.beginPath(); ctx.ellipse(0, 10, 9, 3, 0, 0, 6.283); ctx.fill();
-  ctx.strokeStyle = '#7a4326'; ctx.lineWidth = 4; ctx.lineCap = 'round';
-  ctx.beginPath(); ctx.moveTo(-3, 0); ctx.lineTo(-4, 9 + step);
-  ctx.moveTo(3, 0); ctx.lineTo(4, 9 - step); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(0, 10, a.mounted ? 14 : 9, 3.4, 0, 0, 6.283); ctx.fill();
+  if(a.mounted){
+    // caballo robado al invasor
+    const gal = Math.sin(a.t*12)*2.5;
+    const hd = a.spd > 0 ? 1 : -1;
+    ctx.strokeStyle = '#4a3220'; ctx.lineWidth = 3.5; ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(-9, 5); ctx.lineTo(-10, 11 + gal);
+    ctx.moveTo(-3, 6); ctx.lineTo(-3, 11 - gal);
+    ctx.moveTo(4, 6); ctx.lineTo(4, 11 + gal);
+    ctx.moveTo(9, 5); ctx.lineTo(10, 11 - gal); ctx.stroke();
+    ctx.fillStyle = '#5a3f28';
+    ctx.beginPath(); ctx.ellipse(0, 1, 15, 7, 0, 0, 6.283); ctx.fill();
+    ctx.lineWidth = 5.5; ctx.strokeStyle = '#5a3f28';
+    ctx.beginPath(); ctx.moveTo(hd*13, -1); ctx.lineTo(hd*19, -9); ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(hd*20.5, -10.5, 4.5, 3, hd*0.4, 0, 6.283); ctx.fill();
+    // crin
+    ctx.strokeStyle = '#33241a'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(hd*13, -3); ctx.lineTo(hd*17, -8); ctx.stroke();
+    ctx.translate(0, -12);
+  }
+  if(!a.mounted){
+    ctx.strokeStyle = '#7a4326'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(-3, 0); ctx.lineTo(-4, 9 + step);
+    ctx.moveTo(3, 0); ctx.lineTo(4, 9 - step); ctx.stroke();
+  }
   ctx.fillStyle = '#9a5a30';
   ctx.beginPath(); ctx.ellipse(0, -5, 7, 9, 0, 0, 6.283); ctx.fill();
   ctx.fillStyle = '#c8402e'; ctx.fillRect(-7, -2, 14, 3);
@@ -1673,7 +1859,7 @@ function drawHUD(){
   ctx.textAlign = 'left';
   ctx.font = "italic 14px 'IM Fell English', serif";
   ctx.fillStyle = 'rgba(239,224,192,.8)';
-  ctx.fillText('Cacique de Maquijata', 24, 52);
+  ctx.fillText('Canamico · Cacique tonokoté', 24, 52);
   ctx.font = "13px 'IM Fell English', serif";
   ctx.fillText('Guerreros: ' + allies.length + '  ·  Invasores caídos: ' + kills, 24, 72);
   // la flecha del veneno crece con cada invasor caído
@@ -2041,7 +2227,7 @@ let last = performance.now();
 function loop(now){
   let dt = (now - last) / 1000; last = now;
   dt = Math.min(dt, 0.05);
-  if(state !== 'title' && state !== 'victory' && state !== 'defeat' && state !== 'paused') update(dt);
+  if(state !== 'title' && state !== 'victory' && state !== 'defeat' && state !== 'paused' && state !== 'mision') update(dt);
   else { tGlobal += dt; updateFx(dt*timeScale); }
   draw();
   requestAnimationFrame(loop);
