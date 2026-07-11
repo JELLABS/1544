@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>1544 — The Beginning Of The End</title>
+<title>1544</title>
 <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -86,7 +86,7 @@
 
 <!-- Pantalla título -->
 <div class="screen" id="scrTitle">
-  <div class="eyebrow">La batalla de Maquijata</div>
+  <div class="eyebrow">La resistencia del Tucumán</div>
   <h1>1544</h1>
   <div class="sub">La caída de Diego de Rojas · Sierras de Guasayán, Santiago del Estero</div>
   <div class="rule"></div>
@@ -98,8 +98,9 @@
     <b>sanavirones</b>, con arcos, hondas y el secreto de sus flechas:
     el <span class="ven">veneno del monte</span>.
     <br><br>
-    Tres misiones guarda la memoria: el primer choque en <b>Guampacha</b>,
-    la emboscada de <b>Zanca</b> en Choya, y la batalla final de <b>Maquijata</b>.
+    Cuatro misiones guarda la memoria: el primer choque en <b>Guampacha</b>,
+    la emboscada de <b>Zanca</b>, la batalla de <b>Maquijata</b>... y, nueve
+    años después, la defensa de <b>El Barco</b> a orillas del Río Dulce.
     <br><br>
     Sos <b>Canamico</b> (Qhanamikuq), gobernador tonokoté de la Federación,
     junto al capitán inca <b>Sinchi Wayna</b>. Cada invasor caído suma
@@ -108,6 +109,7 @@
     La historia dice que una sola bastó.
   </div>
   <button class="btn" id="bStart">COMENZAR</button>
+  <button class="btn" id="bContinuarTitulo" style="display:none;margin-top:10px;background:linear-gradient(180deg,#5a7a34,#3c5420);border-color:#a8c870">CONTINUAR</button>
   <button class="btn2" id="bBiblio">BIBLIOTECA HISTÓRICA</button>
   <div class="keys">
     <kbd>W A S D</kbd> o flechas: moverse &nbsp;·&nbsp; <kbd>ESPACIO</kbd>: disparar (mantener)
@@ -171,6 +173,27 @@
     gran parte del ejército invasor. <b>Maquijata</b>: la batalla final y la
     muerte de Diego de Rojas.
 
+    <h3>Francisco de Aguirre</h3>
+    Capitán español enviado desde Chile por Pedro de Valdivia para extender
+    la jurisdicción chilena al este de la cordillera. En julio de 1553
+    destituyó a Juan Núñez de Prado y tomó el control de El Barco; alternó
+    pactos y guerras con lules, diaguitas y tonocotés para asegurar la
+    supervivencia de los colonos.
+
+    <h3>El Barco (1550–1553)</h3>
+    Ciudad fundada por Juan Núñez de Prado por mandato del Virreinato del
+    Perú. Los ataques de los pueblos originarios y las inundaciones la
+    obligaron a trasladarse una y otra vez. Muchos historiadores sostienen
+    que Aguirre no fue el fundador original, sino el responsable del cuarto
+    y definitivo traslado.
+
+    <h3>Madre de Ciudades (1553)</h3>
+    El 23 de diciembre de 1553 Aguirre asentó la ciudad a orillas del Río
+    Dulce y la bautizó <b>Santiago del Estero del Nuevo Maestrazgo</b>: el
+    primer asentamiento urbano que perdura hasta hoy en la Argentina. De
+    allí partieron las expediciones que fundaron las capitales del noroeste
+    y Córdoba.
+
     <h3>Las armas de la resistencia</h3>
     Arcos con <span class="ven" style="color:var(--veneno)">flechas envenenadas</span>
     —arma típica tonokoté—, hondas de cuero y piedra. Los invasores traían
@@ -187,21 +210,26 @@
   <div class="story">El cacique cayó, pero el monte no olvida. Las sierras de Guasayán
     esperan que vuelvas a levantar el arco.</div>
   <div class="story" id="statsLose" style="margin-top:12px;font-size:14px;color:#c9a06a"></div>
-  <button class="btn" id="bRetry">REINTENTAR</button>
+  <div class="story" id="cpInfo" style="margin-top:10px;font-size:15px;color:#e8c98f"></div>
+  <button class="btn" id="bContinuar" style="background:linear-gradient(180deg,#5a7a34,#3c5420);border-color:#a8c870">CONTINUAR</button>
+  <button class="btn2" id="bRetry" style="margin-top:14px">EMPEZAR DE NUEVO</button>
 </div>
 
 <!-- Victoria -->
 <div class="screen hidden" id="scrWin">
-  <h1 style="color:#bcd37f">LA FLECHA<br>ENVENENADA</h1>
+  <h1 style="color:#bcd37f">MADRE DE<br>CIUDADES</h1>
   <div class="rule"></div>
   <div class="story">
-    La flecha encontró la pierna que la armadura no cubría.
-    <b>Diego de Rojas</b>, herido en Maquijata por las huestes de
-    <b>Canamico</b> y <b>Sinchi Wayna</b>, murió tras larga agonía
-    en enero de <b>1544</b>: el primer conquistador caído en el Tucumán.
+    La resistencia rechazó una y mil veces al invasor. Aun así, el
+    23 de diciembre de <b>1553</b> Francisco de Aguirre trasladó la ciudad
+    a orillas del Río Dulce y la bautizó <b>Santiago del Estero del Nuevo
+    Maestrazgo</b>: el primer asentamiento urbano que perdura hasta hoy en
+    la Argentina. De allí partieron las expediciones que fundaron las
+    ciudades del noroeste y Córdoba — por eso Santiago es la
+    <b>Madre de Ciudades</b>.
     <br><br>
-    <i>La memoria de Maquijata sigue viva en las sierras de Guasayán,
-    Santiago del Estero.</i>
+    <i>Y en su gente sigue viva la sangre tonokoté: la memoria de Canamico,
+    de Maquijata y del monte.</i>
   </div>
   <div class="story" id="statsWin" style="margin-top:12px;font-size:14px;color:#c9a06a"></div>
   <button class="btn" id="bAgain">JUGAR DE NUEVO</button>
@@ -268,6 +296,33 @@ let state = 'title';          // title | play | bossintro | victory | defeat
 let timeScale = 1, shake = 0, tGlobal = 0;
 let wave = 0, waveMsg = 0, bossBanner = 0, winTimer = 0, level = 1, levelBanner = 0;
 let flash = 0, thunderT = 7, alliesLost = 0, playT = 0;
+let cineT = 0, cineFlash = 0, cineEv = [];
+let canonesAliados = [];
+/* Memoria de campaña: en la web publicada persiste entre visitas;
+   si el navegador no lo permite, dura la sesión. */
+const store = {
+  ok: (() => { try{ localStorage.setItem('__t','1'); localStorage.removeItem('__t'); return true; }catch(e){ return false; } })(),
+  get(k){ if(!this.ok) return null; try{ return localStorage.getItem(k); }catch(e){ return null; } },
+  set(k, v){ if(!this.ok) return; try{ localStorage.setItem(k, v); }catch(e){} },
+  del(k){ if(!this.ok) return; try{ localStorage.removeItem(k); }catch(e){} }
+};
+let cp = {level: 1, wave: 1, kills: 0, aliados: 2, montados: 0, arcabuces: 0, canones: 0, intentos: 0};
+let cpMem = null;
+function persistCP(){ cpMem = JSON.stringify(cp); store.set('cp1544', cpMem); }
+function saveCP(){
+  cp.level = level; cp.wave = wave; cp.kills = kills;
+  cp.aliados = allies.length;
+  cp.montados = allies.filter(a => a.mounted).length;
+  cp.arcabuces = allies.filter(a => a.weapon === 'arcabuz').length;
+  cp.canones = canonesAliados.length;
+  persistCP();
+}
+function loadCP(){
+  const raw = cpMem || store.get('cp1544');
+  if(!raw) return null;
+  try{ return JSON.parse(raw); }catch(e){ return null; }
+}
+function clearCP(){ cpMem = null; store.del('cp1544'); }
 
 const player  = {x: W*0.25, y: H*0.6, r: 17, hp: 5, maxHp: 5, speed: 175,
                  fireCd: 0, inv: 0, fx: 1, fy: 0, poisonReady: false,
@@ -293,6 +348,7 @@ const cabra = {x: 120, y: 246, t: 0, vx: 9};
 /* ---------- entrada: teclado ---------- */
 const keys = {};
 addEventListener('keydown', e => {
+  if(state === 'cine'){ endCine(); return; }
   keys[e.code] = true;
   if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault();
   if(e.code === 'KeyE') firePoison();
@@ -359,11 +415,51 @@ function togglePause(){
   if(state === 'play') state = 'paused';
   else if(state === 'paused') state = 'play';
 }
+addEventListener('pointerdown', () => { if(state === 'cine') endCine(); });
 
 /* ---------- botones de pantalla ---------- */
 const scr = id => document.getElementById(id);
-document.getElementById('bStart').onclick = () => { startGame(); };
-document.getElementById('bRetry').onclick = () => { startGame(); };
+document.getElementById('bStart').onclick = () => { startCine(); };
+document.getElementById('bRetry').onclick = () => { clearCP(); startGame(); };
+document.getElementById('bContinuar').onclick = () => { continueGame(); };
+document.getElementById('bContinuarTitulo').onclick = () => { continueGame(); };
+function continueGame(){
+  const c = loadCP();
+  if(!c){ startGame(); return; }
+  cp = c;
+  showScreen(null);
+  Object.assign(player, {x: W*0.25, y: H*0.62, hp: 5, inv: 0, fireCd: 0,
+                         fx: 1, fy: 0, poisonReady: false, fireballCd: 0, dead: false});
+  arrows = []; bullets = []; enemies = []; drops = []; parts = []; floats = [];
+  cannonballs = []; fireballs = []; canonesAliados = [];
+  boss = null; timeScale = 1; shake = 0; winTimer = 0; flash = 0; thunderT = 7;
+  kills = c.kills;
+  level = c.level; wave = c.wave - 1;   // nextWave relanza la oleada donde caíste
+  allies = [];
+  for(let i = 0; i < Math.max(2, c.aliados); i++) addAlly();
+  for(let i = 0; i < c.montados && i < allies.length; i++){
+    allies[i].mounted = true; allies[i].dist += 14;
+  }
+  for(let i = 0; i < c.arcabuces && i < allies.length; i++)
+    allies[allies.length - 1 - i].weapon = 'arcabuz';
+  for(let i = 0; i < (c.canones || 0); i++) capturarCanon(true);
+  btnPoison.classList.remove('ready');
+  btnFire.classList.remove('unlocked', 'ready');
+  if(AC && AC.state === 'suspended') AC.resume();
+  startMusic('batalla');
+  if(level === 1) startRainSound(); else stopRainSound();
+  state = 'play';
+  nextWave();
+}
+// Si hay una campaña guardada, ofrecer continuar desde el título
+(function(){
+  const c = loadCP();
+  if(c && c.intentos < 3 && (c.level > 1 || c.wave > 1)){
+    const b = document.getElementById('bContinuarTitulo');
+    b.style.display = '';
+    b.textContent = 'CONTINUAR · MISIÓN ' + c.level;
+  }
+})();
 document.getElementById('bAgain').onclick = () => { startGame(); };
 document.getElementById('scrTitle').addEventListener('pointerdown', () => {
   if(state === 'title') startMusic('chacarera');
@@ -371,11 +467,12 @@ document.getElementById('scrTitle').addEventListener('pointerdown', () => {
 const MISIONES = {
   1: {titulo: 'GUAMPACHA', texto: 'Sierras de Guasayán, 1543. Aquí viven los <b>tonocotés</b> —que los españoles llaman <i>juríes</i>, del quichua <i>xuri</i> (suri), por sus taparrabos de plumas— junto a parcialidades <b>diaguitas</b> serranas. Por el camino inca del Qhapaq Ñan baja la expedición de <b>Diego de Rojas</b> con arcabuces, caballos y cañones. Bajo la tormenta se produce el primer encuentro.'},
   2: {titulo: 'ZANCA · CHOYA', texto: 'Departamento Choya, cerca de la actual Villa La Punta. <b>Juríes</b>, <b>diaguitas</b> y <b>sanavirones</b>, pueblos agricultores de poblados con empalizadas, coordinan la emboscada junto a las aguas del cerro. Gran parte del ejército de Rojas cae aquí.'},
-  3: {titulo: 'MAQUIJATA', texto: 'Wamani inca de Quire Quire, en el límite de las actuales Santiago del Estero y Catamarca. <b>Canamico</b> (Qhanamikuq), gobernador tonokoté, comanda 1.500 guerreros junto al capitán inca <b>Sinchi Wayna</b>. La <span class="ven">flecha envenenada</span> espera a Diego de Rojas.'}
+  3: {titulo: 'MAQUIJATA', anio: '1543–1544', texto: 'Wamani inca de Quire Quire, en el límite de las actuales Santiago del Estero y Catamarca. <b>Canamico</b> (Qhanamikuq), gobernador tonokoté, comanda 1.500 guerreros junto al capitán inca <b>Sinchi Wayna</b>. La <span class="ven">flecha envenenada</span> espera a Diego de Rojas.'},
+  4: {titulo: 'EL BARCO · RÍO DULCE', anio: '1553', texto: 'La flecha encontró la pierna que la armadura no cubría: <b>Diego de Rojas</b> murió por el veneno, tras larga agonía, en enero de 1544. Nueve años después, la ciudad de <b>El Barco</b> —fundada por Núñez de Prado en 1550 y trasladada una y otra vez por los ataques y las crecientes— queda en manos del capitán <b>Francisco de Aguirre</b>, enviado desde Chile por Pedro de Valdivia. A orillas del <b>Río Dulce</b>, los pueblos del monte libran su última gran batalla.'}
 };
 function showMision(n){
   level = n; wave = 0; waveMsg = 0;
-  scr('misEyebrow').textContent = 'MISIÓN ' + n + ' · 1543';
+  scr('misEyebrow').textContent = 'MISIÓN ' + n + ' · ' + (MISIONES[n].anio || '1543');
   scr('misTitle').textContent = MISIONES[n].titulo;
   scr('misText').innerHTML = MISIONES[n].texto;
   showScreen('scrMision');
@@ -397,6 +494,9 @@ function showScreen(id){
 /* ---------- inicio de partida ---------- */
 function startGame(){
   showScreen(null);
+  cp = {level: 1, wave: 1, kills: 0, aliados: 2, montados: 0, arcabuces: 0, canones: 0, intentos: 0};
+  clearCP();
+  canonesAliados = [];
   Object.assign(player, {x: W*0.25, y: H*0.62, hp: 5, inv: 0, fireCd: 0,
                          fx: 1, fy: 0, poisonReady: false, fireballCd: 0, dead: false});
   arrows = []; bullets = []; enemies = []; drops = []; parts = []; floats = []; cannonballs = [];
@@ -415,12 +515,14 @@ function startGame(){
 const LEVELS = {
   1: {name: 'GUAMPACHA', sub: 'Sierras de Guasayán, 1543 — primer encuentro de tonocotés y diaguitas con las tropas de Rojas', c1: '#cfd8e0', c2: '#a8b4c0'},
   2: {name: 'ZANCA · CHOYA', sub: 'Juríes, diaguitas y sanavirones emboscan al invasor — gran parte de su ejército cae aquí', c1: '#cfe8f2', c2: '#a8cfe0'},
-  3: {name: 'MAQUIJATA', sub: 'La batalla final — el destino de Diego de Rojas está escrito en el monte', c1: '#ffd9a0', c2: '#f0b070'}
+  3: {name: 'MAQUIJATA', sub: 'La batalla final — el destino de Diego de Rojas está escrito en el monte', c1: '#ffd9a0', c2: '#f0b070'},
+  4: {name: 'EL BARCO · RÍO DULCE', sub: '1553 — Francisco de Aguirre avanza sobre la ciudad', c1: '#d8ecc8', c2: '#b0d0a0'}
 };
 function nextWave(){
   wave++;
   waveMsg = 2.6;
   grito(4);
+  if(wave <= 3 || level >= 3) saveCP();
   if(level === 1){
     if(wave === 1)      spawnWave(5, 0);
     else if(wave === 2){ spawnWave(5, 3); spawnCanon(); }
@@ -431,10 +533,15 @@ function nextWave(){
     else if(wave === 2){ spawnWave(8, 4, 2); spawnCanon(); spawnCanon(); }
     else if(wave === 3){ spawnWave(9, 5, 3); spawnCanon(); spawnCanon(); }
     else startLevel(3);
-  }else{
+  }else if(level === 3){
     if(wave === 1){      spawnWave(8, 5, 3); spawnCanon(); spawnCanon(); }
     else if(wave === 2){ spawnWave(10, 6, 4); spawnCanon(); spawnCanon(); }
     else if(wave === 3){ spawnWave(11, 7, 4); spawnCanon(); spawnCanon(); spawnCanon(); }
+    else startBoss();
+  }else{
+    if(wave === 1){      spawnWave(10, 6, 4); spawnCanon(); spawnCanon(); }
+    else if(wave === 2){ spawnWave(12, 7, 5); spawnCanon(); spawnCanon(); spawnCanon(); }
+    else if(wave === 3){ spawnWave(12, 8, 5); spawnCanon(); spawnCanon(); spawnCanon(); }
     else startBoss();
   }
 }
@@ -447,9 +554,12 @@ function startLevel(n){
 }
 /* agua del cerro: el río y el ojo de agua del nivel 2 frenan el paso */
 function inWater(x, y){
-  if(level !== 2) return false;
-  if(y > 303 && y < 377) return true;
-  return Math.hypot(x - 170, y - 468) < 58;
+  if(level === 2){
+    if(y > 303 && y < 377) return true;
+    return Math.hypot(x - 170, y - 468) < 58;
+  }
+  if(level === 4) return x > W - 148;
+  return false;
 }
 function spawnWave(nSold, nArc, nPerro){
   for(let i = 0; i < nSold; i++) spawnEnemy('soldado');
@@ -471,8 +581,9 @@ function spawnCanon(){
   const n = enemies.filter(e => e.type === 'canon').length;
   const posY = [236, 428, 332];
   const cy = posY[Math.min(n, 2)];
-  enemies.push({type: 'canon', x: W-80 - n*36, y: cy, r: 22, hp: 6, cd: 3, t: 0});
-  addFloat(W-90 - n*36, cy - 38, '¡Cañón español!', '#ffd27a');
+  const bx = (level === 4 ? W-210 : W-80) - n*36;
+  enemies.push({type: 'canon', x: bx, y: cy, r: 22, hp: 6, cd: 3, t: 0});
+  addFloat(bx - 10, cy - 38, '¡Cañón español!', '#ffd27a');
 }
 function fireCannon(e){
   cannonballs.push({sx: e.x-16, sy: e.y-12, tx: player.x, ty: player.y, t: 0, dur: 1.5});
@@ -484,16 +595,32 @@ function fireCannon(e){
 /* ---------- jefe: Diego de Rojas ---------- */
 function startBoss(){
   state = 'bossintro'; bossBanner = 3;
+  const esAguirre = level >= 4;
   boss = {
+    kind: esAguirre ? 'aguirre' : 'rojas',
+    nombre: esAguirre ? 'FRANCISCO DE AGUIRRE' : 'DIEGO DE ROJAS',
+    titulo: esAguirre ? 'Capitán de Chile' : 'Adelantado del Tucumán',
+    entrada: esAguirre ? 'El capitán de Valdivia carga sobre El Barco'
+                       : 'El conquistador entra a Maquijata a caballo',
     x: W + 100, y: H*0.55, r: 32,
-    armor: 24, maxArmor: 24,      // fase montado
-    hp: 20, maxHp: 20,            // fase a pie
+    armor: esAguirre ? 30 : 24, maxArmor: esAguirre ? 30 : 24,
+    hp: esAguirre ? 24 : 20, maxHp: esAguirre ? 24 : 20,
     phase: 'ride',                // ride | foot | dying
     t: 0, chargeT: 3.2, charging: false, cvx: 0, cvy: 0,
     spawnT: 7, lungeT: 2.5, dashing: 0, dying: 0, hitFlash: 0
   };
   spawnCanon(); spawnCanon();
   grito(5);
+  S.break_();
+}
+/* Aguirre no muere: la historia lo hace retirarse hacia el río */
+function retreatBoss(){
+  if(!boss) return;
+  if(boss.phase === 'dying') return;
+  boss.phase = 'dying'; boss.retreat = true; boss.dying = 0;
+  timeScale = 0.5; shake = 10;
+  addFloat(boss.x, boss.y-70, '¡Aguirre se retira hacia el río!', '#ffd27a');
+  grito(6);
   S.break_();
 }
 
@@ -546,6 +673,41 @@ function registerKill(e){
       sfx(760, .3, 'sawtooth', .05, 320);   // relincho
     }
   }
+  // botín de guerra en El Barco (misión 4)
+  if(level === 4 && e.type === 'canon') capturarCanon(false);
+  if(level === 4 && e.type === 'arcabucero' && Math.random() < 0.3){
+    const g = allies.find(x => x.weapon !== 'arcabuz');
+    if(g){
+      g.weapon = 'arcabuz';
+      addFloat(g.x, g.y - 34, '¡Arcabuz capturado!', '#ffd27a');
+      S.gun();
+    }
+  }
+}
+/* Cañones capturados: pasan a disparar por la resistencia */
+function capturarCanon(silencioso){
+  if(canonesAliados.length >= 2) return;
+  const n = canonesAliados.length;
+  const cy = n === 0 ? 300 : 434;
+  canonesAliados.push({x: 128, y: cy, cd: 3, t: 0});
+  if(!silencioso){
+    addFloat(128, cy - 42, '¡Cañón capturado para la resistencia!', '#ffd27a');
+    grito(4); S.ready();
+  }
+}
+/* daño al jefe desde armas capturadas */
+function daniarJefePie(n){
+  boss.hp = Math.max(4, boss.hp - n);
+  if(boss.hp <= 4){
+    if(boss.kind === 'rojas'){
+      if(!player.poisonReady){
+        player.poisonReady = true;
+        btnPoison.classList.add('ready');
+        S.ready();
+        addFloat(player.x, player.y-46, '¡El veneno está listo! (E)', '#a8d060');
+      }
+    }else retreatBoss();
+  }
 }
 
 /* ---------- bola de fuego de la honda ---------- */
@@ -585,11 +747,15 @@ function explodeFire(x, y){
       }
     }else{
       boss.hp = Math.max(4, boss.hp - 4);
-      if(boss.hp <= 4 && !player.poisonReady){
-        player.poisonReady = true;
-        btnPoison.classList.add('ready');
-        S.ready();
-        addFloat(player.x, player.y-46, '¡El veneno está listo! (E)', '#a8d060');
+      if(boss.hp <= 4){
+        if(boss.kind === 'rojas'){
+          if(!player.poisonReady){
+            player.poisonReady = true;
+            btnPoison.classList.add('ready');
+            S.ready();
+            addFloat(player.x, player.y-46, '¡El veneno está listo! (E)', '#a8d060');
+          }
+        }else retreatBoss();
       }
     }
   }
@@ -622,7 +788,7 @@ function fireArrow(){
 }
 function firePoison(){
   if(state !== 'play' || !player.poisonReady || player.dead) return;
-  if(!boss || boss.phase === 'dying') return;
+  if(!boss || boss.phase === 'dying' || boss.kind !== 'rojas') return;
   player.poisonReady = false;
   btnPoison.classList.remove('ready');
   timeScale = 0.28;                       // cámara lenta cinematográfica
@@ -658,7 +824,20 @@ function hurtPlayer(dmg, fromX){
   if(player.hp <= 0){
     player.dead = true;
     burst(player.x, player.y, '#e8c98f', 30, 200);
-    setTimeout(() => { stopMusic(); scr('statsLose').textContent = statsText(); state = 'defeat'; showScreen('scrLose'); }, 900);
+    setTimeout(() => {
+      stopMusic();
+      cp.intentos++; persistCP();
+      scr('statsLose').textContent = statsText();
+      const puede = cp.intentos < 3;
+      scr('bContinuar').style.display = puede ? '' : 'none';
+      scr('cpInfo').textContent = puede
+        ? 'La resistencia se reagrupa en la Misión ' + cp.level +
+          (cp.wave >= 4 ? ', la batalla final' : ', Oleada ' + cp.wave) +
+          '  ·  Intento ' + cp.intentos + ' de 3'
+        : 'Tres derrotas: los invasores avanzaron. La campaña vuelve a empezar.';
+      if(!puede){ clearCP(); cp.intentos = 0; }
+      state = 'defeat'; showScreen('scrLose');
+    }, 900);
   }
 }
 
@@ -716,7 +895,13 @@ function update(dt){
         al.cd = al.mounted ? rnd(0.7, 1.1) : rnd(1.0, 1.6);
         const dd = dist(al, t) || 1;
         const vx = (t.x - al.x)/dd, vy = (t.y - al.y)/dd;
-        if(al.weapon === 'arco'){
+        if(al.weapon === 'arcabuz'){
+          al.cd = rnd(1.9, 2.5);
+          arrows.push({x: al.x + vx*16, y: al.y - 8, vx: vx*430, vy: vy*430,
+                       poison: false, bala: true, dmg: 2, life: 2});
+          burst(al.x + vx*16, al.y - 8, '#ddd0b0', 5, 60);
+          S.gun();
+        }else if(al.weapon === 'arco'){
           arrows.push({x: al.x + vx*14, y: al.y - 6 + vy*14,
                        vx: vx*380, vy: vy*380, poison: false, life: 2});
           S.shoot();
@@ -762,7 +947,7 @@ function update(dt){
     const dp = dist(e, player) || 1;
     const ux = (player.x - e.x)/dp, uy = (player.y - e.y)/dp;
     if(e.type === 'soldado'){
-      const sp = [0, 58, 74, 86][level] * (inWater(e.x, e.y) ? 0.62 : 1);
+      const sp = [0, 58, 74, 86, 94][level] * (inWater(e.x, e.y) ? 0.62 : 1);
       e.x += ux*sp*d; e.y += uy*sp*d;
       if(dp < e.r + player.r) hurtPlayer(1, e.x);
       for(let i = allies.length-1; i >= 0; i--){
@@ -776,7 +961,7 @@ function update(dt){
         }
       }
     }else if(e.type === 'perro'){
-      const sp = (level === 3 ? 135 : 118) * (inWater(e.x, e.y) ? 0.62 : 1);
+      const sp = (level >= 3 ? 135 : 118) * (inWater(e.x, e.y) ? 0.62 : 1);
       const zig = Math.sin(e.t*6)*26;
       e.x += (ux*sp - uy*zig*0.4)*d;
       e.y += (uy*sp + ux*zig*0.4)*d;
@@ -793,7 +978,7 @@ function update(dt){
     }else if(e.type === 'canon'){
       e.cd -= d;
       if(e.cd <= 0 && !player.dead){
-        e.cd = level === 3 ? rnd(3, 4.4) : level === 2 ? rnd(3.4, 5) : rnd(4.5, 6.5);
+        e.cd = level >= 3 ? rnd(3, 4.4) : level === 2 ? rnd(3.4, 5) : rnd(4.5, 6.5);
         fireCannon(e);
       }
     }else{ // arcabucero
@@ -802,8 +987,8 @@ function update(dt){
       else if(dp < 190){ e.x -= ux*40*wf*d; e.y -= uy*40*wf*d; }
       e.cd -= d;
       if(e.cd <= 0 && dp < 420 && !player.dead){
-        e.cd = [0, 2.4, 1.9, 1.6][level];
-        const bs = [0, 185, 215, 240][level];
+        e.cd = [0, 2.4, 1.9, 1.6, 1.5][level];
+        const bs = [0, 185, 215, 240, 255][level];
         bullets.push({x: e.x, y: e.y-8, vx: ux*bs, vy: uy*bs, life: 3});
         burst(e.x + ux*14, e.y - 8, '#ddd0b0', 5, 60);
         S.gun();
@@ -816,7 +1001,7 @@ function update(dt){
   for(const a of arrows){
     for(const e of enemies){
       if(e.hp > 0 && Math.abs(a.x-e.x) < e.r+5 && Math.abs(a.y-(e.y-6)) < e.r+8){
-        e.hp--; a.life = 0; S.hit();
+        e.hp -= (a.dmg || 1); a.life = 0; S.hit();
         burst(a.x, a.y, '#e0e0e0', 6, 90);
         if(e.hp <= 0){
           burst(e.x, e.y, '#b8b8c2', 16, 150);
@@ -833,7 +1018,7 @@ function update(dt){
       if(a.poison){
         killBoss(a.pw || 1);
       }else if(boss.phase === 'ride'){
-        boss.armor--; S.clank();
+        boss.armor -= (a.dmg || 1); S.clank();
         burst(a.x, a.y, '#f0e6c8', 8, 120);
         addFloat(boss.x, boss.y-55, '¡clanc!', '#e8dcb8');
         if(boss.armor <= 0){
@@ -844,12 +1029,16 @@ function update(dt){
       }else{ // a pie
         S.hit();
         burst(a.x, a.y, '#c9584a', 8, 120);
-        boss.hp = Math.max(4, boss.hp - 1);
-        if(boss.hp <= 4 && !player.poisonReady){
-          player.poisonReady = true;
-          btnPoison.classList.add('ready');
-          S.ready();
-          addFloat(player.x, player.y-46, '¡El veneno está listo! (E)', '#a8d060');
+        boss.hp = Math.max(4, boss.hp - (a.dmg || 1));
+        if(boss.hp <= 4){
+          if(boss.kind === 'rojas'){
+            if(!player.poisonReady){
+              player.poisonReady = true;
+              btnPoison.classList.add('ready');
+              S.ready();
+              addFloat(player.x, player.y-46, '¡El veneno está listo! (E)', '#a8d060');
+            }
+          }else retreatBoss();
         }
       }
     }
@@ -879,9 +1068,30 @@ function update(dt){
       burst(c.tx, c.ty, '#6b6b74', 24, 220);
       burst(c.tx, c.ty, '#8a7448', 16, 150);
       shake = Math.max(shake, 12);
-      if(!player.dead && Math.hypot(player.x - c.tx, player.y - c.ty) < 52) hurtPlayer(1, c.tx);
-      for(let i = allies.length-1; i >= 0; i--)
-        if(Math.hypot(allies[i].x - c.tx, allies[i].y - c.ty) < 52) killAlly(i);
+      if(c.ally){
+        // bala de la resistencia: solo golpea al invasor
+        for(const e of enemies){
+          if(e.hp > 0 && Math.hypot(e.x - c.tx, e.y - c.ty) < 60){
+            e.hp -= 3;
+            if(e.hp <= 0){ burst(e.x, e.y, '#b8b8c2', 16, 150); registerKill(e); }
+          }
+        }
+        if(boss && boss.phase !== 'dying' && Math.hypot(boss.x - c.tx, boss.y - c.ty) < 70){
+          boss.hitFlash = .15;
+          if(boss.phase === 'ride'){
+            boss.armor -= 4;
+            if(boss.armor <= 0){
+              boss.phase = 'foot'; S.break_(); shake = 14;
+              burst(boss.x, boss.y, '#c9c9d4', 40, 240);
+              addFloat(boss.x, boss.y-60, '¡ARMADURA ROTA!', '#ffd27a');
+            }
+          }else daniarJefePie(3);
+        }
+      }else{
+        if(!player.dead && Math.hypot(player.x - c.tx, player.y - c.ty) < 52) hurtPlayer(1, c.tx);
+        for(let i = allies.length-1; i >= 0; i--)
+          if(Math.hypot(allies[i].x - c.tx, allies[i].y - c.ty) < 52) killAlly(i);
+      }
     }
   }
   cannonballs = cannonballs.filter(c => !c.done);
@@ -903,6 +1113,21 @@ function update(dt){
     if(boom){ f.done = true; explodeFire(f.x, f.y); }
   }
   fireballs = fireballs.filter(f => !f.done);
+
+  /* cañones capturados por la resistencia */
+  for(const ca of canonesAliados){
+    ca.t += d; ca.cd -= d;
+    if(ca.cd <= 0){
+      const t = nearestTarget();
+      if(t){
+        ca.cd = rnd(4.5, 6);
+        cannonballs.push({sx: ca.x + 16, sy: ca.y - 12, tx: t.x, ty: t.y,
+                          t: 0, dur: 1.3, ally: true});
+        burst(ca.x + 18, ca.y - 12, '#d8d0c0', 10, 90);
+        S.boom();
+      }else ca.cd = 0.5;
+    }
+  }
 
   /* frutos de algarrobo (curan) */
   for(const dr of drops){
@@ -928,9 +1153,22 @@ function updateBoss(d){
   b.hitFlash = Math.max(0, b.hitFlash - d);
   if(b.phase === 'dying'){
     b.dying += d;
+    if(b.retreat) b.x += 300*d;
     if(b.dying > 2 && winTimer === 0){
       winTimer = 1;
-      setTimeout(() => { stopMusic(); startMusic('chacarera'); scr('statsWin').textContent = statsText(); state = 'victory'; showScreen('scrWin'); }, 700);
+      if(b.kind === 'rojas'){
+        setTimeout(() => {
+          winTimer = 0;
+          enemies = []; bullets = []; cannonballs = []; arrows = []; fireballs = []; drops = [];
+          boss = null;
+          player.hp = Math.min(player.maxHp, player.hp + 2);
+          player.poisonReady = false;
+          btnPoison.classList.remove('ready');
+          showMision(4);
+        }, 1000);
+      }else{
+        setTimeout(() => { stopMusic(); startMusic('chacarera'); clearCP(); scr('statsWin').textContent = statsText(); state = 'victory'; showScreen('scrWin'); }, 700);
+      }
     }
     return;
   }
@@ -1044,6 +1282,12 @@ function draw(){
     return;
   }
 
+  if(state === 'cine'){
+    drawCine();
+    ctx.restore();
+    return;
+  }
+
   drawScene();
 
   // frutos de algarrobo
@@ -1066,6 +1310,9 @@ function draw(){
     ctx.globalAlpha = 1;
   }
 
+  // cañones capturados por la resistencia
+  for(const ca of canonesAliados) drawCanonAliado(ca);
+
   // entidades ordenadas por Y (profundidad)
   const ents = [];
   for(const e of enemies) ents.push({y: e.y, fn: () => drawEnemy(e)});
@@ -1081,6 +1328,11 @@ function draw(){
     if(a.stone){
       ctx.fillStyle = '#8a8d88';
       ctx.beginPath(); ctx.arc(a.x, a.y, 3.5, 0, 6.283); ctx.fill();
+      continue;
+    }
+    if(a.bala){
+      ctx.fillStyle = '#2e2e2e';
+      ctx.beginPath(); ctx.arc(a.x, a.y, 4, 0, 6.283); ctx.fill();
       continue;
     }
     const pw = a.pw || 1;
@@ -1161,7 +1413,8 @@ function draw(){
 
 /* ---------- escenarios: quebrada (nivel 1) y ojo de agua (nivel 2) ---------- */
 function drawScene(){
-  if(level === 3) drawSceneCumbre();
+  if(level === 4) drawSceneRio();
+  else if(level === 3) drawSceneCumbre();
   else if(level === 2) drawSceneAgua();
   else drawSceneQuebrada();
 }
@@ -1384,6 +1637,65 @@ function drawSceneCumbre(){
     const y = 230 + (i*61) % (H-260) + Math.sin(tGlobal*2 + i)*6;
     ctx.beginPath(); ctx.arc(x, y, 1.5, 0, 6.283); ctx.fill();
   }
+}
+
+/* ===== MISIÓN 4: El Barco, a orillas del Río Dulce ===== */
+function drawSceneRio(){
+  const sky = ctx.createLinearGradient(0, 0, 0, 200);
+  sky.addColorStop(0, '#5a9bd0'); sky.addColorStop(1, '#e2ecda');
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, W, 200);
+  drawNubesAves();
+  ctx.fillStyle = '#3f6b33';
+  ctx.beginPath(); ctx.moveTo(0, 178);
+  ctx.lineTo(140, 168); ctx.lineTo(300, 176); ctx.lineTo(460, 166);
+  ctx.lineTo(620, 176); ctx.lineTo(780, 166); ctx.lineTo(W, 174);
+  ctx.lineTo(W, 206); ctx.lineTo(0, 206); ctx.fill();
+  ctx.fillStyle = '#4d7c3c';
+  ctx.beginPath(); ctx.moveTo(0, 192);
+  ctx.lineTo(200, 184); ctx.lineTo(420, 192); ctx.lineTo(640, 184);
+  ctx.lineTo(W, 192); ctx.lineTo(W, 212); ctx.lineTo(0, 212); ctx.fill();
+  const gnd = ctx.createLinearGradient(0, 196, 0, H);
+  gnd.addColorStop(0, '#8aa85c'); gnd.addColorStop(1, '#5e7f42');
+  ctx.fillStyle = gnd; ctx.fillRect(0, 196, W, H-196);
+  // Río Dulce: franja a la derecha (frena el paso)
+  const rx = W - 148;
+  ctx.fillStyle = '#c9b98a';
+  ctx.fillRect(rx - 12, 196, 12, H-196);
+  ctx.fillStyle = '#79b5cd';
+  ctx.fillRect(rx, 196, 148, H-196);
+  ctx.strokeStyle = 'rgba(240,250,255,.55)'; ctx.lineWidth = 1.6;
+  for(let i = 0; i < 9; i++){
+    const x = rx + 12 + i*15;
+    const y = 200 + ((i*77 + tGlobal*70) % (H - 216));
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 2, y + 16); ctx.stroke();
+  }
+  drawRoca({x: rx - 4, y: 260, s: .6});
+  drawRoca({x: rx - 2, y: 402, s: .7});
+  // empalizada de El Barco
+  ctx.strokeStyle = '#6e5233'; ctx.lineCap = 'round';
+  for(let i = 0; i < 13; i++){
+    const y = 226 + i*24;
+    ctx.lineWidth = 7;
+    ctx.beginPath(); ctx.moveTo(44, y + 10); ctx.lineTo(44, y - 16 - (i*5) % 7); ctx.stroke();
+  }
+  drawPirca(96, 262);
+  drawPirca(88, 402);
+  for(let i = 0; i < 3; i++){
+    const ph = (tGlobal*0.4 + i*0.33) % 1;
+    ctx.globalAlpha = (1 - ph)*0.35;
+    ctx.fillStyle = '#d8d8d0';
+    ctx.beginPath();
+    ctx.arc(96 + Math.sin(ph*6)*7, 232 - ph*70, 6 + ph*11, 0, 6.283); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  ctx.fillStyle = 'rgba(64,94,44,.5)';
+  for(let i = 0; i < 14; i++){
+    const x = 130 + (i*127) % (rx - 160), y = 225 + (i*97) % (H-270);
+    ctx.beginPath(); ctx.ellipse(x, y, 15, 5, 0, 0, 6.283); ctx.fill();
+  }
+  for(const r of rocks) if(r.x < rx - 30) drawRoca(r);
+  for(const t of trees) if(t.x < rx - 40) drawAlgarrobo(t.x, t.y, t.s);
+  drawCabra(cabra);
 }
 
 /* ---------- elementos compartidos ---------- */
@@ -1655,7 +1967,12 @@ function drawIndio(a){
   ctx.fillStyle = '#9a5a30';
   ctx.beginPath(); ctx.ellipse(0, -5, 7, 9, 0, 0, 6.283); ctx.fill();
   ctx.fillStyle = '#c8402e'; ctx.fillRect(-7, -2, 14, 3);
-  if(a.weapon === 'arco'){
+  if(a.weapon === 'arcabuz'){
+    ctx.strokeStyle = '#5a3a1c'; ctx.lineWidth = 3.5;
+    ctx.beginPath(); ctx.moveTo(4, -4); ctx.lineTo(20, -10); ctx.stroke();
+    ctx.strokeStyle = '#3c3c46'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(12, -7); ctx.lineTo(21, -10.5); ctx.stroke();
+  }else if(a.weapon === 'arco'){
     ctx.strokeStyle = '#4a2a12'; ctx.lineWidth = 2.5;
     ctx.beginPath(); ctx.arc(9, -5, 8, -1.1, 1.1); ctx.stroke();
   }else{
@@ -1773,7 +2090,8 @@ function drawBoss(b){
   if(b.hitFlash > 0){ ctx.globalAlpha = 0.6; }
   if(b.phase === 'dying'){
     const k = clamp(b.dying / 1.6, 0, 1);
-    ctx.rotate(k * 1.4); ctx.globalAlpha = 1 - k*0.4;
+    if(!b.retreat){ ctx.rotate(k * 1.4); ctx.globalAlpha = 1 - k*0.4; }
+    else ctx.globalAlpha = 1 - k*0.25;
   }
   const gallop = Math.sin(tGlobal*12) * 3;
 
@@ -1839,6 +2157,40 @@ function drawRojasBody(ox, oy, mounted){
   ctx.restore();
 }
 
+function drawCanonAliado(ca){
+  ctx.save(); ctx.translate(ca.x, ca.y);
+  ctx.scale(1.3, 1.3);
+  ctx.fillStyle = 'rgba(0,0,0,.3)';
+  ctx.beginPath(); ctx.ellipse(0, 12, 18, 5, 0, 0, 6.283); ctx.fill();
+  for(const wx of [-9, 11]){
+    ctx.fillStyle = '#5a3a1c';
+    ctx.beginPath(); ctx.arc(wx, 8, 8, 0, 6.283); ctx.fill();
+    ctx.fillStyle = '#7a5028';
+    ctx.beginPath(); ctx.arc(wx, 8, 3, 0, 6.283); ctx.fill();
+  }
+  ctx.fillStyle = '#7a4e26';
+  ctx.fillRect(-16, -2, 32, 8);
+  let ang = 0, bd = 1e9;
+  for(const e of enemies){
+    const dd = Math.hypot(e.x - ca.x, e.y - ca.y);
+    if(dd < bd){ bd = dd; ang = Math.atan2(e.y - ca.y, e.x - ca.x); }
+  }
+  if(boss && boss.phase !== 'dying'){
+    const dd = Math.hypot(boss.x - ca.x, boss.y - ca.y);
+    if(dd < bd) ang = Math.atan2(boss.y - ca.y, boss.x - ca.x);
+  }
+  ctx.save(); ctx.rotate(ang);
+  ctx.fillStyle = '#3c3c46';
+  ctx.fillRect(-4, -6, 30, 12);
+  ctx.fillStyle = '#55555f';
+  ctx.beginPath(); ctx.arc(26, 0, 7, 0, 6.283); ctx.fill();
+  ctx.restore();
+  // pluma roja: ahora pelea por la resistencia
+  ctx.fillStyle = '#c8402e';
+  ctx.beginPath(); ctx.ellipse(-14, -12, 2.2, 7, -.3, 0, 6.283); ctx.fill();
+  ctx.restore();
+}
+
 /* ---------- HUD ---------- */
 function drawHUD(){
   if(state === 'title') return;
@@ -1861,7 +2213,7 @@ function drawHUD(){
   ctx.fillStyle = 'rgba(239,224,192,.8)';
   ctx.fillText('Canamico · Cacique tonokoté', 24, 52);
   ctx.font = "13px 'IM Fell English', serif";
-  ctx.fillText('Guerreros: ' + allies.length + '  ·  Invasores caídos: ' + kills, 24, 72);
+  ctx.fillText('Guerreros: ' + allies.length + '  ·  Invasores caídos: ' + kills + '  ·  Intento ' + Math.min(cp.intentos + 1, 3) + ' de 3', 24, 72);
   // la flecha del veneno crece con cada invasor caído
   const pwh = 1 + Math.min(kills, 20)*0.06;
   ctx.strokeStyle = '#8fbe4a'; ctx.lineWidth = 1.5 + pwh;
@@ -1905,7 +2257,7 @@ function drawHUD(){
     ctx.textAlign = 'center';
     ctx.font = "17px 'IM Fell English SC', serif";
     ctx.fillStyle = '#f0d9a8';
-    ctx.fillText('DIEGO DE ROJAS · Adelantado del Tucumán', W/2, by-6);
+    ctx.fillText(boss.nombre + ' · ' + boss.titulo, W/2, by-6);
     ctx.fillStyle = 'rgba(0,0,0,.45)';
     ctx.fillRect(bx, by, bw, 12);
     if(boss.phase === 'ride'){
@@ -1919,10 +2271,15 @@ function drawHUD(){
       ctx.fillStyle = frac > 0.25 ? '#c8402e' : '#8fbe4a';
       ctx.fillRect(bx, by, bw*frac, 12);
       ctx.font = "italic 12px 'IM Fell English', serif";
-      ctx.fillStyle = player.poisonReady ? '#b8e070' : '#d8d8e0';
-      ctx.fillText(player.poisonReady
-        ? '¡Ahora! Solo la flecha envenenada puede acabar con él (E)'
-        : 'Debilitalo: el veneno necesita un blanco herido', W/2, by+26);
+      if(boss.kind === 'aguirre'){
+        ctx.fillStyle = '#d8e8c8';
+        ctx.fillText('Rechazalo hacia el Río Dulce: que la ciudad resista', W/2, by+26);
+      }else{
+        ctx.fillStyle = player.poisonReady ? '#b8e070' : '#d8d8e0';
+        ctx.fillText(player.poisonReady
+          ? '¡Ahora! Solo la flecha envenenada puede acabar con él (E)'
+          : 'Debilitalo: el veneno necesita un blanco herido', W/2, by+26);
+      }
     }
     ctx.strokeStyle = '#e0a765'; ctx.lineWidth = 1.5;
     ctx.strokeRect(bx, by, bw, 12);
@@ -1937,10 +2294,10 @@ function drawHUD(){
     ctx.textAlign = 'center';
     ctx.font = "40px 'IM Fell English SC', serif";
     ctx.fillStyle = '#f0d9a8';
-    ctx.fillText('DIEGO DE ROJAS', W/2, H*0.36+48);
+    ctx.fillText(boss ? boss.nombre : '', W/2, H*0.36+48);
     ctx.font = "italic 18px 'IM Fell English', serif";
     ctx.fillStyle = '#d9b98a';
-    ctx.fillText('El conquistador entra a Maquijata a caballo', W/2, H*0.36+80);
+    ctx.fillText(boss ? boss.entrada : '', W/2, H*0.36+80);
     ctx.globalAlpha = 1;
   }
 
@@ -2139,6 +2496,12 @@ function scheduleMusic(){
           if(largo) quena(t, f*5/6, 0.5, 0.024);   // segunda voz, tercera abajo
         }
         if(b % 96 === 90) ave(t);
+      }else if(music.mode === 'cine'){
+        // tambores de guerra para la cinemática
+        if(b % 4 === 0) bombo(t, 0.2);
+        else if(b % 4 === 2) bombo(t, 0.1);
+        if(b % 8 === 6) aro(t);
+        if(b % 32 === 8) quena(t, 220, 1.4, 0.035);
       }else{
         // batalla: vidala guerrera, quena al frente
         if(b % 4 === 0) bombo(t, 0.18);
@@ -2222,12 +2585,235 @@ function drawRain(){
   }
 }
 
+/* ================= CINEMÁTICA DE APERTURA ================= */
+function startCine(){
+  showScreen(null);
+  state = 'cine'; cineT = 0; cineFlash = 0;
+  cineEv = [
+    {t: 9.5,  f: () => grito(4)},
+    {t: 12,   f: () => grito(5)},
+    {t: 15,   f: () => grito(6)},
+    {t: 16.5, f: () => { S.boom(); cineFlash = 0.9; }},
+    {t: 17.4, f: () => S.gun()},
+    {t: 18.8, f: () => { S.boom(); cineFlash = 0.9; }},
+    {t: 19.6, f: () => S.gun()},
+    {t: 21,   f: () => { S.hurt(); grito(6); }},
+    {t: 23.5, f: () => grito(3)}
+  ];
+  startMusic('cine');
+}
+function endCine(){
+  if(state !== 'cine') return;
+  startGame();
+}
+function runCine(dt){
+  cineFlash = Math.max(0, cineFlash - 2.4*dt);
+  for(const ev of cineEv)
+    if(!ev.done && cineT >= ev.t){ ev.done = true; ev.f(); }
+  if(cineT > 26.2) endCine();
+}
+function drawSiluetaEspanol(x, y, s){
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.fillStyle = '#14090c'; ctx.strokeStyle = '#14090c'; ctx.lineCap = 'round';
+  const st = Math.sin(tGlobal*8 + x*0.07)*4;
+  ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(-3, 0); ctx.lineTo(-6, 14 + st);
+  ctx.moveTo(3, 0); ctx.lineTo(7, 14 - st); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(0, -8, 6.5, 11, 0, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(0, -22, 5, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(0, -26, 8.5, 2.6, 0, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(0, -27.5, 4.5, 4, 0, Math.PI, 0); ctx.fill();
+  ctx.lineWidth = 2.2;
+  ctx.beginPath(); ctx.moveTo(9, 6); ctx.lineTo(13, -44); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(13, -44); ctx.lineTo(10.5, -37); ctx.stroke();
+  ctx.restore();
+}
+function drawSiluetaJineteEsp(x, y){
+  ctx.save(); ctx.translate(x, y); ctx.scale(1.2, 1.2);
+  ctx.fillStyle = '#14090c'; ctx.strokeStyle = '#14090c'; ctx.lineCap = 'round';
+  const gal = Math.sin(tGlobal*12)*5;
+  ctx.lineWidth = 4.5;
+  ctx.beginPath();
+  ctx.moveTo(-14, 4); ctx.lineTo(-18, 16 + gal);
+  ctx.moveTo(-6, 6); ctx.lineTo(-6, 16 - gal);
+  ctx.moveTo(6, 6); ctx.lineTo(6, 16 + gal);
+  ctx.moveTo(14, 4); ctx.lineTo(18, 16 - gal); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(0, 0, 20, 9, 0, 0, 6.283); ctx.fill();
+  ctx.lineWidth = 7;
+  ctx.beginPath(); ctx.moveTo(17, -2); ctx.lineTo(26, -13); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(28, -15, 6, 4, .4, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(-2, -13, 5.5, 9, 0, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(-2, -25, 4.6, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(-2, -28.5, 7, 2.2, 0, 0, 6.283); ctx.fill();
+  // estandarte
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(4, -16); ctx.lineTo(4, -52); ctx.stroke();
+  const fl = Math.sin(tGlobal*6)*3;
+  ctx.beginPath(); ctx.moveTo(4, -52);
+  ctx.quadraticCurveTo(20, -50 + fl, 26, -46 + fl);
+  ctx.lineTo(24, -40 + fl);
+  ctx.quadraticCurveTo(16, -44 + fl, 4, -42);
+  ctx.fill();
+  ctx.restore();
+}
+function drawSiluetaCanonCine(x, y){
+  ctx.save(); ctx.translate(x, y); ctx.scale(1.2, 1.2);
+  ctx.fillStyle = '#14090c';
+  ctx.beginPath(); ctx.arc(-8, 6, 8, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(10, 6, 8, 0, 6.283); ctx.fill();
+  ctx.fillRect(-16, -4, 34, 8);
+  ctx.save(); ctx.rotate(-0.18);
+  ctx.fillRect(-6, -9, 34, 10);
+  ctx.restore();
+  ctx.restore();
+}
+function drawCaidoRojas(x, y, k){
+  ctx.save(); ctx.translate(x, y);
+  ctx.rotate(k * 0.9);
+  ctx.fillStyle = '#14090c'; ctx.strokeStyle = '#14090c'; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.ellipse(0, 6*k, 20, 9 - 3*k, k*0.5, 0, 6.283); ctx.fill();
+  ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(6, 2); ctx.lineTo(14, -6 + 14*k); ctx.stroke();
+  ctx.beginPath(); ctx.ellipse(-16 - 10*k, 2 + 6*k, 5.5, 9, 1.2, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.arc(-26 - 10*k, 6 + 6*k, 4.5, 0, 6.283); ctx.fill();
+  // la flecha envenenada en la pierna
+  ctx.strokeStyle = '#8fbe4a'; ctx.lineWidth = 2.5;
+  ctx.beginPath(); ctx.moveTo(-12 - 10*k, 8 + 6*k); ctx.lineTo(-4 - 10*k, -2 + 6*k); ctx.stroke();
+  ctx.restore();
+}
+function drawCine(){
+  const sky = ctx.createLinearGradient(0, 0, 0, H);
+  sky.addColorStop(0, '#4a1f42'); sky.addColorStop(.5, '#b34a2a'); sky.addColorStop(.85, '#e89a38');
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
+  ctx.fillStyle = 'rgba(255,214,120,.3)';
+  ctx.beginPath(); ctx.arc(W*0.5, H*0.52, 90, 0, 6.283); ctx.fill();
+  ctx.fillStyle = '#ffe9a8';
+  ctx.beginPath(); ctx.arc(W*0.5, H*0.52, 44, 0, 6.283); ctx.fill();
+  ctx.fillStyle = '#33141f';
+  ctx.beginPath(); ctx.moveTo(0, H*0.64); ctx.lineTo(W*0.2, H*0.55);
+  ctx.lineTo(W*0.4, H*0.62); ctx.lineTo(W*0.62, H*0.54); ctx.lineTo(W*0.82, H*0.61);
+  ctx.lineTo(W, H*0.56); ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.fill();
+  ctx.fillStyle = '#1c0b10';
+  ctx.fillRect(0, H*0.72, W, H*0.28);
+
+  ctx.save();
+  if(cineT > 16 && cineT < 23) ctx.translate(rnd(-2.5, 2.5), rnd(-2, 2));
+
+  // columna española entrando desde la izquierda
+  if(cineT > 3){
+    const adv = (cineT - 3) * 52;
+    for(let i = 0; i < 8; i++){
+      const x = Math.min(-90 + adv - i*50, W*0.42 - i*46);
+      if(x > -60) drawSiluetaEspanol(x, H*0.80 + (i%2)*9, 1 + (i%2)*0.15);
+    }
+    if(cineT < 21) drawSiluetaJineteEsp(Math.min(-30 + adv*1.06, W*0.46), H*0.755);
+    else drawCaidoRojas(W*0.46, H*0.78, clamp((cineT - 21)/1.2, 0, 1));
+    const cx = Math.min(-460 + adv, W*0.08);
+    if(cx > -60) drawSiluetaCanonCine(cx, H*0.815);
+  }
+
+  // guerreros tonokotés desde el monte
+  if(cineT > 9){
+    const adv2 = (cineT - 9) * 62;
+    for(let i = 0; i < 9; i++){
+      const x = Math.max(W + 70 - adv2 + i*46, W*0.58 + i*42);
+      if(x < W + 60) drawSiluetaGuerrero(x, H*0.80 + (i%2)*10, 1 + (i%2)*0.18);
+    }
+    drawSiluetaJinete(Math.max(W + 160 - adv2*1.1, W*0.7), H*0.75);
+  }
+
+  // lluvia de flechas en arco
+  for(let k = 0; k < 7; k++){
+    const t0 = 12 + k*1.35;
+    const ft = cineT - t0;
+    if(ft > 0 && ft < 1.5){
+      const pr = ft / 1.5;
+      const sx = W*0.8 - k*36, ex = W*0.34 + k*26;
+      const ax = sx + (ex - sx)*pr;
+      const ay = H*0.76 - Math.sin(Math.PI*pr)*170;
+      const vx = (ex - sx)/1.5;
+      const vy = -170*Math.PI/1.5*Math.cos(Math.PI*pr);
+      ctx.save(); ctx.translate(ax, ay);
+      ctx.rotate(Math.atan2(vy, vx));
+      ctx.strokeStyle = '#1c0b10'; ctx.lineWidth = 2.4;
+      ctx.beginPath(); ctx.moveTo(-9, 0); ctx.lineTo(9, 0); ctx.stroke();
+      ctx.restore();
+    }
+  }
+
+  // fogonazos de arcabuz y polvo del choque
+  if(cineT > 16 && cineT < 23){
+    const fs = Math.floor(cineT * 3);
+    if(fs % 2 === 0){
+      const fx = W*0.36 + (fs*73) % 120, fy = H*0.78 - (fs*31) % 40;
+      ctx.fillStyle = 'rgba(255,220,140,.85)';
+      ctx.beginPath(); ctx.arc(fx, fy, 6 + (cineT*10 % 4), 0, 6.283); ctx.fill();
+    }
+    ctx.fillStyle = 'rgba(180,120,70,.22)';
+    for(let i = 0; i < 6; i++){
+      const px = W*0.5 + Math.sin(i*2.1 + cineT)*(60 + i*14);
+      const py = H*0.78 - (cineT*12 + i*17) % 46;
+      ctx.beginPath(); ctx.arc(px, py, 10 + i*2, 0, 6.283); ctx.fill();
+    }
+  }
+  ctx.restore();
+
+  if(cineFlash > 0){
+    ctx.fillStyle = 'rgba(255,230,170,' + (cineFlash*0.4).toFixed(3) + ')';
+    ctx.fillRect(0, 0, W, H);
+  }
+
+  // barras de cine
+  ctx.fillStyle = '#000';
+  ctx.fillRect(0, 0, W, 54); ctx.fillRect(0, H-54, W, 54);
+
+  // cartel inicial
+  if(cineT < 4.5){
+    ctx.globalAlpha = clamp(Math.min(cineT*1.2, (4.5 - cineT)*1.2), 0, 1);
+    ctx.textAlign = 'center';
+    ctx.font = "44px 'IM Fell English SC', serif";
+    ctx.fillStyle = '#f0d9a8';
+    ctx.fillText('TUCUMÁN · 1543', W/2, H*0.42);
+    ctx.font = "italic 19px 'IM Fell English', serif";
+    ctx.fillStyle = '#d9b98a';
+    ctx.fillText('La entrada de Diego de Rojas', W/2, H*0.42 + 34);
+    ctx.globalAlpha = 1;
+  }
+
+  // subtítulos de época
+  let sub = '';
+  if(cineT >= 4.5 && cineT < 9) sub = 'Cien españoles bajan por el Qhapaq Ñan, con caballos, cañones y perros de guerra';
+  else if(cineT >= 9 && cineT < 14) sub = 'Los pueblos del monte responden: tonocotés, diaguitas y sanavirones';
+  else if(cineT >= 14 && cineT < 21) sub = '¡La Federación Tonokoté ataca al mando de Canamico y Sinchi Wayna!';
+  else if(cineT >= 21) sub = 'Una flecha envenenada cambiará la historia...';
+  if(sub){
+    ctx.textAlign = 'center';
+    ctx.font = "italic 17px 'IM Fell English', serif";
+    ctx.fillStyle = '#e8d8b0';
+    ctx.fillText(sub, W/2, H - 20);
+  }
+  ctx.textAlign = 'right';
+  ctx.font = "13px 'IM Fell English', serif";
+  ctx.fillStyle = 'rgba(200,170,120,.8)';
+  ctx.fillText('tocá o apretá una tecla para saltar', W - 16, 34);
+
+  // fundidos de entrada y salida
+  let fade = 0;
+  if(cineT < 0.8) fade = 1 - cineT/0.8;
+  if(cineT > 24.2) fade = clamp((cineT - 24.2)/1.6, 0, 1);
+  if(fade > 0){
+    ctx.fillStyle = 'rgba(0,0,0,' + fade.toFixed(3) + ')';
+    ctx.fillRect(0, 0, W, H);
+  }
+}
+
 /* ---------- bucle principal ---------- */
 let last = performance.now();
 function loop(now){
   let dt = (now - last) / 1000; last = now;
   dt = Math.min(dt, 0.05);
-  if(state !== 'title' && state !== 'victory' && state !== 'defeat' && state !== 'paused' && state !== 'mision') update(dt);
+  if(state === 'cine'){ tGlobal += dt; cineT += dt; runCine(dt); }
+  else if(state !== 'title' && state !== 'victory' && state !== 'defeat' && state !== 'paused' && state !== 'mision') update(dt);
   else { tGlobal += dt; updateFx(dt*timeScale); }
   draw();
   requestAnimationFrame(loop);
