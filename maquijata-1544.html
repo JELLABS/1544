@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>1544 — La batalla de Maquijata</title>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --tierra:#8a4b2a; --ocre:#c8792f; --arena:#e8c98f;
+    --noche:#241310; --sangre:#9e2b25; --veneno:#7fae3b;
+    --papel:#efe0c0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{width:100%;height:100%;overflow:hidden;background:var(--noche);
+    font-family:'IM Fell English',Georgia,serif;color:var(--papel);
+    touch-action:none;user-select:none;-webkit-user-select:none}
+  #wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+  canvas{display:block;background:#000;max-width:100%;max-height:100%}
+
+  /* ---- Overlays ---- */
+  .screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:24px;z-index:20;
+    background:radial-gradient(ellipse at 50% 30%, rgba(60,25,12,.30), rgba(18,8,5,.74) 78%)}
+  .hidden{display:none !important}
+  h1{font-family:'IM Fell English SC',serif;font-weight:400;letter-spacing:.06em;
+    font-size:clamp(34px,8vw,72px);color:var(--arena);text-shadow:0 3px 0 #3a1608, 0 0 34px rgba(200,121,47,.35);line-height:1}
+  .sub{font-style:italic;font-size:clamp(15px,3vw,20px);color:#d9b98a;margin-top:6px}
+  .eyebrow{font-family:'IM Fell English SC',serif;font-size:clamp(16px,3.6vw,26px);
+    letter-spacing:.22em;color:#e8c98f;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+  .credit{margin-top:16px;font-size:12px;letter-spacing:.24em;color:#c9a06a;
+    text-transform:uppercase;opacity:.85}
+  .rule{width:min(420px,70vw);height:2px;margin:18px auto;
+    background:linear-gradient(90deg,transparent,var(--ocre),transparent)}
+  .story{max-width:560px;font-size:clamp(15px,2.6vw,19px);line-height:1.55;color:#e9d8b4}
+  .story b{color:var(--arena)}
+  .story .ven{color:var(--veneno)}
+  .btn{margin-top:26px;font-family:'IM Fell English SC',serif;font-size:clamp(18px,3.4vw,24px);
+    letter-spacing:.08em;color:var(--papel);background:linear-gradient(180deg,#a4552b,#7c3a1c);
+    border:2px solid #e0a765;border-radius:4px;padding:12px 38px;cursor:pointer;
+    box-shadow:0 4px 0 #401a0b, 0 0 22px rgba(224,167,101,.25)}
+  .btn:active{transform:translateY(3px);box-shadow:0 1px 0 #401a0b}
+  .keys{margin-top:20px;font-size:13px;color:#b98f5f;line-height:1.7}
+  kbd{border:1px solid #b98f5f;border-radius:3px;padding:1px 6px;font-family:inherit;font-size:12px}
+
+  /* ---- Controles táctiles ---- */
+  #touchUI{position:fixed;inset:0;z-index:15;pointer-events:none;display:none}
+  #touchUI.on{display:block}
+  #stick{position:absolute;width:110px;height:110px;border:2px solid rgba(232,201,143,.5);
+    border-radius:50%;left:30px;bottom:30px;opacity:.55}
+  #knob{position:absolute;width:48px;height:48px;border-radius:50%;
+    background:rgba(232,201,143,.55);left:31px;top:31px}
+  .tbtn{position:absolute;pointer-events:auto;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;text-align:center;
+    font-family:'IM Fell English SC',serif;letter-spacing:.04em;
+    border:2px solid rgba(232,201,143,.6);color:var(--papel);opacity:.85}
+  #btnShoot{right:26px;bottom:34px;width:84px;height:84px;font-size:15px;
+    background:radial-gradient(circle at 35% 30%, #b3602f, #6e3115)}
+  #btnPoison{right:126px;bottom:96px;width:70px;height:70px;font-size:11px;line-height:1.1;
+    background:radial-gradient(circle at 35% 30%, #4e6e22, #2a3d10);filter:grayscale(.9);}
+  #btnPoison.ready{filter:none;animation:pulse 1s infinite}
+  #btnFire{right:26px;bottom:132px;width:64px;height:64px;font-size:11px;line-height:1.1;
+    background:radial-gradient(circle at 35% 30%, #d07a2a, #7a3a10);display:none;filter:grayscale(.8)}
+  #btnFire.unlocked{display:flex}
+  #btnFire.ready{filter:none;animation:pulseF 1s infinite}
+  @keyframes pulseF{0%,100%{box-shadow:0 0 6px rgba(255,150,60,.4)}50%{box-shadow:0 0 26px rgba(255,150,60,.95)}}
+  #btnPause{top:14px;right:14px;bottom:auto;width:44px;height:44px;font-size:15px;
+    background:rgba(28,18,12,.55);opacity:.7}
+  @keyframes pulse{0%,100%{box-shadow:0 0 6px rgba(127,174,59,.4)}50%{box-shadow:0 0 26px rgba(127,174,59,.95)}}
+</style>
+</head>
+<body>
+<div id="wrap"><canvas id="cv"></canvas></div>
+
+<!-- Pantalla título -->
+<div class="screen" id="scrTitle">
+  <div class="eyebrow">La batalla de Maquijata</div>
+  <h1>1544</h1>
+  <div class="sub">La caída de Diego de Rojas · Sierras de Guasayán, Santiago del Estero</div>
+  <div class="rule"></div>
+  <div class="story">
+    Noviembre de 1543. Desde el Perú baja la expedición de <b>Diego de Rojas</b>:
+    la primera entrada española al Tucumán. Doscientos soldados con arcabuces,
+    caballos y un <b>cañón</b> cruzan las quebradas de las <b>sierras de Guasayán</b>.
+    En <b>Maquijata</b> los esperan los pueblos del monte con arcos, hondas
+    y el secreto de sus flechas: el <span class="ven">veneno del monte</span>.
+    <br><br>
+    Sos el <b>Cacique</b>. Cada invasor caído suma <b>guerreros</b> a tu lado
+    y hace más grande la <span class="ven">flecha del veneno</span>.
+    La historia dice que una sola bastó.
+  </div>
+  <button class="btn" id="bStart">COMENZAR</button>
+  <div class="keys">
+    <kbd>W A S D</kbd> o flechas: moverse &nbsp;·&nbsp; <kbd>ESPACIO</kbd>: disparar (mantener)
+    &nbsp;·&nbsp; <kbd>E</kbd>: flecha envenenada &nbsp;·&nbsp; <kbd>Q</kbd>: bola de fuego (tras 10 bajas) &nbsp;·&nbsp; <kbd>M</kbd>: música<br>En celular: joystick y botones en pantalla &nbsp;·&nbsp; Tocá la pantalla para oír la chacarera
+  </div>
+  <div class="credit">Realizado por Jellabs</div>
+</div>
+
+<!-- Derrota -->
+<div class="screen hidden" id="scrLose">
+  <h1 style="color:#d98b7a">LA TIERRA<br>RESISTE</h1>
+  <div class="rule"></div>
+  <div class="story">El cacique cayó, pero el monte no olvida. Las sierras de Guasayán
+    esperan que vuelvas a levantar el arco.</div>
+  <div class="story" id="statsLose" style="margin-top:12px;font-size:14px;color:#c9a06a"></div>
+  <button class="btn" id="bRetry">REINTENTAR</button>
+</div>
+
+<!-- Victoria -->
+<div class="screen hidden" id="scrWin">
+  <h1 style="color:#bcd37f">LA FLECHA<br>ENVENENADA</h1>
+  <div class="rule"></div>
+  <div class="story">
+    La flecha encontró el punto que la armadura no cubría.
+    <b>Diego de Rojas</b>, herido en Maquijata, murió por el
+    <span class="ven">veneno</span> a comienzos de <b>1544</b>:
+    el primer conquistador caído en el Tucumán.
+    <br><br>
+    <i>La memoria de Maquijata sigue viva en las sierras de Guasayán,
+    Santiago del Estero.</i>
+  </div>
+  <div class="story" id="statsWin" style="margin-top:12px;font-size:14px;color:#c9a06a"></div>
+  <button class="btn" id="bAgain">JUGAR DE NUEVO</button>
+</div>
+
+<!-- Controles táctiles -->
+<div id="touchUI">
+  <div id="stick"><div id="knob"></div></div>
+  <div class="tbtn" id="btnShoot">DISPARAR</div>
+  <div class="tbtn" id="btnPoison">FLECHA<br>VENENO</div>
+  <div class="tbtn" id="btnFire">BOLA<br>FUEGO</div>
+  <div class="tbtn" id="btnPause">II</div>
+</div>
+
+<script>
+"use strict";
+/* ================= MAQUIJATA 1544 — motor del juego ================= */
+const W = 960, H = 540;
+const cv = document.getElementById('cv');
+const ctx = cv.getContext('2d');
+
+function fit(){
+  const s = Math.min(innerWidth / W, innerHeight / H);
+  cv.width = W; cv.height = H;
+  cv.style.width  = (W * s) + 'px';
+  cv.style.height = (H * s) + 'px';
+}
+addEventListener('resize', fit); fit();
+
+/* ---------- utilidades ---------- */
+const rnd  = (a, b) => a + Math.random() * (b - a);
+const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+/* ---------- sonido (sintetizado, sin archivos) ---------- */
+let AC = null;
+function sfx(freq, dur, type, vol, slide){
+  try{
+    if(!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+    const o = AC.createOscillator(), g = AC.createGain();
+    o.type = type || 'square'; o.frequency.value = freq;
+    if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(30, slide), AC.currentTime + dur);
+    g.gain.value = vol || 0.06;
+    g.gain.exponentialRampToValueAtTime(0.0001, AC.currentTime + dur);
+    o.connect(g); g.connect(AC.destination);
+    o.start(); o.stop(AC.currentTime + dur);
+  }catch(e){}
+}
+const S = {
+  shoot : () => sfx(720, .09, 'triangle', .05, 340),
+  hit   : () => sfx(220, .08, 'square',  .05, 90),
+  hurt  : () => sfx(140, .25, 'sawtooth',.07, 60),
+  clank : () => sfx(1500,.06, 'square',  .04, 900),
+  break_: () => sfx(300, .4,  'sawtooth',.08, 60),
+  ready : () => sfx(520, .35, 'sine',    .07, 1040),
+  poison: () => sfx(880, .8,  'sine',    .08, 110),
+  pick  : () => sfx(660, .12, 'sine',    .05, 990),
+  gun   : () => sfx(90,  .18, 'sawtooth',.06, 40),
+  boom  : () => sfx(52,  .5,  'sawtooth',.11, 24),
+};
+
+/* ---------- estado global ---------- */
+let state = 'title';          // title | play | bossintro | victory | defeat
+let timeScale = 1, shake = 0, tGlobal = 0;
+let wave = 0, waveMsg = 0, bossBanner = 0, winTimer = 0, level = 1, levelBanner = 0;
+let flash = 0, thunderT = 7, alliesLost = 0, playT = 0;
+
+const player  = {x: W*0.25, y: H*0.6, r: 17, hp: 5, maxHp: 5, speed: 175,
+                 fireCd: 0, inv: 0, fx: 1, fy: 0, poisonReady: false,
+                 fireballCd: 0, dead: false};
+let arrows = [], bullets = [], enemies = [], drops = [], parts = [], floats = [];
+let cannonballs = [];
+let allies = [], kills = 0, fireballs = [];
+let boss = null;
+
+/* ---------- escenario: quebrachos y sierras ---------- */
+const trees = [
+  {x:60,y:207,s:.9},{x:185,y:202,s:1.1},{x:335,y:200,s:.8},{x:520,y:205,s:1.0},
+  {x:645,y:201,s:.85},{x:905,y:208,s:1.05},{x:775,y:203,s:.75}
+];
+const rocks = [];
+for(let i = 0; i < 7; i++) rocks.push({x: rnd(20, W-20), y: rnd(292, 352), s: rnd(.5, 1.1)});
+for(let i = 0; i < 6; i++) rocks.push({x: rnd(20, W-20), y: rnd(400, H-30), s: rnd(.6, 1.3)});
+const clouds = [];
+for(let i = 0; i < 5; i++) clouds.push({x: rnd(0, W), y: rnd(24, 95), s: rnd(.6, 1.4), v: rnd(3, 9)});
+let birds = [], birdT = 4;
+const cabra = {x: 120, y: 246, t: 0, vx: 9};
+
+/* ---------- entrada: teclado ---------- */
+const keys = {};
+addEventListener('keydown', e => {
+  keys[e.code] = true;
+  if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault();
+  if(e.code === 'KeyE') firePoison();
+  if(e.code === 'KeyQ') fireFireball();
+  if(e.code === 'KeyP') togglePause();
+  if(e.code === 'KeyM'){ music.on = !music.on; if(state==='play') addFloat(player.x, player.y-50, music.on?'música ✓':'música silenciada', '#e8dcb8'); }
+});
+addEventListener('keyup', e => keys[e.code] = false);
+
+/* ---------- entrada: táctil ---------- */
+const touchUI = document.getElementById('touchUI');
+const stickEl = document.getElementById('stick'), knob = document.getElementById('knob');
+const isTouch = matchMedia('(pointer: coarse)').matches;
+if(isTouch) touchUI.classList.add('on');
+let joy = {id: null, ox: 0, oy: 0, dx: 0, dy: 0};
+let touchShoot = false;
+
+addEventListener('touchstart', e => {
+  for(const t of e.changedTouches){
+    if(t.clientX < innerWidth * 0.5 && joy.id === null){
+      joy.id = t.identifier; joy.ox = t.clientX; joy.oy = t.clientY;
+      stickEl.style.left = (t.clientX - 55) + 'px';
+      stickEl.style.top  = (t.clientY - 55) + 'px';
+      stickEl.style.bottom = 'auto';
+    }
+  }
+}, {passive: true});
+addEventListener('touchmove', e => {
+  for(const t of e.changedTouches){
+    if(t.identifier === joy.id){
+      let dx = t.clientX - joy.ox, dy = t.clientY - joy.oy;
+      const m = Math.hypot(dx, dy) || 1, cap = Math.min(m, 45);
+      dx = dx / m * cap; dy = dy / m * cap;
+      joy.dx = dx / 45; joy.dy = dy / 45;
+      knob.style.left = (31 + dx) + 'px'; knob.style.top = (31 + dy) + 'px';
+    }
+  }
+}, {passive: true});
+addEventListener('touchend', e => {
+  for(const t of e.changedTouches){
+    if(t.identifier === joy.id){
+      joy.id = null; joy.dx = 0; joy.dy = 0;
+      knob.style.left = '31px'; knob.style.top = '31px';
+      stickEl.style.left = '30px'; stickEl.style.top = 'auto'; stickEl.style.bottom = '30px';
+    }
+  }
+}, {passive: true});
+
+const btnShoot = document.getElementById('btnShoot');
+const btnPoison = document.getElementById('btnPoison');
+btnShoot.addEventListener('touchstart', e => { e.preventDefault(); touchShoot = true; });
+btnShoot.addEventListener('touchend',   e => { e.preventDefault(); touchShoot = false; });
+btnPoison.addEventListener('touchstart', e => { e.preventDefault(); firePoison(); });
+const btnFire = document.getElementById('btnFire');
+btnFire.addEventListener('touchstart', e => { e.preventDefault(); fireFireball(); });
+const btnPause = document.getElementById('btnPause');
+btnPause.addEventListener('touchstart', e => { e.preventDefault(); togglePause(); });
+function statsText(){
+  const m = Math.floor(playT/60), sg = Math.floor(playT % 60);
+  return 'Invasores caídos: ' + kills + '  ·  Guerreros perdidos: ' + alliesLost +
+         '  ·  Nivel ' + level + '  ·  Tiempo ' + m + ':' + String(sg).padStart(2, '0');
+}
+function togglePause(){
+  if(state === 'play') state = 'paused';
+  else if(state === 'paused') state = 'play';
+}
+
+/* ---------- botones de pantalla ---------- */
+const scr = id => document.getElementById(id);
+document.getElementById('bStart').onclick = () => { startGame(); };
+document.getElementById('bRetry').onclick = () => { startGame(); };
+document.getElementById('bAgain').onclick = () => { startGame(); };
+document.getElementById('scrTitle').addEventListener('pointerdown', () => {
+  if(state === 'title') startMusic('chacarera');
+});
+
+function showScreen(id){
+  for(const s of ['scrTitle','scrLose','scrWin']) scr(s).classList.add('hidden');
+  if(id) scr(id).classList.remove('hidden');
+}
+
+/* ---------- inicio de partida ---------- */
+function startGame(){
+  showScreen(null);
+  Object.assign(player, {x: W*0.25, y: H*0.62, hp: 5, inv: 0, fireCd: 0,
+                         fx: 1, fy: 0, poisonReady: false, fireballCd: 0, dead: false});
+  arrows = []; bullets = []; enemies = []; drops = []; parts = []; floats = []; cannonballs = [];
+  allies = []; kills = 0; addAlly(); addAlly(); fireballs = []; flash = 0; thunderT = 7;
+  alliesLost = 0; playT = 0;
+  boss = null; wave = 0; level = 1; levelBanner = 0; timeScale = 1; shake = 0; winTimer = 0;
+  btnPoison.classList.remove('ready');
+  btnFire.classList.remove('unlocked', 'ready');
+  if(AC && AC.state === 'suspended') AC.resume();
+  startMusic('batalla');
+  startRainSound();
+  state = 'play';
+  nextWave();
+}
+
+/* ---------- oleadas ---------- */
+const LEVELS = {
+  1: {name: 'LA QUEBRADA', sub: 'La tormenta baja del cerro con los invasores', c1: '#cfd8e0', c2: '#a8b4c0'},
+  2: {name: 'EL OJO DE AGUA', sub: 'Las aguas del cerro bajan a Maquijata — el río frena a todos por igual', c1: '#cfe8f2', c2: '#a8cfe0'},
+  3: {name: 'LA CUMBRE DEL CERRO', sub: 'Atardece en lo alto de Guasayán — la última defensa de la tierra', c1: '#ffd9a0', c2: '#f0b070'}
+};
+function nextWave(){
+  wave++;
+  waveMsg = 2.6;
+  grito(3);
+  if(level === 1){
+    if(wave === 1)      spawnWave(5, 0);
+    else if(wave === 2) spawnWave(5, 3);
+    else if(wave === 3){ spawnWave(7, 4); spawnCanon(); }
+    else startLevel(2);
+  }else if(level === 2){
+    if(wave === 1){      spawnWave(6, 3); spawnCanon(); }
+    else if(wave === 2){ spawnWave(8, 4, 2); spawnCanon(); }
+    else if(wave === 3){ spawnWave(9, 5, 3); spawnCanon(); spawnCanon(); }
+    else startLevel(3);
+  }else{
+    if(wave === 1){      spawnWave(8, 5, 3); spawnCanon(); }
+    else if(wave === 2){ spawnWave(10, 6, 4); spawnCanon(); spawnCanon(); }
+    else if(wave === 3){ spawnWave(11, 7, 4); spawnCanon(); spawnCanon(); }
+    else startBoss();
+  }
+}
+function startLevel(n){
+  level = n; wave = 0; waveMsg = 0;
+  state = 'levelintro'; levelBanner = 3.4;
+  player.hp = Math.min(player.maxHp, player.hp + 2);
+  addFloat(player.x, player.y-60, '+2 corazones', '#ffd27a');
+  grito(4);
+  stopRainSound();   // la lluvia queda atrás, en la quebrada
+}
+/* agua del cerro: el río y el ojo de agua del nivel 2 frenan el paso */
+function inWater(x, y){
+  if(level !== 2) return false;
+  if(y > 303 && y < 377) return true;
+  return Math.hypot(x - 170, y - 468) < 58;
+}
+function spawnWave(nSold, nArc, nPerro){
+  for(let i = 0; i < nSold; i++) spawnEnemy('soldado');
+  for(let i = 0; i < nArc;  i++) spawnEnemy('arcabucero');
+  for(let i = 0; i < (nPerro || 0); i++) spawnEnemy('perro');
+}
+function spawnEnemy(type){
+  // aparecen desde el borde derecho / arriba / abajo
+  const side = Math.random();
+  let x, y;
+  if(side < 0.6){ x = W + rnd(20, 120); y = rnd(200, H - 40); }
+  else if(side < 0.8){ x = rnd(W*0.45, W); y = H + rnd(20, 60); }
+  else { x = rnd(W*0.45, W); y = 160 - rnd(0, 40); }
+  const r = type === 'perro' ? 13 : 16;
+  const hp = type === 'perro' ? 1 : 2;
+  enemies.push({type, x, y, r, hp, cd: rnd(1, 2.5), t: rnd(0, 6.28)});
+}
+function spawnCanon(){
+  const n = enemies.filter(e => e.type === 'canon').length;
+  const cy = n === 0 ? 236 : 428;
+  enemies.push({type: 'canon', x: W-80 - n*36, y: cy, r: 22, hp: 6, cd: 3, t: 0});
+  addFloat(W-90 - n*36, cy - 38, '¡Cañón español!', '#ffd27a');
+}
+function fireCannon(e){
+  cannonballs.push({sx: e.x-16, sy: e.y-12, tx: player.x, ty: player.y, t: 0, dur: 1.5});
+  burst(e.x-18, e.y-12, '#d8d0c0', 10, 90);
+  shake = Math.max(shake, 5);
+  S.boom();
+}
+
+/* ---------- jefe: Diego de Rojas ---------- */
+function startBoss(){
+  state = 'bossintro'; bossBanner = 3;
+  boss = {
+    x: W + 100, y: H*0.55, r: 32,
+    armor: 24, maxArmor: 24,      // fase montado
+    hp: 20, maxHp: 20,            // fase a pie
+    phase: 'ride',                // ride | foot | dying
+    t: 0, chargeT: 3.2, charging: false, cvx: 0, cvy: 0,
+    spawnT: 7, lungeT: 2.5, dashing: 0, dying: 0, hitFlash: 0
+  };
+  spawnCanon();
+  grito(5);
+  S.break_();
+}
+
+/* ---------- guerreros aliados ---------- */
+function addAlly(){
+  allies.push({
+    ang: rnd(0, 6.283), dist: rnd(42, 60),
+    spd: rnd(1.0, 1.6) * (Math.random() < .5 ? 1 : -1),
+    weapon: allies.length % 2 === 0 ? 'arco' : 'honda',
+    cd: rnd(.4, 1.2), x: player.x, y: player.y, t: rnd(0, 6)
+  });
+}
+function killAlly(i){
+  const al = allies[i];
+  burst(al.x, al.y, '#c9584a', 12, 130);
+  addFloat(al.x, al.y - 30, 'cayó un guerrero', '#e8b0a0');
+  allies.splice(i, 1);
+  alliesLost++;
+  sfx(180, .2, 'sawtooth', .05, 70);
+}
+function registerKill(e){
+  kills++;
+  if(kills === 10){
+    addFloat(player.x, player.y - 88, '¡La honda de fuego despertó! (Q)', '#ffb257');
+    S.ready(); grito(3);
+  }
+  if(Math.random() < 0.18) drops.push({x: e.x, y: e.y, life: 9});
+  if(kills % 4 === 0 && allies.length < 6){
+    addAlly();
+    grito(2);
+    addFloat(player.x, player.y - 56, '¡Otro guerrero se suma!', '#ffd27a');
+  }else if(kills % 5 === 0){
+    addFloat(player.x, player.y - 72, 'La flecha del veneno crece...', '#a8d060');
+  }
+}
+
+/* ---------- bola de fuego de la honda ---------- */
+function fireFireball(){
+  if(state !== 'play' || player.dead) return;
+  if(kills < 10 || player.fireballCd > 0) return;
+  player.fireballCd = 8;
+  const t = nearestTarget();
+  let vx = player.fx, vy = player.fy;
+  if(t){
+    const dd = dist(player, t) || 1;
+    vx = (t.x - player.x)/dd; vy = (t.y - player.y)/dd;
+  }
+  fireballs.push({x: player.x, y: player.y - 8, vx: vx*300, vy: vy*300, life: 2.2});
+  sfx(200, .35, 'sawtooth', .09, 60);
+  addFloat(player.x, player.y - 46, '¡BOLA DE FUEGO!', '#ffb257');
+}
+function explodeFire(x, y){
+  burst(x, y, '#ff8c3a', 30, 240);
+  burst(x, y, '#ffd24a', 20, 180);
+  shake = Math.max(shake, 10);
+  S.boom();
+  for(const e of enemies){
+    if(e.hp > 0 && Math.hypot(e.x - x, e.y - y) < 90){
+      e.hp -= 3;
+      if(e.hp <= 0){ burst(e.x, e.y, '#b8b8c2', 16, 150); registerKill(e); }
+    }
+  }
+  if(boss && boss.phase !== 'dying' && Math.hypot(boss.x - x, boss.y - y) < 100){
+    boss.hitFlash = .15;
+    if(boss.phase === 'ride'){
+      boss.armor -= 5;
+      if(boss.armor <= 0){
+        boss.phase = 'foot'; S.break_(); shake = 14;
+        burst(boss.x, boss.y, '#c9c9d4', 40, 240);
+        addFloat(boss.x, boss.y-60, '¡ARMADURA ROTA!', '#ffd27a');
+      }
+    }else{
+      boss.hp = Math.max(4, boss.hp - 4);
+      if(boss.hp <= 4 && !player.poisonReady){
+        player.poisonReady = true;
+        btnPoison.classList.add('ready');
+        S.ready();
+        addFloat(player.x, player.y-46, '¡El veneno está listo! (E)', '#a8d060');
+      }
+    }
+  }
+}
+
+/* ---------- disparos del cacique ---------- */
+function nearestTarget(){
+  let best = null, bd = 1e9;
+  for(const e of enemies){
+    const d = dist(player, e);
+    if(d < bd){ bd = d; best = e; }
+  }
+  if(boss && boss.phase !== 'dying'){
+    const d = dist(player, boss);
+    if(d < bd){ bd = d; best = boss; }
+  }
+  return best;
+}
+function fireArrow(){
+  const t = nearestTarget();
+  let vx = player.fx, vy = player.fy;
+  if(t){
+    const d = dist(player, t) || 1;
+    vx = (t.x - player.x) / d; vy = (t.y - player.y) / d;
+  }
+  const sp = 430;
+  arrows.push({x: player.x + vx*18, y: player.y - 6 + vy*18,
+               vx: vx*sp, vy: vy*sp, poison: false, life: 2});
+  S.shoot();
+}
+function firePoison(){
+  if(state !== 'play' || !player.poisonReady || player.dead) return;
+  if(!boss || boss.phase === 'dying') return;
+  player.poisonReady = false;
+  btnPoison.classList.remove('ready');
+  timeScale = 0.28;                       // cámara lenta cinematográfica
+  const d = dist(player, boss) || 1;
+  arrows.push({x: player.x, y: player.y - 6,
+               vx: (boss.x - player.x)/d*520, vy: (boss.y - player.y)/d*520,
+               poison: true, life: 4, homing: true,
+               pw: 1 + Math.min(kills, 20)*0.06});
+  S.poison();
+  addFloat(player.x, player.y - 40, '¡FLECHA ENVENENADA!', '#a8d060');
+}
+
+/* ---------- partículas y textos ---------- */
+function burst(x, y, col, n, spd){
+  for(let i = 0; i < n; i++){
+    const a = rnd(0, 6.283), s = rnd(spd*0.3, spd);
+    parts.push({x, y, vx: Math.cos(a)*s, vy: Math.sin(a)*s,
+                life: rnd(.3, .7), col, r: rnd(1.5, 3.5)});
+  }
+}
+function addFloat(x, y, txt, col){
+  floats.push({x, y, txt, col, life: 1.4});
+}
+
+/* ---------- daño al jugador ---------- */
+function hurtPlayer(dmg, fromX){
+  if(player.inv > 0 || player.dead) return;
+  player.hp -= dmg; player.inv = 1.1;
+  shake = 10; S.hurt();
+  burst(player.x, player.y, '#c9584a', 14, 140);
+  const push = player.x < fromX ? -1 : 1;
+  player.x = clamp(player.x + push*30, 20, W-20);
+  if(player.hp <= 0){
+    player.dead = true;
+    burst(player.x, player.y, '#e8c98f', 30, 200);
+    setTimeout(() => { stopMusic(); scr('statsLose').textContent = statsText(); state = 'defeat'; showScreen('scrLose'); }, 900);
+  }
+}
+
+/* ---------- lógica principal ---------- */
+function update(dt){
+  tGlobal += dt;
+  if(state === 'play') playT += dt;
+  const d = dt * timeScale;
+  if(timeScale < 1) timeScale = Math.min(1, timeScale + dt*0.45); // vuelve de la cámara lenta
+
+  if(waveMsg > 0) waveMsg -= dt;
+  if(bossBanner > 0){
+    bossBanner -= dt;
+    if(bossBanner <= 0) state = 'play';
+  }
+  if(shake > 0) shake = Math.max(0, shake - dt*30);
+
+  if(state === 'levelintro'){
+    levelBanner -= dt;
+    if(levelBanner <= 0){ state = 'play'; nextWave(); }
+    updateFx(d); return;
+  }
+  if(state === 'bossintro'){ updateFx(d); return; }
+  if(state !== 'play') { updateFx(d); return; }
+
+  /* --- jugador --- */
+  if(!player.dead){
+    let mx = (keys['KeyA']||keys['ArrowLeft']?-1:0) + (keys['KeyD']||keys['ArrowRight']?1:0) + joy.dx;
+    let my = (keys['KeyW']||keys['ArrowUp']?-1:0)   + (keys['KeyS']||keys['ArrowDown']?1:0)  + joy.dy;
+    const m = Math.hypot(mx, my);
+    if(m > 1){ mx /= m; my /= m; }
+    if(m > 0.1){ player.fx = mx/(m||1); player.fy = my/(m||1); }
+    const pspd = player.speed * (inWater(player.x, player.y) ? 0.62 : 1);
+    player.x = clamp(player.x + mx*pspd*d, 18, W-18);
+    player.y = clamp(player.y + my*pspd*d, 175, H-24);
+    if(m > 0.1 && inWater(player.x, player.y) && Math.random() < 0.35)
+      parts.push({x: player.x + rnd(-8,8), y: player.y + 10, vx: rnd(-20,20),
+                  vy: rnd(-46,-14), life: .4, col: '#cfe8f2', r: rnd(1.5,3)});
+    player.inv = Math.max(0, player.inv - d);
+    player.fireCd -= d;
+    if((keys['Space'] || touchShoot) && player.fireCd <= 0){
+      fireArrow(); player.fireCd = 0.34;
+    }
+  }
+
+  /* --- guerreros aliados: rodean al cacique y disparan --- */
+  for(const al of allies){
+    al.t += d; al.ang += al.spd*d;
+    al.x = clamp(player.x + Math.cos(al.ang)*al.dist, 14, W-14);
+    al.y = clamp(player.y + Math.sin(al.ang)*al.dist*0.7, 175, H-20);
+    al.cd -= d;
+    if(al.cd <= 0 && !player.dead){
+      const t = nearestTarget();
+      if(t && dist(al, t) < 430){
+        al.cd = rnd(1.0, 1.6);
+        const dd = dist(al, t) || 1;
+        const vx = (t.x - al.x)/dd, vy = (t.y - al.y)/dd;
+        if(al.weapon === 'arco'){
+          arrows.push({x: al.x + vx*14, y: al.y - 6 + vy*14,
+                       vx: vx*380, vy: vy*380, poison: false, life: 2});
+          S.shoot();
+        }else{
+          arrows.push({x: al.x, y: al.y - 8, vx: vx*330, vy: vy*330,
+                       poison: false, stone: true, life: 2});
+          sfx(300, .08, 'triangle', .04, 150);
+        }
+      }else al.cd = 0.3;
+    }
+  }
+
+  /* --- flechas --- */
+  for(const a of arrows){
+    if(a.homing && boss && boss.phase !== 'dying'){
+      const dd = dist(a, boss) || 1;
+      a.vx += (boss.x - a.x)/dd * 900 * d;
+      a.vy += (boss.y - a.y)/dd * 900 * d;
+      const sp = Math.hypot(a.vx, a.vy);
+      a.vx = a.vx/sp*520; a.vy = a.vy/sp*520;
+    }
+    a.x += a.vx*d; a.y += a.vy*d; a.life -= d;
+    if(a.poison){
+      const pw = a.pw || 1;
+      parts.push({x:a.x, y:a.y, vx:rnd(-15,15)*pw, vy:rnd(-15,15)*pw,
+                  life:.45, col:'#8fbe4a', r:2*pw});
+      parts.push({x:a.x - a.vx*0.02, y:a.y - a.vy*0.02, vx:rnd(-24,24), vy:rnd(-32,-4),
+                  life:.3, col: Math.random() < .5 ? '#ff8c3a' : '#ffd24a', r:1.8*pw});
+    }
+  }
+  arrows = arrows.filter(a => {
+    const alive = a.life > 0 && a.x > -30 && a.x < W+30 && a.y > 100 && a.y < H+30;
+    if(!alive && a.poison && boss && boss.phase !== 'dying'){
+      player.poisonReady = true; btnPoison.classList.add('ready');
+      addFloat(player.x, player.y-46, 'El veneno espera otra chance...', '#a8d060');
+    }
+    return alive;
+  });
+
+  /* --- enemigos --- */
+  for(const e of enemies){
+    e.t += d;
+    const dp = dist(e, player) || 1;
+    const ux = (player.x - e.x)/dp, uy = (player.y - e.y)/dp;
+    if(e.type === 'soldado'){
+      const sp = [0, 58, 74, 86][level] * (inWater(e.x, e.y) ? 0.62 : 1);
+      e.x += ux*sp*d; e.y += uy*sp*d;
+      if(dp < e.r + player.r) hurtPlayer(1, e.x);
+      for(let i = allies.length-1; i >= 0; i--){
+        const al = allies[i];
+        if(Math.hypot(e.x - al.x, e.y - al.y) < e.r + 12){
+          killAlly(i);
+          e.hp--;                       // el guerrero hiere al soldado al caer
+          e.x -= ux*26; e.y -= uy*26;
+          if(e.hp <= 0){ burst(e.x, e.y, '#b8b8c2', 16, 150); registerKill(e); }
+          break;
+        }
+      }
+    }else if(e.type === 'perro'){
+      const sp = (level === 3 ? 135 : 118) * (inWater(e.x, e.y) ? 0.62 : 1);
+      const zig = Math.sin(e.t*6)*26;
+      e.x += (ux*sp - uy*zig*0.4)*d;
+      e.y += (uy*sp + ux*zig*0.4)*d;
+      if(dp < e.r + player.r) hurtPlayer(1, e.x);
+      for(let i = allies.length-1; i >= 0; i--){
+        const al = allies[i];
+        if(Math.hypot(e.x - al.x, e.y - al.y) < e.r + 12){
+          killAlly(i); e.hp = 0;
+          burst(e.x, e.y, '#8a7458', 14, 150);
+          registerKill(e);
+          break;
+        }
+      }
+    }else if(e.type === 'canon'){
+      e.cd -= d;
+      if(e.cd <= 0 && !player.dead){
+        e.cd = level === 3 ? rnd(3, 4.4) : level === 2 ? rnd(3.4, 5) : rnd(4.5, 6.5);
+        fireCannon(e);
+      }
+    }else{ // arcabucero
+      const wf = inWater(e.x, e.y) ? 0.62 : 1;
+      if(dp > 270){ e.x += ux*48*wf*d; e.y += uy*48*wf*d; }
+      else if(dp < 190){ e.x -= ux*40*wf*d; e.y -= uy*40*wf*d; }
+      e.cd -= d;
+      if(e.cd <= 0 && dp < 420 && !player.dead){
+        e.cd = [0, 2.4, 1.9, 1.6][level];
+        const bs = [0, 185, 215, 240][level];
+        bullets.push({x: e.x, y: e.y-8, vx: ux*bs, vy: uy*bs, life: 3});
+        burst(e.x + ux*14, e.y - 8, '#ddd0b0', 5, 60);
+        S.gun();
+      }
+    }
+    e.y = clamp(e.y, 170, H-20);
+  }
+
+  /* flechas vs enemigos */
+  for(const a of arrows){
+    for(const e of enemies){
+      if(e.hp > 0 && Math.abs(a.x-e.x) < e.r+5 && Math.abs(a.y-(e.y-6)) < e.r+8){
+        e.hp--; a.life = 0; S.hit();
+        burst(a.x, a.y, '#e0e0e0', 6, 90);
+        if(e.hp <= 0){
+          burst(e.x, e.y, '#b8b8c2', 16, 150);
+          registerKill(e);
+        }
+        break;
+      }
+    }
+    /* flechas vs jefe */
+    if(boss && a.life > 0 && boss.phase !== 'dying' &&
+       Math.abs(a.x-boss.x) < boss.r+6 && Math.abs(a.y-(boss.y-10)) < boss.r+14){
+      a.life = 0;
+      boss.hitFlash = .12;
+      if(a.poison){
+        killBoss(a.pw || 1);
+      }else if(boss.phase === 'ride'){
+        boss.armor--; S.clank();
+        burst(a.x, a.y, '#f0e6c8', 8, 120);
+        addFloat(boss.x, boss.y-55, '¡clanc!', '#e8dcb8');
+        if(boss.armor <= 0){
+          boss.phase = 'foot'; S.break_(); shake = 14;
+          burst(boss.x, boss.y, '#c9c9d4', 40, 240);
+          addFloat(boss.x, boss.y-60, '¡ARMADURA ROTA!', '#ffd27a');
+        }
+      }else{ // a pie
+        S.hit();
+        burst(a.x, a.y, '#c9584a', 8, 120);
+        boss.hp = Math.max(4, boss.hp - 1);
+        if(boss.hp <= 4 && !player.poisonReady){
+          player.poisonReady = true;
+          btnPoison.classList.add('ready');
+          S.ready();
+          addFloat(player.x, player.y-46, '¡El veneno está listo! (E)', '#a8d060');
+        }
+      }
+    }
+  }
+  enemies = enemies.filter(e => e.hp > 0);
+
+  /* balas de arcabuz */
+  for(const b of bullets){
+    b.x += b.vx*d; b.y += b.vy*d; b.life -= d;
+    for(let i = allies.length-1; i >= 0; i--){
+      const al = allies[i];
+      if(Math.abs(b.x - al.x) < 12 && Math.abs(b.y - (al.y-6)) < 17){
+        b.life = 0; killAlly(i); break;
+      }
+    }
+    if(b.life > 0 && !player.dead && Math.abs(b.x-player.x) < 15 && Math.abs(b.y-(player.y-6)) < 20){
+      b.life = 0; hurtPlayer(1, b.x);
+    }
+  }
+  bullets = bullets.filter(b => b.life > 0);
+
+  /* balas de cañón (piedra) */
+  for(const c of cannonballs){
+    c.t += d;
+    if(c.t >= c.dur){
+      c.done = true;
+      burst(c.tx, c.ty, '#6b6b74', 24, 220);
+      burst(c.tx, c.ty, '#8a7448', 16, 150);
+      shake = Math.max(shake, 12);
+      if(!player.dead && Math.hypot(player.x - c.tx, player.y - c.ty) < 52) hurtPlayer(1, c.tx);
+      for(let i = allies.length-1; i >= 0; i--)
+        if(Math.hypot(allies[i].x - c.tx, allies[i].y - c.ty) < 52) killAlly(i);
+    }
+  }
+  cannonballs = cannonballs.filter(c => !c.done);
+
+  /* bola de fuego de la honda */
+  player.fireballCd = Math.max(0, player.fireballCd - d);
+  if(kills >= 10){
+    btnFire.classList.add('unlocked');
+    btnFire.classList.toggle('ready', player.fireballCd <= 0 && !player.dead);
+  }
+  for(const f of fireballs){
+    f.x += f.vx*d; f.y += f.vy*d; f.life -= d;
+    parts.push({x: f.x + rnd(-4,4), y: f.y + rnd(-4,4), vx: rnd(-20,20), vy: rnd(-40,-5),
+                life: .35, col: Math.random() < .5 ? '#ff8c3a' : '#ffd24a', r: rnd(2,4)});
+    let boom = f.life <= 0 || f.x < 10 || f.x > W-10 || f.y < 170 || f.y > H-10;
+    if(!boom) for(const e of enemies)
+      if(Math.abs(f.x - e.x) < e.r + 10 && Math.abs(f.y - (e.y - 6)) < e.r + 12){ boom = true; break; }
+    if(!boom && boss && boss.phase !== 'dying' && dist(f, boss) < boss.r + 12) boom = true;
+    if(boom){ f.done = true; explodeFire(f.x, f.y); }
+  }
+  fireballs = fireballs.filter(f => !f.done);
+
+  /* frutos de algarrobo (curan) */
+  for(const dr of drops){
+    dr.life -= d;
+    if(dist(dr, player) < 22 && player.hp < player.maxHp){
+      dr.life = 0; player.hp++;
+      S.pick(); addFloat(player.x, player.y-40, '+1 algarroba', '#e8c98f');
+    }
+  }
+  drops = drops.filter(dr => dr.life > 0);
+
+  /* --- jefe --- */
+  if(boss) updateBoss(d);
+
+  /* fin de oleada */
+  if(!boss && enemies.length === 0 && state === 'play') nextWave();
+
+  updateFx(d);
+}
+
+function updateBoss(d){
+  const b = boss;
+  b.hitFlash = Math.max(0, b.hitFlash - d);
+  if(b.phase === 'dying'){
+    b.dying += d;
+    if(b.dying > 2 && winTimer === 0){
+      winTimer = 1;
+      setTimeout(() => { stopMusic(); startMusic('chacarera'); scr('statsWin').textContent = statsText(); state = 'victory'; showScreen('scrWin'); }, 700);
+    }
+    return;
+  }
+  b.t += d;
+  if(b.phase === 'ride'){
+    if(!b.charging){
+      // se pasea vertical siguiendo al jugador por el lado derecho
+      b.x += (W*0.78 - b.x)*1.2*d;
+      b.y += clamp(player.y - b.y, -70, 70)*d;
+      b.chargeT -= d;
+      if(b.chargeT <= 0){
+        b.charging = true;
+        const dd = dist(b, player) || 1;
+        b.cvx = (player.x - b.x)/dd*430; b.cvy = (player.y - b.y)/dd*430;
+        addFloat(b.x, b.y-60, '¡CARGA!', '#ff9a6a'); S.hurt();
+      }
+      b.spawnT -= d;
+      if(b.spawnT <= 0 && enemies.length < 4){
+        b.spawnT = 8; spawnEnemy('soldado'); spawnEnemy('soldado');
+      }
+    }else{
+      b.x += b.cvx*d; b.y += b.cvy*d;
+      if(Math.random() < 0.5) parts.push({x:b.x-20, y:b.y+18, vx:rnd(-30,-5),
+        vy:rnd(-12,4), life:.5, col:'#c8965a', r:rnd(2,4)});
+      if(!player.dead && dist(b, player) < b.r + player.r) hurtPlayer(1, b.x);
+      if(b.x < 40 || b.x > W-20 || b.y < 175 || b.y > H-20){
+        b.charging = false; b.chargeT = rnd(2.4, 3.6);
+        b.x = clamp(b.x, 40, W-20); b.y = clamp(b.y, 175, H-20);
+      }
+    }
+  }else if(b.phase === 'foot'){
+    if(!b.called && b.hp <= 10){
+      b.called = true;
+      spawnEnemy('soldado'); spawnEnemy('soldado');
+      addFloat(b.x, b.y - 64, '¡A mí, la guardia!', '#ff9a6a');
+      grito(2);
+    }
+    const dp = dist(b, player) || 1;
+    const ux = (player.x-b.x)/dp, uy = (player.y-b.y)/dp;
+    if(b.dashing > 0){
+      b.dashing -= d;
+      b.x += b.cvx*d; b.y += b.cvy*d;
+      if(!player.dead && dp < b.r + player.r + 4) hurtPlayer(1, b.x);
+    }else{
+      const bw = inWater(b.x, b.y) ? 0.62 : 1;
+      b.x += ux*82*bw*d; b.y += uy*82*bw*d;
+      b.lungeT -= d;
+      if(b.lungeT <= 0 && dp < 190){
+        b.lungeT = rnd(1.8, 2.6); b.dashing = 0.35;
+        b.cvx = ux*380; b.cvy = uy*380;
+        addFloat(b.x, b.y-56, '¡estocada!', '#ff9a6a');
+      }
+    }
+    b.x = clamp(b.x, 30, W-25); b.y = clamp(b.y, 175, H-22);
+  }
+}
+
+function killBoss(pw){
+  pw = pw || 1;
+  boss.phase = 'dying'; boss.dying = 0;
+  timeScale = 0.35; shake = 16;
+  S.break_();
+  // la flecha se prende fuego al dar en el blanco
+  for(let i = 0; i < 26*pw; i++)
+    parts.push({x: boss.x + rnd(-16,16), y: boss.y - 10 + rnd(-18,10),
+                vx: rnd(-40,40), vy: rnd(-95,-20), life: rnd(.4,.9),
+                col: i % 2 ? '#ff8c3a' : '#ffd24a', r: rnd(2,4.5)});
+  // el veneno se esparce en el aire
+  for(let i = 0; i < 30*pw; i++)
+    parts.push({x: boss.x + rnd(-34,34), y: boss.y - 14 + rnd(-26,18),
+                vx: rnd(-26,26), vy: rnd(-48,-6), life: rnd(1.2,2.8),
+                col: '#8fbe4a', r: rnd(3,7)});
+  burst(boss.x, boss.y-10, '#c9584a', 16, 150);
+  addFloat(boss.x, boss.y-70, 'La flecha halló su marca...', '#bcd37f');
+  grito(6);
+}
+
+function updateFx(d){
+  for(const p of parts){ p.x += p.vx*d; p.y += p.vy*d; p.life -= d; p.vy += 60*d; }
+  parts = parts.filter(p => p.life > 0);
+  if(parts.length > 450) parts.splice(0, parts.length - 450);
+  for(const f of floats){ f.y -= 26*d; f.life -= d; }
+  floats = floats.filter(f => f.life > 0);
+  // ambiente: nubes, pájaros, cabra
+  for(const c of clouds){ c.x += c.v*d; if(c.x > W+70) c.x = -70; }
+  birdT -= d;
+  if(birdT <= 0){
+    birdT = rnd(6, 14);
+    birds.push({x: -14, y: rnd(28, 105), t: 0, v: rnd(35, 60)});
+  }
+  for(const b of birds){ b.x += b.v*d; b.t += d; }
+  birds = birds.filter(b => b.x < W + 20);
+  cabra.t += d; cabra.x += cabra.vx*d;
+  if(cabra.x > 210 || cabra.x < 60) cabra.vx *= -1;
+  // tormenta del nivel 1
+  if(level === 1 && state !== 'title' && state !== 'victory' && state !== 'defeat'){
+    thunderT -= d;
+    if(thunderT <= 0){ thunderT = rnd(8, 16); flash = 0.9; trueno(); }
+  }
+  flash = Math.max(0, flash - 2.2*d);
+}
+
+/* ================= DIBUJO ================= */
+function draw(){
+  ctx.save();
+  if(shake > 0) ctx.translate(rnd(-shake,shake)*0.5, rnd(-shake,shake)*0.5);
+
+  if(state === 'title'){
+    drawTitleScene();
+    ctx.restore();
+    return;
+  }
+
+  drawScene();
+
+  // frutos de algarrobo
+  for(const dr of drops){
+    const bob = Math.sin(tGlobal*4 + dr.x)*3;
+    ctx.fillStyle = '#e8c98f';
+    ctx.beginPath(); ctx.ellipse(dr.x, dr.y+bob, 8, 4, 0.5, 0, 6.283); ctx.fill();
+    ctx.strokeStyle = 'rgba(232,201,143,.4)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(dr.x, dr.y+bob, 12, 0, 6.283); ctx.stroke();
+  }
+
+  // aviso de impacto del cañón
+  for(const c of cannonballs){
+    const p = c.t / c.dur;
+    ctx.globalAlpha = 0.25 + 0.45*p;
+    ctx.strokeStyle = '#b03a2e'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(c.tx, c.ty, 48, 0, 6.283); ctx.stroke();
+    ctx.fillStyle = 'rgba(176,58,46,.18)';
+    ctx.beginPath(); ctx.arc(c.tx, c.ty, 48*p, 0, 6.283); ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+
+  // entidades ordenadas por Y (profundidad)
+  const ents = [];
+  for(const e of enemies) ents.push({y: e.y, fn: () => drawEnemy(e)});
+  for(const al of allies) ents.push({y: al.y, fn: () => drawIndio(al)});
+  if(boss) ents.push({y: boss.y, fn: () => drawBoss(boss)});
+  if(!player.dead || state === 'play')
+    ents.push({y: player.y, fn: () => drawCacique(player)});
+  ents.sort((a,b) => a.y - b.y);
+  for(const en of ents) en.fn();
+
+  // flechas
+  for(const a of arrows){
+    if(a.stone){
+      ctx.fillStyle = '#8a8d88';
+      ctx.beginPath(); ctx.arc(a.x, a.y, 3.5, 0, 6.283); ctx.fill();
+      continue;
+    }
+    const pw = a.pw || 1;
+    const ang = Math.atan2(a.vy, a.vx);
+    ctx.save(); ctx.translate(a.x, a.y); ctx.rotate(ang);
+    ctx.strokeStyle = a.poison ? '#8fbe4a' : '#e8d8b0';
+    ctx.lineWidth = a.poison ? 3*pw : 2;
+    ctx.beginPath(); ctx.moveTo(-10*pw, 0); ctx.lineTo(8*pw, 0); ctx.stroke();
+    ctx.fillStyle = a.poison ? '#b8e070' : '#f0f0f0';
+    ctx.beginPath(); ctx.moveTo(10*pw,0); ctx.lineTo(4*pw,-3*pw); ctx.lineTo(4*pw,3*pw); ctx.fill();
+    if(a.poison){
+      ctx.shadowColor = '#8fbe4a'; ctx.shadowBlur = 12*pw;
+      ctx.beginPath(); ctx.arc(8*pw, 0, 3*pw, 0, 6.283); ctx.fill();
+      ctx.shadowColor = '#ff8c3a'; ctx.shadowBlur = 8*pw;
+      ctx.fillStyle = '#ffb257';
+      ctx.beginPath(); ctx.arc(-4*pw, 0, 2.2*pw, 0, 6.283); ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // balas de arcabuz
+  ctx.fillStyle = '#3a3a3a';
+  for(const b of bullets){
+    ctx.beginPath(); ctx.arc(b.x, b.y, 4, 0, 6.283); ctx.fill();
+  }
+
+  // balas de piedra del cañón en vuelo
+  for(const c of cannonballs){
+    const p = c.t / c.dur;
+    const gx = c.sx + (c.tx - c.sx)*p, gy = c.sy + (c.ty - c.sy)*p;
+    const y = gy - 120*Math.sin(Math.PI*p);
+    ctx.fillStyle = 'rgba(0,0,0,.25)';
+    ctx.beginPath(); ctx.ellipse(gx, gy, 7, 3, 0, 0, 6.283); ctx.fill();
+    ctx.fillStyle = '#5b5f5c';
+    ctx.beginPath(); ctx.arc(gx, y, 7, 0, 6.283); ctx.fill();
+    ctx.fillStyle = '#828782';
+    ctx.beginPath(); ctx.arc(gx-2, y-2, 2.5, 0, 6.283); ctx.fill();
+  }
+
+  // bolas de fuego de la honda
+  for(const f of fireballs){
+    ctx.shadowColor = '#ff8c3a'; ctx.shadowBlur = 18;
+    ctx.fillStyle = '#ffb257';
+    ctx.beginPath(); ctx.arc(f.x, f.y, 9, 0, 6.283); ctx.fill();
+    ctx.fillStyle = '#fff0c0';
+    ctx.beginPath(); ctx.arc(f.x, f.y, 4.5, 0, 6.283); ctx.fill();
+    ctx.shadowBlur = 0;
+  }
+
+  // partículas
+  for(const p of parts){
+    ctx.globalAlpha = clamp(p.life*2, 0, 1);
+    ctx.fillStyle = p.col;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.283); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+
+  // textos flotantes
+  ctx.textAlign = 'center';
+  ctx.font = "16px 'IM Fell English', serif";
+  for(const f of floats){
+    ctx.globalAlpha = clamp(f.life, 0, 1);
+    ctx.fillStyle = f.col;
+    ctx.fillText(f.txt, f.x, f.y);
+  }
+  ctx.globalAlpha = 1;
+
+  if(level === 1) drawRain();
+  if(player.inv > 0.55 && !player.dead && state !== 'title'){
+    const vg = ctx.createRadialGradient(W/2, H/2, H*0.35, W/2, H/2, H*0.75);
+    vg.addColorStop(0, 'rgba(160,30,20,0)');
+    vg.addColorStop(1, 'rgba(160,30,20,.45)');
+    ctx.fillStyle = vg; ctx.fillRect(0, 0, W, H);
+  }
+  drawHUD();
+  ctx.restore();
+}
+
+/* ---------- escenarios: quebrada (nivel 1) y ojo de agua (nivel 2) ---------- */
+function drawScene(){
+  if(level === 3) drawSceneCumbre();
+  else if(level === 2) drawSceneAgua();
+  else drawSceneQuebrada();
+}
+function drawNubesAves(mode){
+  ctx.fillStyle = mode === 'storm' ? 'rgba(148,158,170,.92)'
+                : mode === 'sunset' ? 'rgba(255,205,150,.55)'
+                : 'rgba(255,255,255,.88)';
+  for(const c of clouds){
+    ctx.beginPath(); ctx.ellipse(c.x, c.y, 34*c.s, 11*c.s, 0, 0, 6.283); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(c.x+20*c.s, c.y+4*c.s, 24*c.s, 9*c.s, 0, 0, 6.283); ctx.fill();
+    ctx.beginPath(); ctx.ellipse(c.x-22*c.s, c.y+5*c.s, 20*c.s, 8*c.s, 0, 0, 6.283); ctx.fill();
+  }
+  ctx.strokeStyle = 'rgba(35,45,55,.8)'; ctx.lineWidth = 1.6;
+  for(const b of birds){
+    const w = Math.sin(b.t*10)*4;
+    ctx.beginPath();
+    ctx.moveTo(b.x-6, b.y-w); ctx.quadraticCurveTo(b.x, b.y+3, b.x, b.y);
+    ctx.quadraticCurveTo(b.x, b.y+3, b.x+6, b.y-w); ctx.stroke();
+  }
+}
+
+/* ===== NIVEL 1: la quebrada de tierra colorada ===== */
+function drawSceneQuebrada(){
+  const sky = ctx.createLinearGradient(0, 0, 0, 200);
+  sky.addColorStop(0, '#59687a'); sky.addColorStop(1, '#a8b4b2');
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, W, 200);
+  drawNubesAves('storm');
+  // paredón lejano de roca y monte
+  ctx.fillStyle = '#7a5a40';
+  ctx.beginPath(); ctx.moveTo(0, 175);
+  ctx.lineTo(90, 92); ctx.lineTo(210, 148); ctx.lineTo(330, 86);
+  ctx.lineTo(465, 140); ctx.lineTo(600, 82); ctx.lineTo(735, 138);
+  ctx.lineTo(860, 95); ctx.lineTo(W, 145); ctx.lineTo(W, 206); ctx.lineTo(0, 206);
+  ctx.fill();
+  ctx.fillStyle = 'rgba(64,96,48,.72)';
+  for(let i = 0; i < 9; i++){
+    const x = (i*118 + 40) % W, y = 108 + (i*53) % 52;
+    ctx.beginPath(); ctx.ellipse(x, y, 26, 10, 0, 0, 6.283); ctx.fill();
+  }
+  // cresta cercana con cardones
+  ctx.fillStyle = '#8a5f3f';
+  ctx.beginPath(); ctx.moveTo(0, 200);
+  ctx.lineTo(150, 150); ctx.lineTo(320, 188); ctx.lineTo(500, 146);
+  ctx.lineTo(680, 190); ctx.lineTo(840, 152); ctx.lineTo(W, 186);
+  ctx.lineTo(W, 212); ctx.lineTo(0, 212); ctx.fill();
+  ctx.fillStyle = 'rgba(70,102,52,.55)';
+  for(let i = 0; i < 6; i++){
+    const x = (i*173 + 80) % W;
+    ctx.beginPath(); ctx.ellipse(x, 182, 30, 9, 0, 0, 6.283); ctx.fill();
+  }
+  drawCardon(122, 162, .5, '#5a4030');
+  drawCardon(548, 154, .55, '#5a4030');
+  drawCardon(882, 164, .45, '#5a4030');
+  // piso: tierra colorada de la quebrada
+  const gnd = ctx.createLinearGradient(0, 200, 0, H);
+  gnd.addColorStop(0, '#a06a48'); gnd.addColorStop(1, '#6e4630');
+  ctx.fillStyle = gnd; ctx.fillRect(0, 200, W, H-200);
+  // laderas rocosas que encajonan el cauce
+  ctx.fillStyle = '#5f4030';
+  ctx.beginPath(); ctx.moveTo(0, 200); ctx.lineTo(72, 236); ctx.lineTo(46, 322);
+  ctx.lineTo(66, 432); ctx.lineTo(0, 472); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(W, 200); ctx.lineTo(W-74, 242); ctx.lineTo(W-44, 342);
+  ctx.lineTo(W-68, 454); ctx.lineTo(W, 488); ctx.fill();
+  ctx.strokeStyle = 'rgba(40,26,18,.5)'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(14, 250); ctx.lineTo(40, 300); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(W-20, 270); ctx.lineTo(W-48, 330); ctx.stroke();
+  // matas del monte
+  ctx.fillStyle = 'rgba(74,104,54,.55)';
+  for(let i = 0; i < 16; i++){
+    const x = (i*137 + 60) % W, y = 228 + (i*97) % (H-270);
+    ctx.beginPath(); ctx.ellipse(x, y, 15, 5, 0, 0, 6.283); ctx.fill();
+  }
+  // arroyo chico entre piedras
+  ctx.fillStyle = '#8fb4c2';
+  ctx.beginPath();
+  ctx.moveTo(0, 336); ctx.quadraticCurveTo(240, 312, 480, 326);
+  ctx.quadraticCurveTo(720, 340, W, 316);
+  ctx.lineTo(W, 334); ctx.quadraticCurveTo(720, 358, 480, 344);
+  ctx.quadraticCurveTo(240, 330, 0, 356);
+  ctx.fill();
+  ctx.strokeStyle = 'rgba(240,250,255,.55)'; ctx.lineWidth = 1.2;
+  for(let i = 0; i < 6; i++){
+    const x = (i*167 + tGlobal*26) % W;
+    ctx.beginPath(); ctx.moveTo(x, 332 + Math.sin(i*2.1)*6); ctx.lineTo(x+10, 332 + Math.sin(i*2.1)*6); ctx.stroke();
+  }
+  for(const r of rocks) drawRoca(r);
+  drawPirca(96, 226);
+  drawPirca(846, 222);
+  drawCorral(640, 212);
+  for(const t of trees) drawAlgarrobo(t.x, t.y, t.s);
+  drawCardon(252, 470, .55);
+  drawCardon(716, 252, .48);
+  drawCabra(cabra);
+}
+
+/* ===== NIVEL 2: el ojo de agua ===== */
+function drawSceneAgua(){
+  const sky = ctx.createLinearGradient(0, 0, 0, 200);
+  sky.addColorStop(0, '#4f97d6'); sky.addColorStop(1, '#cfe8f2');
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, W, 200);
+  drawNubesAves();
+  // cerros verdes y húmedos
+  ctx.fillStyle = '#37602e';
+  ctx.beginPath(); ctx.moveTo(0, 170);
+  ctx.lineTo(140, 105); ctx.lineTo(300, 152); ctx.lineTo(470, 98);
+  ctx.lineTo(640, 148); ctx.lineTo(800, 104); ctx.lineTo(W, 148);
+  ctx.lineTo(W, 210); ctx.lineTo(0, 210); ctx.fill();
+  ctx.fillStyle = '#487a39';
+  ctx.beginPath(); ctx.moveTo(0, 196);
+  ctx.lineTo(200, 142); ctx.lineTo(390, 182); ctx.lineTo(580, 140);
+  ctx.lineTo(760, 180); ctx.lineTo(W, 150); ctx.lineTo(W, 214);
+  ctx.lineTo(0, 214); ctx.fill();
+  // cascada que baja del cerro
+  const cx = 668;
+  ctx.fillStyle = 'rgba(232,246,252,.92)';
+  ctx.beginPath();
+  ctx.moveTo(cx-7, 118); ctx.lineTo(cx+7, 118);
+  ctx.lineTo(cx+16, 210); ctx.lineTo(cx-16, 210); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,.85)'; ctx.lineWidth = 2;
+  for(let i = 0; i < 4; i++){
+    const off = (tGlobal*130 + i*26) % 92;
+    ctx.beginPath();
+    ctx.moveTo(cx - 6 + i*4, 118 + off);
+    ctx.lineTo(cx - 6 + i*4 + 2, 118 + off + 14);
+    ctx.stroke();
+  }
+  // neblina al pie de la cascada
+  ctx.fillStyle = 'rgba(240,250,255,.5)';
+  ctx.beginPath(); ctx.ellipse(cx, 212, 30 + Math.sin(tGlobal*3)*4, 10, 0, 0, 6.283); ctx.fill();
+  // valle verde
+  const gnd = ctx.createLinearGradient(0, 196, 0, H);
+  gnd.addColorStop(0, '#7ea35a'); gnd.addColorStop(1, '#4f7340');
+  ctx.fillStyle = gnd; ctx.fillRect(0, 196, W, H-196);
+  // río ancho que cruza el campo (frena el paso: y 303..377)
+  ctx.fillStyle = '#79b5cd';
+  ctx.beginPath();
+  ctx.moveTo(0, 305);
+  ctx.quadraticCurveTo(W*0.3, 297, W*0.6, 305);
+  ctx.quadraticCurveTo(W*0.85, 311, W, 303);
+  ctx.lineTo(W, 375);
+  ctx.quadraticCurveTo(W*0.7, 383, W*0.4, 375);
+  ctx.quadraticCurveTo(W*0.15, 369, 0, 377);
+  ctx.fill();
+  // ojo de agua (poza) abajo a la izquierda
+  ctx.fillStyle = '#79b5cd';
+  ctx.beginPath(); ctx.ellipse(170, 468, 60, 34, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle = 'rgba(210,236,246,.5)';
+  ctx.beginPath(); ctx.ellipse(156, 458, 24, 10, 0, 0, 6.283); ctx.fill();
+  // ondas animadas
+  ctx.strokeStyle = 'rgba(240,250,255,.6)'; ctx.lineWidth = 1.5;
+  for(let i = 0; i < 10; i++){
+    const x = (i*113 + tGlobal*36) % W;
+    const y = 316 + (i*31) % 48;
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + 14, y); ctx.stroke();
+  }
+  ctx.beginPath(); ctx.arc(170, 468, 18 + (tGlobal*14 % 26), 0, 6.283);
+  ctx.globalAlpha = .35; ctx.stroke(); ctx.globalAlpha = 1;
+  // piedras de vado para cruzar
+  for(let i = 0; i < 5; i++){
+    drawRoca({x: 150 + i*160, y: 338 + (i%2)*14, s: .7});
+  }
+  for(const r of rocks) drawRoca(r);
+  drawPirca(866, 224);
+  for(const t of trees) drawAlgarrobo(t.x, t.y, t.s);
+  drawCabra(cabra);
+}
+
+/* ===== NIVEL 3: la cumbre del cerro al atardecer ===== */
+function drawSceneCumbre(){
+  const sky = ctx.createLinearGradient(0, 0, 0, 205);
+  sky.addColorStop(0, '#5a2a52'); sky.addColorStop(.55, '#c8542e'); sky.addColorStop(1, '#f0a23c');
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, W, 205);
+  // sol bajo que late
+  const pul = 1 + Math.sin(tGlobal*1.4)*0.03;
+  ctx.fillStyle = 'rgba(255,214,120,.3)';
+  ctx.beginPath(); ctx.arc(W*0.72, 148, 54*pul, 0, 6.283); ctx.fill();
+  ctx.fillStyle = '#ffe9a8';
+  ctx.beginPath(); ctx.arc(W*0.72, 148, 30, 0, 6.283); ctx.fill();
+  drawNubesAves('sunset');
+  // filos lejanos en silueta
+  ctx.fillStyle = '#4a2434';
+  ctx.beginPath(); ctx.moveTo(0, 172);
+  ctx.lineTo(130, 120); ctx.lineTo(290, 160); ctx.lineTo(460, 112);
+  ctx.lineTo(630, 158); ctx.lineTo(800, 118); ctx.lineTo(W, 156);
+  ctx.lineTo(W, 208); ctx.lineTo(0, 208); ctx.fill();
+  ctx.fillStyle = '#3a1f2a';
+  ctx.beginPath(); ctx.moveTo(0, 200);
+  ctx.lineTo(170, 154); ctx.lineTo(350, 192); ctx.lineTo(540, 150);
+  ctx.lineTo(720, 194); ctx.lineTo(870, 158); ctx.lineTo(W, 190);
+  ctx.lineTo(W, 214); ctx.lineTo(0, 214); ctx.fill();
+  drawCardon(140, 166, .52, '#26121c');
+  drawCardon(566, 158, .58, '#26121c');
+  drawCardon(892, 168, .46, '#26121c');
+  // roca de la cumbre al atardecer
+  const gnd = ctx.createLinearGradient(0, 200, 0, H);
+  gnd.addColorStop(0, '#6a4238'); gnd.addColorStop(1, '#3c2622');
+  ctx.fillStyle = gnd; ctx.fillRect(0, 200, W, H-200);
+  // laderas que encajonan la cumbre
+  ctx.fillStyle = '#402a26';
+  ctx.beginPath(); ctx.moveTo(0, 200); ctx.lineTo(72, 238); ctx.lineTo(46, 326);
+  ctx.lineTo(66, 436); ctx.lineTo(0, 474); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(W, 200); ctx.lineTo(W-74, 244); ctx.lineTo(W-44, 344);
+  ctx.lineTo(W-68, 456); ctx.lineTo(W, 490); ctx.fill();
+  // pastos secos dorados
+  ctx.fillStyle = 'rgba(150,120,58,.5)';
+  for(let i = 0; i < 16; i++){
+    const x = (i*137 + 60) % W, y = 228 + (i*97) % (H-270);
+    ctx.beginPath(); ctx.ellipse(x, y, 15, 5, 0, 0, 6.283); ctx.fill();
+  }
+  for(const r of rocks) drawRoca(r);
+  drawPirca(96, 228);
+  for(const t of trees) drawAlgarrobo(t.x, t.y, t.s);
+  drawCardon(246, 470, .58, '#274020');
+  drawCardon(724, 256, .5, '#274020');
+  drawCabra(cabra);
+  // viento con polvo dorado
+  ctx.fillStyle = 'rgba(240,200,120,.5)';
+  for(let i = 0; i < 14; i++){
+    const x = (i*79 + tGlobal*90) % (W+40) - 20;
+    const y = 230 + (i*61) % (H-260) + Math.sin(tGlobal*2 + i)*6;
+    ctx.beginPath(); ctx.arc(x, y, 1.5, 0, 6.283); ctx.fill();
+  }
+}
+
+/* ---------- elementos compartidos ---------- */
+function drawRoca(r){
+  ctx.save(); ctx.translate(r.x, r.y); ctx.scale(r.s, r.s*0.75);
+  ctx.fillStyle = '#a9ada9';
+  ctx.beginPath(); ctx.ellipse(0, 0, 16, 12, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle = '#c4c8c3';
+  ctx.beginPath(); ctx.ellipse(-4, -4, 9, 6, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle = 'rgba(88,93,88,.5)';
+  ctx.beginPath(); ctx.ellipse(4, 6, 10, 4, 0, 0, 6.283); ctx.fill();
+  ctx.restore();
+}
+function drawPirca(x, y){
+  ctx.save(); ctx.translate(x, y);
+  ctx.fillStyle = '#8f938e';
+  ctx.fillRect(-34, -26, 68, 26);
+  ctx.strokeStyle = 'rgba(58,62,58,.55)'; ctx.lineWidth = 1;
+  for(let r = 0; r < 3; r++)
+    for(let c = 0; c < 5; c++)
+      ctx.strokeRect(-34 + c*13.6 + (r%2)*5, -26 + r*8.7, 13.6, 8.7);
+  ctx.fillStyle = '#b09a52';
+  ctx.beginPath(); ctx.moveTo(-40, -26); ctx.lineTo(0, -44); ctx.lineTo(40, -26); ctx.fill();
+  ctx.fillStyle = '#2c2620';
+  ctx.fillRect(-7, -18, 14, 18);
+  ctx.restore();
+}
+function drawCorral(x, y){
+  ctx.save(); ctx.translate(x, y);
+  ctx.strokeStyle = '#7c6448'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+  for(let i = 0; i < 7; i++){
+    ctx.beginPath();
+    ctx.moveTo(i*14, 0);
+    ctx.lineTo(i*14 + ((i*13)%3 - 1), -22 - ((i*7)%8));
+    ctx.stroke();
+  }
+  ctx.lineWidth = 2.2;
+  ctx.beginPath(); ctx.moveTo(-4, -9); ctx.lineTo(90, -15); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(-4, -18); ctx.lineTo(90, -23); ctx.stroke();
+  ctx.restore();
+}
+function drawAlgarrobo(x, y, s){
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.fillStyle = '#503a22';
+  ctx.fillRect(-3, -30, 6, 30);
+  ctx.strokeStyle = '#503a22'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(0, -26); ctx.lineTo(-14, -44); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, -28); ctx.lineTo(13, -46); ctx.stroke();
+  ctx.fillStyle = '#3d6b2e';
+  ctx.beginPath(); ctx.ellipse(-14, -48, 17, 10, -.2, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(14, -50, 18, 10, .2, 0, 6.283); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(0, -56, 20, 11, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle = '#548a3c';
+  ctx.beginPath(); ctx.ellipse(-2, -55, 12, 6, 0, 0, 6.283); ctx.fill();
+  ctx.restore();
+}
+function drawCardon(x, y, s, col){
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  ctx.strokeStyle = col || '#3f7030';
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 14;
+  ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, -78); ctx.stroke();
+  ctx.lineWidth = 10;
+  ctx.beginPath(); ctx.moveTo(-2, -34); ctx.quadraticCurveTo(-26, -36, -26, -66); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(2, -48); ctx.quadraticCurveTo(28, -50, 28, -84); ctx.stroke();
+  if(!col){
+    ctx.strokeStyle = 'rgba(28,52,24,.6)'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(-3, -6); ctx.lineTo(-3, -72); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(3, -6); ctx.lineTo(3, -72); ctx.stroke();
+  }
+  ctx.restore();
+}
+function drawCabra(c){
+  ctx.save(); ctx.translate(c.x, c.y);
+  const step = Math.sin(c.t*6)*1.5;
+  ctx.fillStyle = 'rgba(0,0,0,.25)';
+  ctx.beginPath(); ctx.ellipse(0, 10, 10, 3, 0, 0, 6.283); ctx.fill();
+  ctx.strokeStyle = '#d8d2c4'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(-6, 4); ctx.lineTo(-6, 10+step);
+  ctx.moveTo(6, 4); ctx.lineTo(6, 10-step); ctx.stroke();
+  ctx.fillStyle = '#e6e0d2';
+  ctx.beginPath(); ctx.ellipse(0, 0, 11, 6, 0, 0, 6.283); ctx.fill();
+  const hx = c.vx > 0 ? 10 : -10;
+  ctx.beginPath(); ctx.arc(hx, -5, 4, 0, 6.283); ctx.fill();
+  ctx.strokeStyle = '#9a8a6a'; ctx.lineWidth = 1.6;
+  ctx.beginPath(); ctx.moveTo(hx, -8); ctx.lineTo(hx + (c.vx>0?3:-3), -12); ctx.stroke();
+  ctx.restore();
+}
+
+/* ---------- pantalla de título: atardecer de la quebrada ---------- */
+function drawTitleScene(){
+  const sky = ctx.createLinearGradient(0, 0, 0, H);
+  sky.addColorStop(0, '#66284e');
+  sky.addColorStop(.45, '#c8542e');
+  sky.addColorStop(.78, '#f0a23c');
+  ctx.fillStyle = sky; ctx.fillRect(0, 0, W, H);
+  // sol que late
+  const sx = W*0.63, sy = H*0.55, pul = 1 + Math.sin(tGlobal*1.4)*0.04;
+  ctx.fillStyle = 'rgba(255,214,120,.26)';
+  ctx.beginPath(); ctx.arc(sx, sy, 98*pul, 0, 6.283); ctx.fill();
+  ctx.fillStyle = 'rgba(255,224,140,.5)';
+  ctx.beginPath(); ctx.arc(sx, sy, 62*pul, 0, 6.283); ctx.fill();
+  ctx.fillStyle = '#ffe9a8';
+  ctx.beginPath(); ctx.arc(sx, sy, 40, 0, 6.283); ctx.fill();
+  // aves cruzando el atardecer
+  ctx.strokeStyle = 'rgba(45,16,22,.9)'; ctx.lineWidth = 1.8;
+  for(const b of birds){
+    const w = Math.sin(b.t*10)*4;
+    ctx.beginPath();
+    ctx.moveTo(b.x-7, b.y+120-w); ctx.quadraticCurveTo(b.x, b.y+124, b.x, b.y+121);
+    ctx.quadraticCurveTo(b.x, b.y+124, b.x+7, b.y+120-w); ctx.stroke();
+  }
+  // sierras en silueta
+  ctx.fillStyle = '#4a2030';
+  ctx.beginPath(); ctx.moveTo(0, H*0.66);
+  ctx.lineTo(W*0.15, H*0.56); ctx.lineTo(W*0.34, H*0.64); ctx.lineTo(W*0.52, H*0.55);
+  ctx.lineTo(W*0.7, H*0.63); ctx.lineTo(W*0.86, H*0.57); ctx.lineTo(W, H*0.63);
+  ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.fill();
+  ctx.fillStyle = '#2a1218';
+  ctx.fillRect(0, H*0.76, W, H*0.24);
+  // cardón protagonista con leve balanceo
+  ctx.save();
+  ctx.translate(168, H*0.82);
+  ctx.rotate(Math.sin(tGlobal*0.5)*0.012);
+  drawCardon(0, 0, 2.4, '#200e12');
+  ctx.restore();
+  // ramas secas a la derecha
+  ctx.strokeStyle = '#200e12'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(W, H*0.72);
+  ctx.quadraticCurveTo(W-90, H*0.60, W-150, H*0.52); ctx.stroke();
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(W-108, H*0.575);
+  ctx.quadraticCurveTo(W-140, H*0.50, W-128, H*0.44); ctx.stroke();
+  // chispas cálidas flotando
+  for(let i = 0; i < 12; i++){
+    const x = (i*97 + tGlobal*14) % W;
+    const y = H*0.55 + Math.sin(tGlobal*0.8 + i*1.7)*36 + (i*37)%90;
+    ctx.globalAlpha = 0.3 + 0.3*Math.sin(tGlobal*2 + i);
+    ctx.fillStyle = '#ffd27a';
+    ctx.beginPath(); ctx.arc(x, y, 1.6, 0, 6.283); ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+}
+
+/* ---------- personajes ---------- */
+function drawCacique(p){
+  const blink = p.inv > 0 && Math.floor(tGlobal*14) % 2 === 0;
+  if(blink) ctx.globalAlpha = 0.35;
+  ctx.save(); ctx.translate(p.x, p.y);
+  ctx.scale(1.35, 1.35);
+  const step = Math.sin(tGlobal*10) * 2;
+  // sombra
+  ctx.fillStyle = 'rgba(0,0,0,.3)';
+  ctx.beginPath(); ctx.ellipse(0, 12, 13, 4, 0, 0, 6.283); ctx.fill();
+  // piernas
+  ctx.strokeStyle = '#7a4326'; ctx.lineWidth = 5; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(-4, 0); ctx.lineTo(-5, 11 + step);
+  ctx.moveTo(4, 0); ctx.lineTo(5, 11 - step); ctx.stroke();
+  // torso
+  ctx.fillStyle = '#9a5a30';
+  ctx.beginPath(); ctx.ellipse(0, -6, 9, 12, 0, 0, 6.283); ctx.fill();
+  // faja tejida
+  ctx.fillStyle = '#c8402e'; ctx.fillRect(-9, -2, 18, 4);
+  ctx.fillStyle = '#e8c98f'; ctx.fillRect(-9, 0, 18, 1.5);
+  // arco
+  const aim = Math.atan2(p.fy, p.fx);
+  ctx.save(); ctx.rotate(aim);
+  ctx.strokeStyle = '#4a2a12'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.arc(13, -6, 12, -1.15, 1.15); ctx.stroke();
+  ctx.strokeStyle = 'rgba(240,230,200,.8)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(13+12*Math.cos(-1.15), -6+12*Math.sin(-1.15));
+  ctx.lineTo(13+12*Math.cos(1.15), -6+12*Math.sin(1.15)); ctx.stroke();
+  ctx.restore();
+  // cabeza
+  ctx.fillStyle = '#a86538';
+  ctx.beginPath(); ctx.arc(0, -20, 7, 0, 6.283); ctx.fill();
+  // vincha y plumas
+  ctx.fillStyle = '#c8402e'; ctx.fillRect(-7, -24, 14, 3);
+  for(let i = -1; i <= 1; i++){
+    ctx.save(); ctx.translate(i*4, -25); ctx.rotate(i*0.35);
+    ctx.fillStyle = i === 0 ? '#e8dcb8' : '#c8402e';
+    ctx.beginPath(); ctx.ellipse(0, -7, 2.4, 7.5, 0, 0, 6.283); ctx.fill();
+    ctx.restore();
+  }
+  ctx.restore();
+  ctx.globalAlpha = 1;
+}
+
+function drawIndio(a){
+  ctx.save(); ctx.translate(a.x, a.y);
+  ctx.scale(1.25, 1.25);
+  const step = Math.sin(a.t*10)*1.6;
+  ctx.fillStyle = 'rgba(0,0,0,.25)';
+  ctx.beginPath(); ctx.ellipse(0, 10, 9, 3, 0, 0, 6.283); ctx.fill();
+  ctx.strokeStyle = '#7a4326'; ctx.lineWidth = 4; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(-3, 0); ctx.lineTo(-4, 9 + step);
+  ctx.moveTo(3, 0); ctx.lineTo(4, 9 - step); ctx.stroke();
+  ctx.fillStyle = '#9a5a30';
+  ctx.beginPath(); ctx.ellipse(0, -5, 7, 9, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle = '#c8402e'; ctx.fillRect(-7, -2, 14, 3);
+  if(a.weapon === 'arco'){
+    ctx.strokeStyle = '#4a2a12'; ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.arc(9, -5, 8, -1.1, 1.1); ctx.stroke();
+  }else{
+    // honda girando
+    ctx.strokeStyle = '#d8c8a0'; ctx.lineWidth = 1.6;
+    const ha = a.t*9;
+    ctx.beginPath(); ctx.moveTo(7, -10);
+    ctx.lineTo(7 + Math.cos(ha)*9, -10 + Math.sin(ha)*9); ctx.stroke();
+    ctx.fillStyle = '#8a8d88';
+    ctx.beginPath(); ctx.arc(7 + Math.cos(ha)*9, -10 + Math.sin(ha)*9, 2.2, 0, 6.283); ctx.fill();
+  }
+  ctx.fillStyle = '#a86538';
+  ctx.beginPath(); ctx.arc(0, -16, 5.5, 0, 6.283); ctx.fill();
+  ctx.fillStyle = '#c8402e'; ctx.fillRect(-5.5, -19.5, 11, 2.5);
+  ctx.save(); ctx.translate(0, -20); ctx.rotate(-0.15);
+  ctx.fillStyle = '#e8dcb8';
+  ctx.beginPath(); ctx.ellipse(0, -5, 1.8, 5.5, 0, 0, 6.283); ctx.fill();
+  ctx.restore();
+  ctx.restore();
+}
+
+function drawEnemy(e){
+  if(e.type === 'canon'){
+    ctx.save(); ctx.translate(e.x, e.y);
+    ctx.scale(1.3, 1.3);
+    ctx.fillStyle = 'rgba(0,0,0,.3)';
+    ctx.beginPath(); ctx.ellipse(0, 12, 18, 5, 0, 0, 6.283); ctx.fill();
+    // ruedas
+    for(const wx of [-9, 11]){
+      ctx.fillStyle = '#5a3a1c';
+      ctx.beginPath(); ctx.arc(wx, 8, 8, 0, 6.283); ctx.fill();
+      ctx.fillStyle = '#7a5028';
+      ctx.beginPath(); ctx.arc(wx, 8, 3, 0, 6.283); ctx.fill();
+    }
+    // cureña
+    ctx.fillStyle = '#7a4e26';
+    ctx.fillRect(-16, -2, 32, 8);
+    // caño apuntando al cacique
+    const a = Math.atan2(player.y - e.y, player.x - e.x);
+    ctx.save(); ctx.rotate(a);
+    ctx.fillStyle = '#3c3c46';
+    ctx.fillRect(-4, -6, 30, 12);
+    ctx.fillStyle = '#55555f';
+    ctx.beginPath(); ctx.arc(26, 0, 7, 0, 6.283); ctx.fill();
+    ctx.restore();
+    // vida del cañón
+    ctx.fillStyle = 'rgba(0,0,0,.4)'; ctx.fillRect(-16, -28, 32, 4);
+    ctx.fillStyle = '#c8402e'; ctx.fillRect(-16, -28, 32*(e.hp/6), 4);
+    ctx.restore();
+    return;
+  }
+  if(e.type === 'perro'){
+    ctx.save(); ctx.translate(e.x, e.y);
+    ctx.scale(1.35, 1.35);
+    const step = Math.sin(e.t*14)*2.5;
+    ctx.fillStyle = 'rgba(0,0,0,.28)';
+    ctx.beginPath(); ctx.ellipse(0, 9, 11, 3, 0, 0, 6.283); ctx.fill();
+    ctx.strokeStyle = '#4a3a2c'; ctx.lineWidth = 3; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(-8, 3); ctx.lineTo(-9, 9 + step);
+    ctx.moveTo(-3, 4); ctx.lineTo(-3, 9 - step);
+    ctx.moveTo(3, 4); ctx.lineTo(3, 9 + step);
+    ctx.moveTo(8, 3); ctx.lineTo(9, 9 - step); ctx.stroke();
+    ctx.fillStyle = '#6b5138';
+    ctx.beginPath(); ctx.ellipse(0, 0, 12, 6, 0, 0, 6.283); ctx.fill();
+    const hd = player.x < e.x ? -1 : 1;
+    ctx.beginPath(); ctx.arc(hd*12, -4, 5, 0, 6.283); ctx.fill();
+    ctx.fillStyle = '#54402c';
+    ctx.fillRect(hd*12 + (hd>0?3:-8), -5, 5, 3.4);
+    // collar con púas de perro de guerra
+    ctx.strokeStyle = '#9a9da6'; ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.moveTo(hd*7, -6); ctx.lineTo(hd*7, 2); ctx.stroke();
+    ctx.fillStyle = '#c8cbd4';
+    ctx.beginPath(); ctx.arc(hd*7, -7.5, 1.3, 0, 6.283); ctx.fill();
+    ctx.beginPath(); ctx.arc(hd*7, 3.5, 1.3, 0, 6.283); ctx.fill();
+    ctx.restore();
+    return;
+  }
+  ctx.save(); ctx.translate(e.x, e.y);
+  ctx.scale(1.35, 1.35);
+  const step = Math.sin(e.t*9) * 2;
+  ctx.fillStyle = 'rgba(0,0,0,.3)';
+  ctx.beginPath(); ctx.ellipse(0, 12, 12, 4, 0, 0, 6.283); ctx.fill();
+  // piernas
+  ctx.strokeStyle = '#4a4a55'; ctx.lineWidth = 5; ctx.lineCap = 'round';
+  ctx.beginPath(); ctx.moveTo(-4, 0); ctx.lineTo(-5, 11+step);
+  ctx.moveTo(4, 0); ctx.lineTo(5, 11-step); ctx.stroke();
+  // peto
+  ctx.fillStyle = '#8a8a96';
+  ctx.beginPath(); ctx.ellipse(0, -6, 9, 12, 0, 0, 6.283); ctx.fill();
+  ctx.strokeStyle = '#5c5c66'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, -16); ctx.lineTo(0, 4); ctx.stroke();
+  // arma
+  if(e.type === 'soldado'){
+    ctx.strokeStyle = '#d8d8e0'; ctx.lineWidth = 3;
+    ctx.beginPath(); ctx.moveTo(9, -4); ctx.lineTo(20, -14 + step); ctx.stroke();
+  }else{
+    ctx.strokeStyle = '#5a3a1c'; ctx.lineWidth = 4;
+    const a = Math.atan2(player.y - e.y, player.x - e.x);
+    ctx.save(); ctx.rotate(a);
+    ctx.beginPath(); ctx.moveTo(4, -6); ctx.lineTo(22, -6); ctx.stroke();
+    ctx.restore();
+  }
+  // cabeza + morrión
+  ctx.fillStyle = '#c89a72';
+  ctx.beginPath(); ctx.arc(0, -20, 6.5, 0, 6.283); ctx.fill();
+  ctx.fillStyle = e.type === 'soldado' ? '#7a7a88' : '#5f5f70';
+  ctx.beginPath(); ctx.ellipse(0, -24, 9, 4.5, 0, Math.PI, 0); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(0, -24, 10.5, 2, 0, 0, 6.283); ctx.fill();
+  ctx.restore();
+}
+
+function drawBoss(b){
+  ctx.save(); ctx.translate(b.x, b.y);
+  ctx.scale(1.3, 1.3);
+  if(b.hitFlash > 0){ ctx.globalAlpha = 0.6; }
+  if(b.phase === 'dying'){
+    const k = clamp(b.dying / 1.6, 0, 1);
+    ctx.rotate(k * 1.4); ctx.globalAlpha = 1 - k*0.4;
+  }
+  const gallop = Math.sin(tGlobal*12) * 3;
+
+  ctx.fillStyle = 'rgba(0,0,0,.35)';
+  ctx.beginPath(); ctx.ellipse(0, 20, b.phase==='ride'?30:14, 5, 0, 0, 6.283); ctx.fill();
+
+  if(b.phase === 'ride'){
+    // caballo
+    ctx.fillStyle = '#3a2a20';
+    ctx.beginPath(); ctx.ellipse(0, 2, 28, 13, 0, 0, 6.283); ctx.fill();
+    ctx.strokeStyle = '#3a2a20'; ctx.lineWidth = 5; ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(-18, 10); ctx.lineTo(-20, 22+gallop);
+    ctx.moveTo(-8, 12);  ctx.lineTo(-8, 23-gallop);
+    ctx.moveTo(8, 12);   ctx.lineTo(8, 23+gallop);
+    ctx.moveTo(18, 10);  ctx.lineTo(20, 22-gallop);
+    ctx.stroke();
+    // cuello y cabeza del caballo
+    ctx.beginPath(); ctx.moveTo(-24, 0); ctx.lineTo(-36, -14); ctx.lineWidth = 9; ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(-38, -17, 8, 5, -0.5, 0, 6.283); ctx.fill();
+    // jinete
+    drawRojasBody(0, -18, true);
+  }else{
+    drawRojasBody(0, 0, false);
+  }
+  ctx.restore();
+  ctx.globalAlpha = 1;
+}
+function drawRojasBody(ox, oy, mounted){
+  ctx.save(); ctx.translate(ox, oy);
+  const sc = mounted ? 1 : 1.25;
+  ctx.scale(sc, sc);
+  if(!mounted){
+    ctx.strokeStyle = '#4a4a55'; ctx.lineWidth = 5; ctx.lineCap = 'round';
+    const step = Math.sin(tGlobal*9)*2;
+    ctx.beginPath(); ctx.moveTo(-4, 2); ctx.lineTo(-5, 14+step);
+    ctx.moveTo(4, 2); ctx.lineTo(5, 14-step); ctx.stroke();
+  }
+  // capa roja
+  ctx.fillStyle = '#8e1f1a';
+  ctx.beginPath(); ctx.moveTo(-2, -14);
+  ctx.quadraticCurveTo(-20, 0, -14 + Math.sin(tGlobal*6)*3, 10);
+  ctx.lineTo(-2, 4); ctx.fill();
+  // coraza
+  ctx.fillStyle = boss && boss.phase === 'ride' ? '#b8b8c8' : '#9a9aa8';
+  ctx.beginPath(); ctx.ellipse(0, -6, 11, 13, 0, 0, 6.283); ctx.fill();
+  ctx.strokeStyle = '#6a6a78'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(0, -18); ctx.lineTo(0, 6); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(-9, -10); ctx.lineTo(9, -10); ctx.stroke();
+  // espada
+  ctx.strokeStyle = '#e8e8f0'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(10, -6); ctx.lineTo(26, -16); ctx.stroke();
+  ctx.strokeStyle = '#c8a040'; ctx.lineWidth = 4;
+  ctx.beginPath(); ctx.moveTo(9, -5); ctx.lineTo(13, -8); ctx.stroke();
+  // cabeza + morrión con penacho
+  ctx.fillStyle = '#c89a72';
+  ctx.beginPath(); ctx.arc(0, -22, 7, 0, 6.283); ctx.fill();
+  ctx.fillStyle = '#7a7a8c';
+  ctx.beginPath(); ctx.ellipse(0, -27, 10, 5, 0, Math.PI, 0); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(0, -27, 12, 2.4, 0, 0, 6.283); ctx.fill();
+  ctx.fillStyle = '#c8402e';
+  ctx.beginPath(); ctx.ellipse(4, -35, 2.5, 6, 0.4, 0, 6.283); ctx.fill();
+  ctx.restore();
+}
+
+/* ---------- HUD ---------- */
+function drawHUD(){
+  if(state === 'title') return;
+  // sombra para que el HUD contraste con el cielo claro
+  ctx.shadowColor = 'rgba(20,20,20,.65)';
+  ctx.shadowBlur = 4;
+  ctx.shadowOffsetY = 1;
+  // corazones del cacique
+  for(let i = 0; i < player.maxHp; i++){
+    const x = 24 + i*26, y = 24;
+    ctx.fillStyle = i < player.hp ? '#c8402e' : 'rgba(255,255,255,.18)';
+    ctx.beginPath();
+    ctx.moveTo(x, y+4);
+    ctx.bezierCurveTo(x-9, y-6, x-2, y-11, x, y-4);
+    ctx.bezierCurveTo(x+2, y-11, x+9, y-6, x, y+4);
+    ctx.fill();
+  }
+  ctx.textAlign = 'left';
+  ctx.font = "italic 14px 'IM Fell English', serif";
+  ctx.fillStyle = 'rgba(239,224,192,.8)';
+  ctx.fillText('Cacique de Maquijata', 24, 52);
+  ctx.font = "13px 'IM Fell English', serif";
+  ctx.fillText('Guerreros: ' + allies.length + '  ·  Invasores caídos: ' + kills, 24, 72);
+  // la flecha del veneno crece con cada invasor caído
+  const pwh = 1 + Math.min(kills, 20)*0.06;
+  ctx.strokeStyle = '#8fbe4a'; ctx.lineWidth = 1.5 + pwh;
+  ctx.beginPath(); ctx.moveTo(24, 90); ctx.lineTo(24 + 30*pwh, 90); ctx.stroke();
+  ctx.fillStyle = '#b8e070';
+  ctx.beginPath(); ctx.moveTo(24 + 30*pwh + 8, 90);
+  ctx.lineTo(24 + 30*pwh, 86); ctx.lineTo(24 + 30*pwh, 94); ctx.fill();
+  // honda de fuego (desde 10 bajas)
+  if(kills >= 10){
+    const cdf = 1 - player.fireballCd / 8;
+    ctx.fillStyle = cdf >= 1 ? '#ffd24a' : 'rgba(255,210,74,.3)';
+    ctx.beginPath(); ctx.arc(31, 112, 5.5, 0, 6.283); ctx.fill();
+    ctx.strokeStyle = '#ffb257'; ctx.lineWidth = 2.2;
+    ctx.beginPath(); ctx.arc(31, 112, 10, -Math.PI/2, -Math.PI/2 + 6.283*cdf); ctx.stroke();
+    ctx.font = "italic 11px 'IM Fell English', serif";
+    ctx.fillStyle = '#ffd8a0';
+    ctx.fillText(cdf >= 1 ? 'fuego listo (Q)' : 'cargando fuego...', 48, 116);
+  }
+
+  // oleada
+  if(!boss){
+    ctx.textAlign = 'right';
+    ctx.font = "18px 'IM Fell English SC', serif";
+    ctx.fillStyle = '#e8c98f';
+    ctx.fillText('Nivel ' + level + ' · Oleada ' + Math.min(Math.max(wave,1),3) + ' de 3', W-24, 34);
+  }
+
+  // aviso de oleada
+  if(waveMsg > 0 && !boss){
+    ctx.globalAlpha = clamp(waveMsg, 0, 1);
+    ctx.textAlign = 'center';
+    ctx.font = "30px 'IM Fell English SC', serif";
+    ctx.fillStyle = '#f0d9a8';
+    ctx.fillText('¡Se acercan los invasores!', W/2, H*0.32);
+    ctx.globalAlpha = 1;
+  }
+
+  // barras del jefe
+  if(boss && boss.phase !== 'dying'){
+    const bw = 380, bx = (W-bw)/2, by = 22;
+    ctx.textAlign = 'center';
+    ctx.font = "17px 'IM Fell English SC', serif";
+    ctx.fillStyle = '#f0d9a8';
+    ctx.fillText('DIEGO DE ROJAS · Adelantado del Tucumán', W/2, by-6);
+    ctx.fillStyle = 'rgba(0,0,0,.45)';
+    ctx.fillRect(bx, by, bw, 12);
+    if(boss.phase === 'ride'){
+      ctx.fillStyle = '#b8b8c8';
+      ctx.fillRect(bx, by, bw*(boss.armor/boss.maxArmor), 12);
+      ctx.font = "italic 12px 'IM Fell English', serif";
+      ctx.fillStyle = '#d8d8e0';
+      ctx.fillText('Armadura — las flechas comunes apenas la rayan', W/2, by+26);
+    }else{
+      const frac = boss.hp/boss.maxHp;
+      ctx.fillStyle = frac > 0.25 ? '#c8402e' : '#8fbe4a';
+      ctx.fillRect(bx, by, bw*frac, 12);
+      ctx.font = "italic 12px 'IM Fell English', serif";
+      ctx.fillStyle = player.poisonReady ? '#b8e070' : '#d8d8e0';
+      ctx.fillText(player.poisonReady
+        ? '¡Ahora! Solo la flecha envenenada puede acabar con él (E)'
+        : 'Debilitalo: el veneno necesita un blanco herido', W/2, by+26);
+    }
+    ctx.strokeStyle = '#e0a765'; ctx.lineWidth = 1.5;
+    ctx.strokeRect(bx, by, bw, 12);
+  }
+
+  // cartel de entrada del jefe
+  if(state === 'bossintro' && bossBanner > 0){
+    const a = clamp(Math.min(bossBanner, 3-bossBanner)*1.4, 0, 1);
+    ctx.globalAlpha = a;
+    ctx.fillStyle = 'rgba(20,8,4,.72)';
+    ctx.fillRect(0, H*0.36, W, 110);
+    ctx.textAlign = 'center';
+    ctx.font = "40px 'IM Fell English SC', serif";
+    ctx.fillStyle = '#f0d9a8';
+    ctx.fillText('DIEGO DE ROJAS', W/2, H*0.36+48);
+    ctx.font = "italic 18px 'IM Fell English', serif";
+    ctx.fillStyle = '#d9b98a';
+    ctx.fillText('El conquistador entra a Maquijata a caballo', W/2, H*0.36+80);
+    ctx.globalAlpha = 1;
+  }
+
+  // cartel de nivel
+  if(state === 'levelintro' && levelBanner > 0){
+    const L = LEVELS[level] || {name:'', sub:'', c1:'#fff', c2:'#ddd'};
+    const a = clamp(Math.min(levelBanner, 3.4-levelBanner)*1.3, 0, 1);
+    ctx.globalAlpha = a;
+    ctx.fillStyle = 'rgba(12,14,20,.74)';
+    ctx.fillRect(0, H*0.36, W, 116);
+    ctx.textAlign = 'center';
+    ctx.font = "38px 'IM Fell English SC', serif";
+    ctx.fillStyle = L.c1;
+    ctx.fillText('NIVEL ' + level + ' · ' + L.name, W/2, H*0.36+48);
+    ctx.font = "italic 17px 'IM Fell English', serif";
+    ctx.fillStyle = L.c2;
+    ctx.fillText(L.sub, W/2, H*0.36+82);
+    ctx.globalAlpha = 1;
+  }
+
+  // pausa
+  if(state === 'paused'){
+    ctx.fillStyle = 'rgba(10,8,6,.55)';
+    ctx.fillRect(0, 0, W, H);
+    ctx.textAlign = 'center';
+    ctx.font = "42px 'IM Fell English SC', serif";
+    ctx.fillStyle = '#e8c98f';
+    ctx.fillText('PAUSA', W/2, H/2 - 6);
+    ctx.font = "italic 16px 'IM Fell English', serif";
+    ctx.fillStyle = '#c9a06a';
+    ctx.fillText('P o el botón para continuar', W/2, H/2 + 26);
+  }
+}
+
+
+/* ================= MÚSICA AUTÓCTONA (sintetizada) ================= */
+/* Quena protagonista + bombo legüero + aves del monte + gritos.      */
+/* Modo "chacarera" (título, 6/8) y modo "batalla" (vidala guerrera). */
+let noiseBuf = null;
+function getNoise(){
+  if(noiseBuf) return noiseBuf;
+  noiseBuf = AC.createBuffer(1, AC.sampleRate*0.3, AC.sampleRate);
+  const dd = noiseBuf.getChannelData(0);
+  for(let i = 0; i < dd.length; i++) dd[i] = Math.random()*2 - 1;
+  return noiseBuf;
+}
+function bombo(t, vol){
+  const o = AC.createOscillator(), g = AC.createGain();
+  o.type = 'sine';
+  o.frequency.setValueAtTime(92, t);
+  o.frequency.exponentialRampToValueAtTime(50, t + 0.25);
+  g.gain.setValueAtTime(vol, t);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.32);
+  o.connect(g); g.connect(AC.destination);
+  o.start(t); o.stop(t + 0.36);
+}
+function aro(t){ // golpe en el aro del bombo
+  const o = AC.createOscillator(), g = AC.createGain();
+  o.type = 'square'; o.frequency.value = 1650;
+  g.gain.setValueAtTime(0.026, t);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.05);
+  o.connect(g); g.connect(AC.destination);
+  o.start(t); o.stop(t + 0.06);
+}
+function quena(t, freq, dur, vol){
+  dur = dur || 0.5; vol = vol || 0.05;
+  const o = AC.createOscillator(), g = AC.createGain();
+  const vib = AC.createOscillator(), vg = AC.createGain();
+  const br = AC.createBufferSource(), bg = AC.createGain(), bf = AC.createBiquadFilter();
+  o.type = 'triangle'; o.frequency.setValueAtTime(freq, t);
+  vib.frequency.value = 5.2; vg.gain.value = freq*0.012;
+  vib.connect(vg); vg.connect(o.frequency);
+  // soplo de la quena (aire)
+  br.buffer = getNoise(); br.loop = true;
+  bf.type = 'bandpass'; bf.frequency.value = freq*2; bf.Q.value = 2;
+  bg.gain.setValueAtTime(vol*0.25, t);
+  bg.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  br.connect(bf); bf.connect(bg); bg.connect(AC.destination);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(vol, t + 0.05);
+  g.gain.setValueAtTime(vol*0.85, t + dur*0.7);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  o.connect(g); g.connect(AC.destination);
+  o.start(t); o.stop(t + dur + 0.05);
+  vib.start(t); vib.stop(t + dur + 0.05);
+  br.start(t); br.stop(t + dur);
+}
+function ave(t){ // canto de ave del monte
+  for(let k = 0; k < 2; k++){
+    const t0 = t + k*0.16;
+    const o = AC.createOscillator(), g = AC.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(3100 + k*300, t0);
+    o.frequency.exponentialRampToValueAtTime(2300, t0 + 0.12);
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(0.032, t0 + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.14);
+    o.connect(g); g.connect(AC.destination);
+    o.start(t0); o.stop(t0 + 0.16);
+  }
+}
+// pentatónica menor, aire de vidala / baguala
+const PENTA = [329.6, 392, 440, 523.3, 587.3, 659.3];
+// Chacarera original con aire de añoranza (Mi menor, 6/8, 4 compases por frase)
+const E4=329.6, Fs4=370.0, G4=392.0, A4=440.0, B4=493.9, C5=523.3, D5=587.3, E5=659.3;
+const MEL_A = [
+  B4,0,G4,  A4,0,Fs4,
+  G4,0,E4,  E4,0,0,
+  A4,0,B4,  C5,0,B4,
+  A4,0,Fs4, E4,0,0
+];
+const MEL_B = [
+  E5,0,D5,  C5,0,B4,
+  C5,0,A4,  A4,0,0,
+  B4,0,C5,  D5,0,B4,
+  B4,0,G4,  E4,0,0
+];
+const CHACA_BASS = [82.4, 110, 123.5, 82.4];   // Mi - La - Si - Mi
+const CHACA_CHORD = [
+  [164.8, 246.9, 329.6],   // Mi menor
+  [220.0, 261.6, 329.6],   // La menor
+  [246.9, 293.7, 370.0],   // Si
+  [164.8, 246.9, 329.6]    // Mi menor
+];
+function rasgueo(t, compas){ // rasgueo suave de guitarra
+  const ch = CHACA_CHORD[compas];
+  for(let i = 0; i < 3; i++){
+    const o = AC.createOscillator(), g = AC.createGain();
+    o.type = 'triangle'; o.frequency.value = ch[i];
+    const t0 = t + i*0.028;
+    g.gain.setValueAtTime(0.028, t0);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.22);
+    o.connect(g); g.connect(AC.destination);
+    o.start(t0); o.stop(t0 + 0.24);
+  }
+}
+function bordona(t, f){ // bordoneo grave de guitarra
+  const o = AC.createOscillator(), g = AC.createGain();
+  o.type = 'triangle'; o.frequency.value = f;
+  g.gain.setValueAtTime(0.075, t);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.3);
+  o.connect(g); g.connect(AC.destination);
+  o.start(t); o.stop(t + 0.32);
+}
+let phrase = new Array(16).fill(0);
+function buildPhrase(slots){
+  slots = slots || 16;
+  let idx = Math.floor(rnd(1, 4));
+  phrase = new Array(slots).fill(0);
+  for(let i = 0; i < slots; i += 2){
+    if(Math.random() < 0.74){
+      idx = clamp(idx + Math.round(rnd(-1.5, 1.5)), 0, PENTA.length - 1);
+      phrase[i] = PENTA[idx];
+    }
+  }
+  // remate largo al final de la frase
+  if(Math.random() < 0.6) phrase[slots-2] = PENTA[Math.random() < .5 ? 0 : 2];
+}
+const music = {on: true, playing: false, next: 0, beat: 0, timer: null, mode: 'batalla'};
+function startMusic(mode){
+  music.mode = mode || 'batalla';
+  try{
+    if(!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+    if(AC.state === 'suspended') AC.resume();
+    if(music.playing) return;
+    music.playing = true; music.beat = 0;
+    music.next = AC.currentTime + 0.15;
+    buildPhrase();
+    music.timer = setInterval(scheduleMusic, 90);
+  }catch(e){}
+}
+function stopMusic(){
+  music.playing = false;
+  if(music.timer) clearInterval(music.timer);
+  stopRainSound();
+}
+function scheduleMusic(){
+  if(!music.playing) return;
+  const step = music.mode === 'chacarera' ? 0.19 : 0.3;
+  while(music.next < AC.currentTime + 0.28){
+    if(music.on){
+      const b = music.beat, t = music.next;
+      if(music.mode === 'chacarera'){
+        // chacarera 6/8: bombo en 1 y 4, aro en 3 y 6, bordona y quena
+        const b24 = b % 24, b6 = b % 6;
+        const compas = Math.floor(b24 / 6);
+        if(b6 === 0 || b6 === 3) bombo(t, b6 === 0 ? 0.18 : 0.13);
+        if(b6 === 2 || b6 === 5) aro(t);
+        if(b6 === 0) bordona(t, CHACA_BASS[compas]);
+        const mel = (Math.floor(b / 24) % 2 === 0) ? MEL_A : MEL_B;
+        if(b6 === 3) rasgueo(t, compas);
+        const f = mel[b24];
+        if(f){
+          const largo = !mel[(b24+1) % 24] && !mel[(b24+2) % 24];
+          quena(t, f, largo ? 0.52 : 0.3, 0.052);
+          if(largo) quena(t, f*5/6, 0.5, 0.024);   // segunda voz, tercera abajo
+        }
+        if(b % 96 === 90) ave(t);
+      }else{
+        // batalla: vidala guerrera, quena al frente
+        if(b % 4 === 0) bombo(t, 0.18);
+        else if(b % 4 === 2) bombo(t, 0.09);
+        if(b % 16 === 0) buildPhrase(16);
+        const f = phrase[b % 16];
+        if(f) quena(t, f, 0.62, 0.062);
+        if(b % 24 === 12 && Math.random() < 0.8) ave(t);
+        if(b % 96 === 48) grito(2);   // gritos lejanos en el fragor
+      }
+    }
+    music.next += step;
+    music.beat++;
+  }
+}
+/* Grito de guerra: varias voces con barrido de sierra + banda vocal */
+function grito(voces){
+  try{
+    if(!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+    if(!music.on) return;
+    for(let v = 0; v < (voces || 3); v++){
+      const t0 = AC.currentTime + v*0.07;
+      const o = AC.createOscillator(), g = AC.createGain(), f = AC.createBiquadFilter();
+      o.type = 'sawtooth';
+      o.frequency.setValueAtTime(rnd(420, 520), t0);
+      o.frequency.exponentialRampToValueAtTime(rnd(620, 780), t0 + 0.12);
+      o.frequency.exponentialRampToValueAtTime(rnd(130, 190), t0 + 0.55);
+      f.type = 'bandpass'; f.frequency.value = 720; f.Q.value = 1.2;
+      g.gain.setValueAtTime(0.0001, t0);
+      g.gain.exponentialRampToValueAtTime(0.085, t0 + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.6);
+      o.connect(f); f.connect(g); g.connect(AC.destination);
+      o.start(t0); o.stop(t0 + 0.65);
+    }
+  }catch(e){}
+}
+
+/* ---------- lluvia de la quebrada (nivel 1) ---------- */
+let rainNode = null;
+function startRainSound(){
+  try{
+    if(!AC || rainNode || !music.on) return;
+    const src = AC.createBufferSource(); src.buffer = getNoise(); src.loop = true;
+    const g = AC.createGain(), f = AC.createBiquadFilter();
+    f.type = 'lowpass'; f.frequency.value = 1000;
+    g.gain.value = 0.022;
+    src.connect(f); f.connect(g); g.connect(AC.destination);
+    src.start();
+    rainNode = {src, g};
+  }catch(e){}
+}
+function stopRainSound(){
+  if(rainNode){ try{ rainNode.src.stop(); }catch(e){} rainNode = null; }
+}
+function trueno(){
+  try{
+    if(!AC || !music.on) return;
+    const src = AC.createBufferSource(); src.buffer = getNoise(); src.loop = true;
+    const g = AC.createGain(), f = AC.createBiquadFilter();
+    f.type = 'lowpass'; f.frequency.value = 140;
+    const t0 = AC.currentTime;
+    g.gain.setValueAtTime(0.0001, t0);
+    g.gain.exponentialRampToValueAtTime(0.12, t0 + 0.06);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + 1.4);
+    src.connect(f); f.connect(g); g.connect(AC.destination);
+    src.start(t0); src.stop(t0 + 1.5);
+  }catch(e){}
+}
+function drawRain(){
+  ctx.strokeStyle = 'rgba(195,212,230,.45)';
+  ctx.lineWidth = 1.4;
+  for(let i = 0; i < 70; i++){
+    const spd = 420 + (i % 5)*40;
+    const x = ((i*137.3) % (W+60)) - 30;
+    const y = ((i*97.7) + tGlobal*spd) % (H+40) - 20;
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x-6, y+16); ctx.stroke();
+  }
+  if(flash > 0){
+    ctx.fillStyle = 'rgba(240,246,255,' + (flash*0.45).toFixed(3) + ')';
+    ctx.fillRect(0, 0, W, H);
+  }
+}
+
+/* ---------- bucle principal ---------- */
+let last = performance.now();
+function loop(now){
+  let dt = (now - last) / 1000; last = now;
+  dt = Math.min(dt, 0.05);
+  if(state !== 'title' && state !== 'victory' && state !== 'defeat' && state !== 'paused') update(dt);
+  else { tGlobal += dt; updateFx(dt*timeScale); }
+  draw();
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
