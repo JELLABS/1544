@@ -2,19 +2,29 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>1544 | The Beginning Of The End</title>
+<meta name="description" content="1544: la resistencia tonokoté contra la conquista española en Santiago del Estero. Un juego histórico de Jellabs.">
+<meta name="theme-color" content="#241310">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="1544">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%2064%2064%27%3E%3Crect%20width%3D%2764%27%20height%3D%2764%27%20rx%3D%2713%27%20fill%3D%27%23241310%27/%3E%3Cg%20stroke-linecap%3D%27round%27%3E%3Cline%20x1%3D%2732%27%20y1%3D%2730%27%20x2%3D%2710%27%20y2%3D%2710%27%20stroke%3D%27%23c8c2b4%27%20stroke-width%3D%275%27/%3E%3Cline%20x1%3D%2732%27%20y1%3D%2728%27%20x2%3D%2721%27%20y2%3D%276%27%20%20stroke%3D%27%23c8c2b4%27%20stroke-width%3D%275%27/%3E%3Cline%20x1%3D%2732%27%20y1%3D%2727%27%20x2%3D%2732%27%20y2%3D%274%27%20%20stroke%3D%27%23c8402e%27%20stroke-width%3D%275%27/%3E%3Cline%20x1%3D%2732%27%20y1%3D%2728%27%20x2%3D%2743%27%20y2%3D%276%27%20%20stroke%3D%27%23c8c2b4%27%20stroke-width%3D%275%27/%3E%3Cline%20x1%3D%2732%27%20y1%3D%2730%27%20x2%3D%2754%27%20y2%3D%2710%27%20stroke%3D%27%23c8c2b4%27%20stroke-width%3D%275%27/%3E%3C/g%3E%3Cellipse%20cx%3D%2732%27%20cy%3D%2742%27%20rx%3D%2717%27%20ry%3D%2718%27%20fill%3D%27%23120c0a%27/%3E%3Ccircle%20cx%3D%2732%27%20cy%3D%2740%27%20r%3D%2713%27%20fill%3D%27%23a86538%27/%3E%3Crect%20x%3D%2718%27%20y%3D%2727%27%20width%3D%2728%27%20height%3D%276%27%20fill%3D%27%23c8402e%27/%3E%3Crect%20x%3D%2718%27%20y%3D%2731%27%20width%3D%2728%27%20height%3D%271.4%27%20fill%3D%27%23e8c98f%27/%3E%3Ccircle%20cx%3D%2727%27%20cy%3D%2740%27%20r%3D%272%27%20fill%3D%27%23140c0a%27/%3E%3Ccircle%20cx%3D%2737%27%20cy%3D%2740%27%20r%3D%272%27%20fill%3D%27%23140c0a%27/%3E%3Ccircle%20cx%3D%2732%27%20cy%3D%2750%27%20r%3D%272.6%27%20fill%3D%27%239a9d98%27/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAYAAABS3GwHAAAHrklEQVR42u2dv28cRRiG19bJKJ2VdBSBIgVNEFJa/wUUSNAhuaG1kCsEzblAcQOishAtzUl0IPE3XGsJkYYSUlBGdFHchMrWnW/3dmZ3vpnvx/NWySX27c68z/d+M7t7d/Dk0fHbDqGgOmQIEAAgBAAIAQBCobRgCNpo9fTxzmunL14yMJV1wC5Qe+MDAgBgfEBgDYD5y/wcAgCEAMBy9ScFAAAhFsEiVfm31e6C89NTddVfckFcawwAQLnxJU2gEYDaYwAARowvYQJNALQaA9YABs0/5+cYAwBACAAsV75SP1+qb5/ze1qPAQCgQV0dPeiujh4wEACgr/prSYGW1T9CCpAAiARAsppaxbkbFAAQAgCEACC3fSh0FdPy1VDGgAQY1dXl8+7q8jnnTAKQAn2yvAVY4ti93w8UPgHOlxd3VTFK9d88bxLAuaKmANUfALYmct9kRkmB1Oo/Nl4A4BQELykw9VgjGZ81QLAUoPcHgNm9rYUUmFP9I2qhffJqTsz58uJuj9xTpWxZ/bU/fH+oxfhDlWvfv5ECeqt/izk1B0DOQNQaNG9rgdrVX+OcqgRAw4PanlJAQ/W3+PA9u0COU4CdH6UAaHpQO+ruh5bq3zoFSICJKaCpDeo7Fqq/UgA0PqgdMQU0Vf+WRYUEMJ4CVP/AAJACfqo/AAxobCem9V5y5Pf28HlBhxbMn7IdKXX/u7Ut0bH2p9bzEVbGqzoAOROwOYm1ILBSiTWfa07hat2Gqm+BzpcXW1W4RUtkJQUkF7+p47o5RhYW4U0AmEJ6rTSwcHuExnPbLE6bRUv7JoSpXaCWLZH2FJCq/h6rvgoAphI/BYJcEDSnQK3qX7PlabkF3TQBpj6DmrsuKGVOrSlQuvqnjtVc82t4BllFCzQHBKmWSGMK1Kj+tfp9LRceVa0BbgcmZ4Bqrwu0pUDJ6i/V8kyZVxbBGZVCal2gKQUkq79Uv2/hY1ZM7AKlQlBrXaAlBUpUf6l+38q9VWa2QVu1RBpSQKr6S/X7lm4sNHUdoHVLpCkF5lT/yC2PaQByW6IcCPZVRKkUOL953Z3fvK5a/aO3PC4A0LIuaJUCU6s/5t/VwZNHx28745Lcvht7nyEzljbF5nvn3vKM8Z0DUAuCVCNJGWPK+2P+IABogKCWKVKPAfMHA6DGpGv6sNd9x4L5gwJQIw02f3drQ9w/FowPAOIQaDREzu4V5g8CgAQE2s0wdr6YPxgAJUGwYoahc/UEOgA0gMAqAFT9YYX7lsgx3RrEqvnvHyvmJwFmLxqtmuL2HFO+8yzqx8SHBSAVAuvGiHCOtEBCLZEHY0Q4RwAQXhdw7rRA4Voib+bwfG4AUNgoEga5/OyD7J9Z/vqXiXMDADTb7K2gAAAAUG96YAAAjA8IAIDxAQEAMD4gAMCwVk8fM6vCOn3x0s258D3BKLQAAAEAQgCAEAAgBAAIAQBCAIAQACDkVwtvJ/T+d18wq9L6+FsSACEAQAgAEGINoEZ/f/Mzs4pIAIQAAKERuX0i7NWbm53Xfvr8Q2Y8UWe//Lnz2sN3jkgAzB9DfePVN64AgBAAUP1JAQBQaX7EOIdugaj+jF8IAKj+jDcJgFBEAIaqEe2PbBvkIQVIAEQC0IuiqONPAiASgOqDos6D6Zvh9g281AL4y56bxH5suNiueTx9N8jdyuqNcrRAM8227/VoxwMAjmN3zFS1TafteKy2QSRAAbPVNp224yEBMH8102k7HgBg1wEZnhcSAJEACEXVgiFopz/++W/r7x+9d8ygkAC6lHtRSfqimLbjAYAAC61UE9Uym7bjsbwQJgEKma622bQdDwkQGIJWZtN2PBZl7ma4nIjV/kSYpUXwWcYFNUs3xpEAiBYIIQBACAAQAgA3OuNOSMaRBEAIABCKCQBtEONHAiA0INdXgjfF54TWq/5cCUYIAGQ0tbqwFqD6kwAIRQaAFGCcSACENmTyw3HnPnYnuSP0+/W/4uf/ybN31VZ/1gCKF8K0QpifFgghACAFGA/Da4BSawHp9UAk81v9gozwALSC4NWz010TXa/MVn4AMAxATQj6jN8KhJJtD1+R1EAlB71GD5xi/pz/h/lZBJtZCOaaWhICNgCctEASrZBEOzRk5vV6fffnk5OTKu1QafNbrv4kQKMKuV6vt8w/9BqVHwCaVaFSZpnbypRqhSTMb736dx1fkJFkmpIt0ViVX6/Xg+0QVZ8EaFKNrJpI8rg9VH8SoHEaAGx7udgF2uqZK31DSSoIfT38vjaor/1J3QmqZXwv1d8lADUhSAXhPgQ5AKSYv2bF92R+WqBGrdGtyVOuA9DqkADqUyAlFaZsZ/ZV/5am91b9XQPQGoI+KHIgeHi9UlXhPZrfPQDaIOi6rrv84fvR/7P86mtVx+zV/ACgDARtxgcAIAgvz+bvuiA3w3mfRMYNAJhMxgsAmFTGCQCYXMYHAJhkxiVNi+iTzQ5R7IJwyOQfcf6BxTPBgU1AK8jdoCFbIoxPAoQ1B+YnAUKmAcYHgJAgYHwACAkCxgcAUVNphAHTA0DIVMD4AKDGfDWAwPAAYKr3ngMFZgcAl1AgHeJCGAIAhAAAIQBACAAQAgCEAAAhAEAIABACAIQAACEAQMiH/gct3MjaY9umHQAAAABJRU5ErkJggg==">
+<link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjogIjE1NDQgfCBUaGUgQmVnaW5uaW5nIE9mIFRoZSBFbmQiLCAic2hvcnRfbmFtZSI6ICIxNTQ0IiwgImRpc3BsYXkiOiAiZnVsbHNjcmVlbiIsICJvcmllbnRhdGlvbiI6ICJsYW5kc2NhcGUiLCAiYmFja2dyb3VuZF9jb2xvciI6ICIjMjQxMzEwIiwgInRoZW1lX2NvbG9yIjogIiMyNDEzMTAiLCAiaWNvbnMiOiBbeyJzcmMiOiAiZGF0YTppbWFnZS9wbmc7YmFzZTY0LGlWQk9SdzBLR2dvQUFBQU5TVWhFVWdBQUFNQUFBQURBQ0FZQUFBQlMzR3dIQUFBSHJrbEVRVlI0MnUyZHYyOGNSUmlHMTliSktKMlZkQlNCSWdWTkVGSmEvd1VVU05BaHVhRzFrQ3NFemJsQWNRT2lzaEF0elVsMElQRTNYR3NKa1lZU1VsQkdkRkhjaE1yV25XLzNkbVozdnBudngvTld5U1gyN2M2OHovZCtNN3Q3ZC9EazBmSGJEcUdnT21RSUVBQWdCQUFJQVFCQ29iUmdDTnBvOWZUeHptdW5MMTR5TUpWMXdDNVFlK01EQWdCZ2ZFQmdEWUQ1eS93Y0FnQ0VBTUJ5OVNjRkFBQWhGc0VpVmZtMzFlNkM4OU5UZGRWZmNrRmNhd3dBUUxueEpVMmdFWURhWXdBQVJvd3ZZUUpOQUxRYUE5WUFCczAvNStjWUF3QkFDQUFzVjc1U1AxK3FiNS96ZTFxUEFRQ2dRVjBkUGVpdWpoNHdFQUNnci9wclNZR1cxVDlDQ3BBQWlBUkFzcHBheGJrYkZBQVFBZ0NFQUNDM2ZTaDBGZFB5MVZER2dBUVkxZFhsOCs3cThqbm5UQUtRQW4yeXZBVlk0dGk5M3c4VVBnSE9seGQzVlRGSzlkODhieExBdWFLbUFOVWZBTFltY3Q5a1JrbUIxT28vTmw0QTRCUUVMeWt3OVZnakdaODFRTEFVb1BjSGdObTlyWVVVbUZQOUkycWhmZkpxVHN6NTh1SnVqOXhUcFd4Wi9iVS9mSCtveGZoRGxXdmZ2NUVDZXF0L2l6azFCMERPUU5RYU5HOXJnZHJWWCtPY3FnUkF3NFBhbmxKQVEvVzMrUEE5dTBDT1U0Q2RINlVBYUhwUU8rcnVoNWJxM3pvRlNJQ0pLYUNwRGVvN0ZxcS9VZ0EwUHFnZE1RVTBWZitXUllVRU1KNENWUC9BQUpBQ2Zxby9BQXhvYkNlbTlWNXk1UGYyOEhsQmh4Yk1uN0lkS1hYL3U3VXQwYkgycDliekVWYkdxem9BT1JPd09ZbTFJTEJTaVRXZmEwN2hhdDJHcW0rQnpwY1hXMVc0UlV0a0pRVWtGNytwNDdvNVJoWVc0VTBBbUVKNnJUU3djSHVFeG5QYkxFNmJSVXY3Sm9TcFhhQ1dMWkgyRkpDcS9oNnJ2Z29BcGhJL0JZSmNFRFNuUUszcVg3UGxhYmtGM1RRQnBqNkRtcnN1S0dWT3JTbFF1dnFuanRWYzgydDRCbGxGQ3pRSEJLbVdTR01LMUtqK3RmcDlMUmNlVmEwQmJnY21aNEJxcnd1MHBVREo2aS9WOGt5WlZ4YkJHWlZDYWwyZ0tRVWtxNzlVdjIvaFkxWk03QUtsUWxCclhhQWxCVXBVZjZsKzM4cTlWV2EyUVZ1MVJCcFNRS3I2Uy9YN2xtNHNOSFVkb0hWTHBDa0Y1bFQveUMyUGFRQnlXNkljQ1BaVlJLa1VPTDk1M1ozZnZLNWEvYU8zUEM0QTBMSXVhSlVDVTZzLzV0L1Z3Wk5IeDI4NzQ1TGN2aHQ3bnlFemxqYkY1bnZuM3ZLTThaMERVQXVDVkNOSkdXUEsrMlArSUFCb2dLQ1dLVktQQWZNSEE2REdwR3Y2c05kOXg0TDVnd0pRSXcwMmYzZHJROXcvRm93UEFPSVFhRFJFenU0VjVnOENnQVFFMnMwd2RyNllQeGdBSlVHd1lvYWhjL1VFT2dBMGdNQXFBRlQ5WVlYN2xzZ3gzUnJFcXZudkh5dm1Kd0ZtTHhxdG11TDJIRk8rOHl6cXg4U0hCU0FWQXV2R2lIQ090RUJDTFpFSFkwUTRSd0FRWGhkdzdyUkE0Vm9pYitid2ZHNEFVTmdvRWdhNS9PeUQ3SjlaL3ZxWGlYTURBRFRiN0syZ0FBQUFVRzk2WUFBQWpBOElBSUR4QVFFQU1ENGdBTUN3Vms4Zk02dkNPbjN4MHMyNThEM0JLTFFBQUFFQVFnQ0FFQUFnQkFBSUFRQkNBSUFRQUNEa1Z3dHZKL1QrZDE4d3E5TDYrRnNTQUNFQVFBZ0FFR0lOb0VaL2YvTXpzNHBJQUlRQUFLRVJ1WDBpN05XYm01M1hmdnI4UTJZOFVXZS8vTG56MnNOM2prZ0F6QjlEZmVQVk42NEFnQkFBVVAxSkFRQlFhWDdFT0lkdWdhaitqRjhJQUtqK2pEY0pnRkJFQUlhcUVlMlBiQnZrSVFWSUFFUUMwSXVpcU9OUEFpQVNnT3FEb3M2RDZadmg5ZzI4MUFMNHk1NmJ4SDVzdU5pdWVUeDlOOGpkeXVxTmNyUkFNODIyNy9Wb3h3TUFqbU4zekZTMVRhZnRlS3kyUVNSQUFiUFZOcDIyNHlFQk1IODEwMms3SGdCZzF3RVpuaGNTQUpFQUNFWFZnaUZvcHovKytXL3I3eCs5ZDh5Z2tBQzZsSHRSU2ZxaW1MYmpBWUFBQzYxVUU5VXltN2Jqc2J3UUpnRUttYTYyMmJRZER3a1FHSUpXWnROMlBCWmw3bWE0bklqVi9rU1lwVVh3V2NZRk5VczN4cEVBaUJZSUlRQkFDQUFRQWdBM091Tk9TTWFSQkVBSUFCQ0tDUUJ0RU9OSEFpQTBJTmRYZ2pmRjU0VFdxLzVjQ1VZSUFHUTB0YnF3RnFENmt3QUlSUWFBRkdDY1NBQ0VObVR5dzNIblBuWW51U1AwKy9XLzR1Zi95Yk4zMVZaLzFnQ0tGOEswUXBpZkZnZ2hBQ0FGR0EvRGE0QlNhd0hwOVVBazgxdjlnb3p3QUxTQzROV3owMTBUWGEvTVZuNEFNQXhBVFFqNmpOOEtoSkp0RDErUjFFQWxCNzFHRDV4aS9wei9oL2xaQkp0WkNPYWFXaElDTmdDY3RFQVNyWkJFT3pSazV2VjZmZmZuazVPVEt1MVFhZk5icnY0a1FLTUt1VjZ2dDh3LzlCcVZId0NhVmFGU1pwbmJ5cFJxaFNUTWI3MzZkeDFma0pGa21wSXQwVmlWWDYvWGcrMFFWWjhFYUZLTnJKcEk4cmc5Vkg4U29IRWFBR3g3dWRnRjJ1cVpLMzFEU1NvSWZUMzh2amFvci8xSjNRbXFaWHd2MWQ4bEFEVWhTQVhoUGdRNUFLU1l2MmJGOTJSK1dxQkdyZEd0eVZPdUE5RHFrQURxVXlBbEZhWnNaL1pWLzVhbTkxYjlYUVBRR29JK0tISWdlSGk5VWxYaFBacmZQUURhSU9pNnJydjg0ZnZSLzdQODZtdFZ4K3pWL0FDZ0RBUnR4Z2NBSUFndnorYnZ1aUEzdzNtZlJNWU5BSmhNeGdzQW1GVEdDUUNZWE1ZSEFKaGt4aVZOaStpVHpRNVI3SUp3eU9RZmNmNkJ4VFBCZ1UxQUs4amRvQ0ZiSW94UEFvUTFCK1luQVVLbUFjWUhnSkFnWUh3QUNBa0N4Z2NBVVZOcGhBSFRBMERJVk1ENEFLREdmRFdBd1BBQVlLcjNuZ01GWmdjQWwxQWdIZUpDR0FJQWhBQUFJUUJBQ0FBUUFnQ0VBQUFoQUVBSUFCQUNBSVFBQUNFQVFNaUgvZ2N0M01qYVk5dW1IUUFBQUFCSlJVNUVya0pnZ2c9PSIsICJzaXplcyI6ICIxOTJ4MTkyIiwgInR5cGUiOiAiaW1hZ2UvcG5nIn1dfQ==">
 <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
 <style>
   :root{
     --tierra:#8a4b2a; --ocre:#c8792f; --arena:#e8c98f;
-    --noche:#241310; --sangre:#9e2b25; --veneno:#383b35;
+    --noche:#241310; --sangre:#9e2b25; --veneno:#7fae3b;
     --papel:#efe0c0;
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{width:100%;height:100%;overflow:hidden;background:var(--noche);
     font-family:'IM Fell English',Georgia,serif;color:var(--papel);
-    touch-action:none;user-select:none;-webkit-user-select:none}
+    touch-action:none;user-select:none;-webkit-user-select:none;
+    overscroll-behavior:none;-webkit-touch-callout:none}
   #wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
   canvas{display:block;background:#000;max-width:100%;max-height:100%}
 
@@ -78,17 +88,33 @@
   @keyframes pulseF{0%,100%{box-shadow:0 0 6px rgba(255,150,60,.4)}50%{box-shadow:0 0 26px rgba(255,150,60,.95)}}
   #btnPause{top:14px;right:14px;bottom:auto;width:44px;height:44px;font-size:15px;
     background:rgba(28,18,12,.55);opacity:.7}
+  /* zonas seguras (notch y barra de iPhone / Android con gestos) */
+  @supports (padding: env(safe-area-inset-bottom)){
+    #btnShoot{right:calc(26px + env(safe-area-inset-right));bottom:calc(34px + env(safe-area-inset-bottom))}
+    #btnPoison{right:calc(126px + env(safe-area-inset-right));bottom:calc(96px + env(safe-area-inset-bottom))}
+    #btnFire{right:calc(26px + env(safe-area-inset-right));bottom:calc(132px + env(safe-area-inset-bottom))}
+    #btnPause{right:calc(14px + env(safe-area-inset-right));top:calc(14px + env(safe-area-inset-top))}
+    #stick{left:calc(30px + env(safe-area-inset-left));bottom:calc(30px + env(safe-area-inset-bottom))}
+  }
+  /* aviso para girar el celular */
+  #rotate{position:fixed;inset:0;z-index:60;display:none;flex-direction:column;gap:14px;
+    align-items:center;justify-content:center;text-align:center;background:#241310;
+    color:var(--arena);font-family:'IM Fell English SC',serif;font-size:22px;padding:30px}
+  #rotate span{font-size:52px;display:block;animation:girar 2.4s ease-in-out infinite}
+  @keyframes girar{0%,100%{transform:rotate(0)}50%{transform:rotate(-90deg)}}
+  @media (orientation: portrait) and (pointer: coarse){ #rotate{display:flex} }
   @keyframes pulse{0%,100%{box-shadow:0 0 6px rgba(127,174,59,.4)}50%{box-shadow:0 0 26px rgba(127,174,59,.95)}}
 </style>
 </head>
 <body>
 <div id="wrap"><canvas id="cv"></canvas></div>
+<div id="rotate"><span>⟳</span>Girá el celular<br><small style="font-size:15px;color:#c9a06a">1544 se juega apaisado</small></div>
 
 <!-- Pantalla título -->
 <div class="screen" id="scrTitle">
   <div class="eyebrow">La resistencia del Tucumán</div>
   <h1>1544</h1>
-  <div class="sub">La caída de Diego de Rojas · Sierras de Guasayán, Santiago del Estero</div>
+  <div class="sub">The Beginning Of The End · Sierras de Guasayán, Santiago del Estero</div>
   <div class="rule"></div>
   <div class="story">
     Noviembre de 1543. Desde el Perú baja la expedición de <b>Diego de Rojas</b>:
@@ -253,10 +279,13 @@ const ctx = cv.getContext('2d');
 
 function fit(){
   const s = Math.min(innerWidth / W, innerHeight / H);
-  cv.width = W; cv.height = H;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
   cv.style.width  = (W * s) + 'px';
   cv.style.height = (H * s) + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
+addEventListener('orientationchange', () => setTimeout(fit, 250));
 addEventListener('resize', fit); fit();
 
 /* ---------- utilidades ---------- */
@@ -415,14 +444,29 @@ function togglePause(){
   if(state === 'play') state = 'paused';
   else if(state === 'paused') state = 'play';
 }
-addEventListener('pointerdown', () => { if(state === 'cine') endCine(); });
+addEventListener('pointerdown', () => {
+  if(AC && AC.state === 'suspended') AC.resume();   // desbloqueo de audio en iOS
+  if(state === 'cine') endCine();
+});
+addEventListener('gesturestart', e => e.preventDefault());   // sin zoom de pellizco
+addEventListener('contextmenu', e => { if(isTouch) e.preventDefault(); });
+function goFullscreen(){
+  if(!isTouch) return;
+  try{
+    const el = document.documentElement;
+    if(el.requestFullscreen) el.requestFullscreen().catch(() => {});
+    else if(el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+    if(screen.orientation && screen.orientation.lock)
+      screen.orientation.lock('landscape').catch(() => {});
+  }catch(e){}
+}
 
 /* ---------- botones de pantalla ---------- */
 const scr = id => document.getElementById(id);
-document.getElementById('bStart').onclick = () => { startCine(); };
+document.getElementById('bStart').onclick = () => { goFullscreen(); startCine(); };
 document.getElementById('bRetry').onclick = () => { clearCP(); startGame(); };
 document.getElementById('bContinuar').onclick = () => { continueGame(); };
-document.getElementById('bContinuarTitulo').onclick = () => { continueGame(); };
+document.getElementById('bContinuarTitulo').onclick = () => { goFullscreen(); continueGame(); };
 function continueGame(){
   const c = loadCP();
   if(!c){ startGame(); return; }
