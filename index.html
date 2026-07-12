@@ -125,6 +125,8 @@
   @media (orientation: portrait) and (pointer: coarse){ #rotate{display:flex} }
   @keyframes pulse{0%,100%{box-shadow:0 0 6px rgba(127,174,59,.4)}50%{box-shadow:0 0 26px rgba(127,174,59,.95)}}
 </style>
+<!-- Contador de visitas (privado, sin cookies) - reemplazá TUCODIGO por el código real que te dé GoatCounter -->
+<script data-goatcounter="https://1544juego.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 <div id="wrap"><canvas id="cv"></canvas></div>
@@ -651,7 +653,19 @@ if(isTouch) touchUI.classList.add('on');
 let joy = {id: null, ox: 0, oy: 0, dx: 0, dy: 0};
 let touchShoot = false;
 
+function resetJoy(){
+  joy.id = null; joy.dx = 0; joy.dy = 0;
+  knob.style.left = '31px'; knob.style.top = '31px';
+  stickEl.style.left = '30px'; stickEl.style.top = 'auto'; stickEl.style.bottom = '30px';
+}
 addEventListener('touchstart', e => {
+  // Vigía: si el dedo que sostenía la palanca ya no está entre los toques activos
+  // (el navegador perdió el touchend, p.ej. al recibir una notificación), la liberamos.
+  if(joy.id !== null){
+    let stillDown = false;
+    for(const t of e.touches) if(t.identifier === joy.id) stillDown = true;
+    if(!stillDown) resetJoy();
+  }
   for(const t of e.changedTouches){
     if(t.clientX < innerWidth * 0.5 && joy.id === null){
       joy.id = t.identifier; joy.ox = t.clientX; joy.oy = t.clientY;
@@ -673,19 +687,20 @@ addEventListener('touchmove', e => {
   }
 }, {passive: true});
 addEventListener('touchend', e => {
-  for(const t of e.changedTouches){
-    if(t.identifier === joy.id){
-      joy.id = null; joy.dx = 0; joy.dy = 0;
-      knob.style.left = '31px'; knob.style.top = '31px';
-      stickEl.style.left = '30px'; stickEl.style.top = 'auto'; stickEl.style.bottom = '30px';
-    }
-  }
+  for(const t of e.changedTouches) if(t.identifier === joy.id) resetJoy();
 }, {passive: true});
+addEventListener('touchcancel', e => {
+  for(const t of e.changedTouches) if(t.identifier === joy.id) resetJoy();
+}, {passive: true});
+// Si el navegador oculta la pestaña (cambio de app, notificación) sueltan todos los dedos
+// y a veces no llega touchend: soltamos la palanca igual para no dejarla trabada.
+document.addEventListener('visibilitychange', () => { if(document.hidden) resetJoy(); });
 
 const btnShoot = document.getElementById('btnShoot');
 const btnPoison = document.getElementById('btnPoison');
 btnShoot.addEventListener('touchstart', e => { e.preventDefault(); touchShoot = true; });
 btnShoot.addEventListener('touchend',   e => { e.preventDefault(); touchShoot = false; });
+btnShoot.addEventListener('touchcancel', e => { e.preventDefault(); touchShoot = false; });
 btnPoison.addEventListener('touchstart', e => { e.preventDefault(); firePoison(); });
 const btnFire = document.getElementById('btnFire');
 btnFire.addEventListener('touchstart', e => { e.preventDefault(); fireFireball(); });
@@ -799,8 +814,16 @@ const MISIONES = {
   8: {titulo: 'SANTO DOMINGO', anio: '1820', texto: 'Cuatro años después de Borges, el reclamo santiagueño vuelve con <b>Juan Felipe Ibarra</b>, comandante de la frontera de Abipones. Tucumán quiere someter a Santiago a su nueva "República"; los vecinos llaman a Ibarra en su auxilio. El <b>31 de marzo de 1820</b>, frente a la <b>Iglesia de Santo Domingo</b>, sus <b>Dragones</b> derrotan al enviado tucumano Echauri. El <b>27 de abril</b>, un Cabildo abierto declara la <b>Autonomía Provincial</b>: Santiago del Estero, al fin, gobierna su propio destino.'},
   9: {titulo: 'PRADERA DEL GANSO', anio: '1982', texto: 'Ciento sesenta y dos años después, la misma bandera vuelve a estar en juego, ahora en el sur helado del país. En <b>Malvinas</b>, jóvenes de este mismo monte —muchos con apenas 18 o 19 años— combaten en <b>Pradera del Ganso</b> del 27 al 29 de mayo: infantería pura, casa por casa, bajo un frío que no habían conocido. Esta misión no se gana matando: se resiste, se cuida al compañero, y al final, se recuerda. <b style="color:#c8d4dc">Catorce santiagueños no volvieron.</b>'}
 };
+function trackEvent(name){
+  try{
+    if(window.goatcounter && window.goatcounter.count){
+      window.goatcounter.count({path: name, event: true});
+    }
+  }catch(e){}
+}
 function showMision(n){
   level = n; wave = 0; waveMsg = 0;
+  trackEvent('mision-' + n);
   scr('misEyebrow').textContent = 'MISIÓN ' + n + ' · ' + (MISIONES[n].anio || '1543');
   scr('misTitle').textContent = MISIONES[n].titulo;
   scr('misText').innerHTML = MISIONES[n].texto;
@@ -915,6 +938,7 @@ function nextWave(){
   }
 }
 function endMalvinas(){
+  trackEvent('campana-completa');
   // No hay jefe que vencer en esta misión: se resistió, y ahora se recuerda.
   stopMusic(); stopViento();
   enemies = []; bullets = []; cannonballs = []; arrows = []; fireballs = []; drops = [];
