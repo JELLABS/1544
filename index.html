@@ -658,6 +658,9 @@ const cabra = {x: 120, y: 246, t: 0, vx: 9};
 const keys = {};
 addEventListener('keydown', e => {
   if(state === 'cine'){ endCine(); return; }
+  // Si estás escribiendo en un campo de texto (ej. Sugerencias), el juego no debe interceptar teclas
+  const tag = document.activeElement && document.activeElement.tagName;
+  if(tag === 'TEXTAREA' || tag === 'INPUT') return;
   keys[e.code] = true;
   if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code)) e.preventDefault();
   if(e.code === 'KeyE') firePoison();
@@ -739,10 +742,17 @@ document.getElementById('bFeedbackSend').onclick = () => {
   if(!txt){ status.textContent = 'Escribí algo primero.'; return; }
   if(txt.length < 3){ status.textContent = 'Un poquito más largo, dale.'; return; }
   status.textContent = 'Enviando...';
-  notifyTelegram('💬 Sugerencia en 1544:\n' + txt);
-  status.textContent = '¡Gracias! Ya llegó.';
-  document.getElementById('fbText').value = '';
-  setTimeout(() => { showScreen('scrTitle'); status.textContent = ''; }, 1400);
+  notifyTelegram('💬 Sugerencia en 1544:\n' + txt)
+    .then(res => {
+      if(res.ok){
+        status.textContent = '¡Gracias! Ya llegó.';
+        document.getElementById('fbText').value = '';
+        setTimeout(() => { showScreen('scrTitle'); status.textContent = ''; }, 1400);
+      }else{
+        status.textContent = 'No se pudo enviar (error ' + res.status + '). Probá de nuevo.';
+      }
+    })
+    .catch(() => { status.textContent = 'No hay conexión. Probá de nuevo en un ratito.'; });
 };
 document.getElementById('bSalir').onclick = () => salirDelJuego();
 function goHome(){
@@ -853,13 +863,11 @@ const MISIONES = {
 const NOTIFY_URL = 'https://1544-notify.juanchilezana.workers.dev';
 
 function notifyTelegram(text){
-  try{
-    fetch(NOTIFY_URL, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({text})
-    }).catch(() => {});
-  }catch(e){}
+  return fetch(NOTIFY_URL, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({text})
+  });
 }
 
 function trackEvent(name){
