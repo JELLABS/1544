@@ -126,7 +126,7 @@
   @keyframes pulse{0%,100%{box-shadow:0 0 6px rgba(127,174,59,.4)}50%{box-shadow:0 0 26px rgba(127,174,59,.95)}}
 </style>
 <!-- Contador de visitas (privado, sin cookies) - reemplazá TUCODIGO por el código real que te dé GoatCounter -->
-<script data-goatcounter="https://1544juego.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<script data-goatcounter="https://TUCODIGO.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 <div id="wrap"><canvas id="cv"></canvas></div>
@@ -159,6 +159,12 @@
   <button class="btn" id="bStart">COMENZAR</button>
   <button class="btn" id="bContinuarTitulo" style="display:none;margin-top:10px;background:linear-gradient(180deg,#5a7a34,#3c5420);border-color:#a8c870">CONTINUAR</button>
   <button class="btn2" id="bBiblio">BIBLIOTECA HISTÓRICA</button>
+  <div style="display:flex;gap:10px;justify-content:center;margin-top:10px;flex-wrap:wrap">
+    <button class="btn2" id="bFeedback" style="font-size:13px;padding:10px 18px">✉ SUGERENCIAS</button>
+    <a class="btn2" id="bCafecito" href="https://cafecito.app/1544-game" target="_blank" rel="noopener"
+      style="font-size:13px;padding:10px 18px;text-decoration:none;display:inline-flex;align-items:center">☕ INVITAME UN CAFECITO</a>
+  </div>
+
   <div class="keys">
     <kbd>W A S D</kbd> o flechas: moverse &nbsp;·&nbsp; <kbd>ESPACIO</kbd>: disparar (mantener)
     &nbsp;·&nbsp; <kbd>E</kbd>: flecha envenenada &nbsp;·&nbsp; <kbd>Q</kbd>: bola de fuego (tras 10 bajas) &nbsp;·&nbsp; <kbd>M</kbd>: música<br>En celular: joystick y botones en pantalla &nbsp;·&nbsp; Tocá la pantalla para oír la chacarera
@@ -520,6 +526,22 @@
 </div>
 
 <!-- Menú de pausa -->
+<div class="screen hidden" id="scrFeedback">
+  <h1 style="font-size:clamp(26px,5vw,42px)">SUGERENCIAS</h1>
+  <div class="rule"></div>
+  <div class="story">
+    ¿Encontraste un bug? ¿Tenés una idea para una misión? Escribime acá,
+    llega directo.
+  </div>
+  <textarea id="fbText" maxlength="500" rows="5" placeholder="Contame qué se te ocurrió..."
+    style="width:min(90%,480px);margin:16px auto;display:block;padding:12px;border-radius:8px;
+    border:1px solid rgba(232,201,143,.4);background:rgba(20,12,8,.5);color:#f0e4d0;
+    font-family:inherit;font-size:15px;resize:vertical"></textarea>
+  <div id="fbStatus" style="min-height:20px;color:#c9a06a;font-size:14px;margin-bottom:6px"></div>
+  <button class="btn" id="bFeedbackSend">ENVIAR</button>
+  <button class="btn2" id="bFeedbackVolver" style="margin-top:12px">VOLVER</button>
+</div>
+
 <div class="screen hidden" id="scrPausa">
   <h1 style="font-size:clamp(28px,5vw,46px)">PAUSA</h1>
   <div class="rule"></div>
@@ -709,6 +731,19 @@ btnPause.addEventListener('click', () => togglePause());
 document.getElementById('btnHome').addEventListener('click', () => goHome());
 document.getElementById('bReanudar').onclick = () => togglePause();
 document.getElementById('bInicio').onclick = () => goHome();
+document.getElementById('bFeedback').onclick = () => { showScreen('scrFeedback'); };
+document.getElementById('bFeedbackVolver').onclick = () => { showScreen('scrTitle'); };
+document.getElementById('bFeedbackSend').onclick = () => {
+  const txt = document.getElementById('fbText').value.trim();
+  const status = document.getElementById('fbStatus');
+  if(!txt){ status.textContent = 'Escribí algo primero.'; return; }
+  if(txt.length < 3){ status.textContent = 'Un poquito más largo, dale.'; return; }
+  status.textContent = 'Enviando...';
+  notifyTelegram('💬 Sugerencia en 1544:\n' + txt);
+  status.textContent = '¡Gracias! Ya llegó.';
+  document.getElementById('fbText').value = '';
+  setTimeout(() => { showScreen('scrTitle'); status.textContent = ''; }, 1400);
+};
 document.getElementById('bSalir').onclick = () => salirDelJuego();
 function goHome(){
   stopMusic(); stopRainSound(); stopAgua();
@@ -814,6 +849,19 @@ const MISIONES = {
   8: {titulo: 'SANTO DOMINGO', anio: '1820', texto: 'Cuatro años después de Borges, el reclamo santiagueño vuelve con <b>Juan Felipe Ibarra</b>, comandante de la frontera de Abipones. Tucumán quiere someter a Santiago a su nueva "República"; los vecinos llaman a Ibarra en su auxilio. El <b>31 de marzo de 1820</b>, frente a la <b>Iglesia de Santo Domingo</b>, sus <b>Dragones</b> derrotan al enviado tucumano Echauri. El <b>27 de abril</b>, un Cabildo abierto declara la <b>Autonomía Provincial</b>: Santiago del Estero, al fin, gobierna su propio destino.'},
   9: {titulo: 'PRADERA DEL GANSO', anio: '1982', texto: 'Ciento sesenta y dos años después, la misma bandera vuelve a estar en juego, ahora en el sur helado del país. En <b>Malvinas</b>, jóvenes de este mismo monte —muchos con apenas 18 o 19 años— combaten en <b>Pradera del Ganso</b> del 27 al 29 de mayo: infantería pura, casa por casa, bajo un frío que no habían conocido. Esta misión no se gana matando: se resiste, se cuida al compañero, y al final, se recuerda. <b style="color:#c8d4dc">Catorce santiagueños no volvieron.</b>'}
 };
+// Reemplazá esta URL por la de tu Cloudflare Worker (ver instrucciones)
+const NOTIFY_URL = 'https://1544-notify.juanchilezana.workers.dev';
+
+function notifyTelegram(text){
+  try{
+    fetch(NOTIFY_URL, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({text})
+    }).catch(() => {});
+  }catch(e){}
+}
+
 function trackEvent(name){
   try{
     if(window.goatcounter && window.goatcounter.count){
@@ -840,7 +888,7 @@ document.getElementById('bBiblio').onclick = () => { showScreen('scrBiblio'); };
 document.getElementById('bVolver').onclick = () => { showScreen('scrTitle'); };
 
 function showScreen(id){
-  for(const s of ['scrTitle','scrLose','scrWin','scrMision','scrBiblio','scrPausa','scrMemorial'])
+  for(const s of ['scrTitle','scrLose','scrWin','scrMision','scrBiblio','scrPausa','scrMemorial','scrFeedback'])
     scr(s).classList.add('hidden');
   if(id) scr(id).classList.remove('hidden');
   // botonera visible solo durante el juego
@@ -939,6 +987,7 @@ function nextWave(){
 }
 function endMalvinas(){
   trackEvent('campana-completa');
+  notifyTelegram('🏆 Alguien completó la campaña completa de 1544 (9 misiones)');
   // No hay jefe que vencer en esta misión: se resistió, y ahora se recuerda.
   stopMusic(); stopViento();
   enemies = []; bullets = []; cannonballs = []; arrows = []; fireballs = []; drops = [];
